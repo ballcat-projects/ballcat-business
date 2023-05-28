@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hccake.ballcat.i18n.mapper.I18nDataMapper">
+<mapper namespace="org.ballcat.business.i18n.mapper.I18nDataMapper">
 
-	<resultMap id="i18nDataMap" type="com.hccake.ballcat.i18n.model.entity.I18nData">
+	<resultMap id="i18nDataMap" type="org.ballcat.business.i18n.model.entity.I18nData">
   		<id property="id" column="id"/>
     		<result property="languageTag" column="language_tag"/>
     		<result property="code" column="code"/>

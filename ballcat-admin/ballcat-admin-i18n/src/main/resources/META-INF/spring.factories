@@ -1,4 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    com.hccake.ballcat.admin.i18n.config.AdminI18nAutoConfiguration
+    org.ballcat.admin.i18n.config.AdminI18nAutoConfiguration
 
 
