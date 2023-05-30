@@ -16,6 +16,7 @@
     <modules>
         <module>ballcat-admin</module>
         <module>ballcat-i18n</module>
+        <module>ballcat-infra</module>
         <module>ballcat-log</module>
         <module>ballcat-notify</module>
         <module>ballcat-system</module>

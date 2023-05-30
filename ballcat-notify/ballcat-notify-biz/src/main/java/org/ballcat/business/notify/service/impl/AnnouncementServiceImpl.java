@@ -10,7 +10,7 @@ import com.hccake.ballcat.common.model.domain.PageParam;
 import com.hccake.ballcat.common.model.domain.PageResult;
 import com.hccake.ballcat.common.model.result.BaseResultCode;
 import com.hccake.ballcat.common.model.result.SystemResultCode;
-import org.ballcat.business.file.service.FileService;
+import org.ballcat.business.infra.service.FileService;
 import org.ballcat.business.notify.converter.AnnouncementConverter;
 import org.ballcat.business.notify.converter.NotifyInfoConverter;
 import org.ballcat.business.notify.enums.AnnouncementStatusEnum;

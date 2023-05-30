@@ -11,7 +11,7 @@ import com.hccake.ballcat.common.model.domain.PageParam;
 import com.hccake.ballcat.common.model.domain.PageResult;
 import com.hccake.ballcat.common.model.domain.SelectData;
 import com.hccake.ballcat.common.model.result.BaseResultCode;
-import org.ballcat.business.file.service.FileService;
+import org.ballcat.business.infra.service.FileService;
 import org.ballcat.business.system.checker.AdminUserChecker;
 import org.ballcat.business.system.component.PasswordHelper;
 import org.ballcat.business.system.constant.SysUserConst;

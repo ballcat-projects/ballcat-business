@@ -4,7 +4,7 @@ import com.hccake.ballcat.common.util.JsonUtils;
 import com.hccake.ballcat.common.websocket.distribute.MessageDO;
 import com.hccake.ballcat.common.websocket.distribute.MessageDistributor;
 import org.ballcat.admin.websocket.message.DictChangeMessage;
-import org.ballcat.business.system.event.DictChangeEvent;
+import org.ballcat.business.infra.event.DictChangeEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
