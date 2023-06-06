@@ -3,7 +3,7 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
 		<groupId>org.ballcat.business</groupId>
-		<artifactId>ballcat-system</artifactId>
+		<artifactId>ballcat-business-system</artifactId>
 		<version>${revision}</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
@@ -11,16 +11,16 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.ballcat</groupId>
+			<groupId>org.ballcat.business</groupId>
 			<artifactId>ballcat-system-model</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.ballcat</groupId>
+			<groupId>org.ballcat.business</groupId>
 			<artifactId>ballcat-infra-biz</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.ballcat</groupId>
-			<artifactId>ballcat-common-redis</artifactId>
+			<artifactId>ballcat-redis</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.ballcat</groupId>

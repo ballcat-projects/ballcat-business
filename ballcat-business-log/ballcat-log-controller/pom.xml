@@ -15,7 +15,7 @@
 			<artifactId>ballcat-common-model</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.ballcat</groupId>
+			<groupId>org.ballcat.business</groupId>
 			<artifactId>ballcat-log-biz</artifactId>
 		</dependency>
 		<dependency>

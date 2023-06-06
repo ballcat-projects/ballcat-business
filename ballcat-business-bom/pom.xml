@@ -21,83 +21,99 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- admin 功能模块 -->
+            <dependency>
+                <groupId>org.ballcat.business</groupId>
+                <artifactId>ballcat-admin-core</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.ballcat.business</groupId>
+                <artifactId>ballcat-admin-i18n</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.ballcat.business</groupId>
+                <artifactId>ballcat-admin-websocket</artifactId>
+                <version>${revision}</version>
+            </dependency>
             <!-- i18n 国际化模块 -->
             <dependency>
-                <groupId>org.ballcat</groupId>
+                <groupId>org.ballcat.business</groupId>
                 <artifactId>ballcat-i18n-biz</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
-                <groupId>org.ballcat</groupId>
+                <groupId>org.ballcat.business</groupId>
                 <artifactId>ballcat-i18n-controller</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
-                <groupId>org.ballcat</groupId>
+                <groupId>org.ballcat.business</groupId>
                 <artifactId>ballcat-i18n-model</artifactId>
                 <version>${revision}</version>
             </dependency>
-            <!-- system 系统模块 -->
+            <!-- infra 基础建设模块 -->
             <dependency>
-                <groupId>org.ballcat</groupId>
+                <groupId>org.ballcat.business</groupId>
                 <artifactId>ballcat-infra-biz</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
-                <groupId>org.ballcat</groupId>
+                <groupId>org.ballcat.business</groupId>
                 <artifactId>ballcat-infra-controller</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
-                <groupId>org.ballcat</groupId>
+                <groupId>org.ballcat.business</groupId>
                 <artifactId>ballcat-infra-model</artifactId>
                 <version>${revision}</version>
             </dependency>
             <!-- log 日志模块 -->
             <dependency>
-                <groupId>org.ballcat</groupId>
+                <groupId>org.ballcat.business</groupId>
                 <artifactId>ballcat-log-biz</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
-                <groupId>org.ballcat</groupId>
+                <groupId>org.ballcat.business</groupId>
                 <artifactId>ballcat-log-controller</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
-                <groupId>org.ballcat</groupId>
+                <groupId>org.ballcat.business</groupId>
                 <artifactId>ballcat-log-model</artifactId>
                 <version>${revision}</version>
             </dependency>
             <!-- notify 通知模块 -->
             <dependency>
-                <groupId>org.ballcat</groupId>
+                <groupId>org.ballcat.business</groupId>
                 <artifactId>ballcat-notify-biz</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
-                <groupId>org.ballcat</groupId>
+                <groupId>org.ballcat.business</groupId>
                 <artifactId>ballcat-notify-controller</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
-                <groupId>org.ballcat</groupId>
+                <groupId>org.ballcat.business</groupId>
                 <artifactId>ballcat-notify-model</artifactId>
                 <version>${revision}</version>
             </dependency>
             <!-- system 系统模块 -->
             <dependency>
-                <groupId>org.ballcat</groupId>
+                <groupId>org.ballcat.business</groupId>
                 <artifactId>ballcat-system-biz</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
-                <groupId>org.ballcat</groupId>
+                <groupId>org.ballcat.business</groupId>
                 <artifactId>ballcat-system-controller</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
-                <groupId>org.ballcat</groupId>
+                <groupId>org.ballcat.business</groupId>
                 <artifactId>ballcat-system-model</artifactId>
                 <version>${revision}</version>
             </dependency>

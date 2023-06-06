@@ -18,7 +18,7 @@
 		<!-- 脱敏工具 -->
 		<dependency>
 			<groupId>org.ballcat</groupId>
-			<artifactId>ballcat-common-desensitize</artifactId>
+			<artifactId>ballcat-desensitize</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.ballcat</groupId>
@@ -58,19 +58,19 @@
 
 		<!-- 业务模块 -->
 		<dependency>
-			<groupId>org.ballcat</groupId>
+			<groupId>org.ballcat.business</groupId>
 			<artifactId>ballcat-infra-controller</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.ballcat</groupId>
+			<groupId>org.ballcat.business</groupId>
 			<artifactId>ballcat-log-controller</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.ballcat</groupId>
+			<groupId>org.ballcat.business</groupId>
 			<artifactId>ballcat-notify-controller</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.ballcat</groupId>
+			<groupId>org.ballcat.business</groupId>
 			<artifactId>ballcat-system-controller</artifactId>
 		</dependency>
 	</dependencies>

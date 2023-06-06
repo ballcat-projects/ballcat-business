@@ -11,25 +11,25 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.ballcat</groupId>
-			<artifactId>ballcat-common-websocket</artifactId>
+			<groupId>org.ballcat.business</groupId>
+			<artifactId>ballcat-notify-model</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.ballcat.business</groupId>
+			<artifactId>ballcat-system-biz</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.ballcat.business</groupId>
+			<artifactId>ballcat-infra-biz</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.ballcat</groupId>
-			<artifactId>ballcat-notify-model</artifactId>
+			<artifactId>ballcat-websocket</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.ballcat</groupId>
 			<artifactId>ballcat-spring-boot-starter-mail</artifactId>
 			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.ballcat</groupId>
-			<artifactId>ballcat-system-biz</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.ballcat</groupId>
-			<artifactId>ballcat-infra-biz</artifactId>
 		</dependency>
 	</dependencies>
 </project>

@@ -16,14 +16,14 @@
 		</dependency>
 		<dependency>
 			<groupId>org.ballcat</groupId>
-			<artifactId>ballcat-common-redis</artifactId>
+			<artifactId>ballcat-redis</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.ballcat</groupId>
 			<artifactId>ballcat-mybatis-plus</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.ballcat</groupId>
+			<groupId>org.ballcat.business</groupId>
 			<artifactId>ballcat-i18n-model</artifactId>
 		</dependency>
 	</dependencies>

@@ -34,7 +34,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.ballcat</groupId>
-			<artifactId>ballcat-common-i18n</artifactId>
+			<artifactId>ballcat-i18n</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.ballcat</groupId>

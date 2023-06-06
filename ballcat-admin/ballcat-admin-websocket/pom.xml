@@ -11,7 +11,7 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.ballcat</groupId>
+			<groupId>org.ballcat.business</groupId>
 			<artifactId>ballcat-admin-core</artifactId>
 		</dependency>
 		<dependency>
