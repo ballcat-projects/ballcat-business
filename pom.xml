@@ -16,11 +16,11 @@
     <modules>
         <module>ballcat-admin</module>
         <module>ballcat-business-bom</module>
-        <module>ballcat-i18n</module>
-        <module>ballcat-infra</module>
-        <module>ballcat-log</module>
-        <module>ballcat-notify</module>
-        <module>ballcat-system</module>
+        <module>ballcat-business-i18n</module>
+        <module>ballcat-business-infra</module>
+        <module>ballcat-business-log</module>
+        <module>ballcat-business-notify</module>
+        <module>ballcat-business-system</module>
     </modules>
 
     <properties>
