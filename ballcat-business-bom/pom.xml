@@ -10,6 +10,7 @@
         <relativePath/>
     </parent>
 
+    <groupId>org.ballcat.business</groupId>
     <artifactId>ballcat-business-bom</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
