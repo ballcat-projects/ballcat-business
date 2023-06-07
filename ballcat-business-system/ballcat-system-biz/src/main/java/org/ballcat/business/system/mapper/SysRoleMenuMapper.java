@@ -3,7 +3,7 @@ package org.ballcat.business.system.mapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.ballcat.business.system.model.entity.SysRoleMenu;
-import com.hccake.extend.mybatis.plus.mapper.ExtendMapper;
+import org.ballcat.mybatisplus.mapper.ExtendMapper;
 
 import java.io.Serializable;
 

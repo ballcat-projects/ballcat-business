@@ -2,8 +2,8 @@ package org.ballcat.business.system.component;
 
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.crypto.CryptoException;
-import com.hccake.ballcat.common.core.exception.BusinessException;
-import com.hccake.ballcat.common.security.util.PasswordUtils;
+import org.ballcat.common.core.exception.BusinessException;
+import org.ballcat.springsecurity.util.PasswordUtils;
 import org.ballcat.business.system.properties.SystemProperties;
 import org.ballcat.security.properties.SecurityProperties;
 import org.springframework.security.crypto.password.PasswordEncoder;

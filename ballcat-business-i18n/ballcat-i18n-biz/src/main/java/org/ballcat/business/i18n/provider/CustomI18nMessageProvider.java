@@ -2,9 +2,9 @@ package org.ballcat.business.i18n.provider;
 
 import cn.hutool.cache.impl.TimedCache;
 import cn.hutool.core.util.RandomUtil;
-import com.hccake.ballcat.common.i18n.I18nMessage;
-import com.hccake.ballcat.common.i18n.I18nMessageProvider;
-import com.hccake.ballcat.common.redis.listener.AbstractMessageEventListener;
+import org.ballcat.i18n.I18nMessage;
+import org.ballcat.i18n.I18nMessageProvider;
+import org.ballcat.redis.listener.AbstractMessageEventListener;
 import org.ballcat.business.i18n.constant.I18nRedisKeyConstants;
 import org.ballcat.business.i18n.model.dto.I18nDataUnique;
 import org.ballcat.business.i18n.model.entity.I18nData;

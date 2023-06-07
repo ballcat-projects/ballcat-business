@@ -3,9 +3,9 @@ package org.ballcat.business.notify.service;
 import org.ballcat.business.notify.model.entity.UserAnnouncement;
 import org.ballcat.business.notify.model.qo.UserAnnouncementQO;
 import org.ballcat.business.notify.model.vo.UserAnnouncementPageVO;
-import com.hccake.ballcat.common.model.domain.PageParam;
-import com.hccake.ballcat.common.model.domain.PageResult;
-import com.hccake.extend.mybatis.plus.service.ExtendService;
+import org.ballcat.common.model.domain.PageParam;
+import org.ballcat.common.model.domain.PageResult;
+import org.ballcat.mybatisplus.service.ExtendService;
 
 /**
  * 用户公告表

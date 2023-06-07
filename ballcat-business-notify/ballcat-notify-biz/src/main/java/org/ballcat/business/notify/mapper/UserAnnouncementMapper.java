@@ -8,11 +8,11 @@ import org.ballcat.business.notify.converter.UserAnnouncementConverter;
 import org.ballcat.business.notify.model.entity.UserAnnouncement;
 import org.ballcat.business.notify.model.qo.UserAnnouncementQO;
 import org.ballcat.business.notify.model.vo.UserAnnouncementPageVO;
-import com.hccake.ballcat.common.model.domain.PageParam;
-import com.hccake.ballcat.common.model.domain.PageResult;
-import com.hccake.extend.mybatis.plus.conditions.query.LambdaQueryWrapperX;
-import com.hccake.extend.mybatis.plus.mapper.ExtendMapper;
-import com.hccake.extend.mybatis.plus.toolkit.WrappersX;
+import org.ballcat.common.model.domain.PageParam;
+import org.ballcat.common.model.domain.PageResult;
+import org.ballcat.mybatisplus.conditions.query.LambdaQueryWrapperX;
+import org.ballcat.mybatisplus.mapper.ExtendMapper;
+import org.ballcat.mybatisplus.toolkit.WrappersX;
 
 import java.time.LocalDateTime;
 

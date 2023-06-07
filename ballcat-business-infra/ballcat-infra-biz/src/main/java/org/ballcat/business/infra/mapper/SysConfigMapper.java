@@ -4,14 +4,14 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import com.hccake.ballcat.common.model.domain.PageParam;
-import com.hccake.ballcat.common.model.domain.PageResult;
+import org.ballcat.common.model.domain.PageParam;
+import org.ballcat.common.model.domain.PageResult;
 import org.ballcat.business.infra.converter.SysConfigConverter;
 import org.ballcat.business.infra.model.entity.SysConfig;
 import org.ballcat.business.infra.model.qo.SysConfigQO;
 import org.ballcat.business.infra.model.vo.SysConfigPageVO;
-import com.hccake.extend.mybatis.plus.mapper.ExtendMapper;
-import com.hccake.extend.mybatis.plus.toolkit.WrappersX;
+import org.ballcat.mybatisplus.mapper.ExtendMapper;
+import org.ballcat.mybatisplus.toolkit.WrappersX;
 
 /**
  * 系统配置表

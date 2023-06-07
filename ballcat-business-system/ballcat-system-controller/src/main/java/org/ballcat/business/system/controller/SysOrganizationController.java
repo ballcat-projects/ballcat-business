@@ -1,11 +1,11 @@
 package org.ballcat.business.system.controller;
 
 import cn.hutool.core.collection.CollUtil;
-import com.hccake.ballcat.common.log.operation.annotation.CreateOperationLogging;
-import com.hccake.ballcat.common.log.operation.annotation.DeleteOperationLogging;
-import com.hccake.ballcat.common.log.operation.annotation.UpdateOperationLogging;
-import com.hccake.ballcat.common.model.result.BaseResultCode;
-import com.hccake.ballcat.common.model.result.R;
+import org.ballcat.log.operation.annotation.CreateOperationLogging;
+import org.ballcat.log.operation.annotation.DeleteOperationLogging;
+import org.ballcat.log.operation.annotation.UpdateOperationLogging;
+import org.ballcat.common.model.result.BaseResultCode;
+import org.ballcat.common.model.result.R;
 import org.ballcat.business.system.converter.SysOrganizationConverter;
 import org.ballcat.business.system.model.dto.SysOrganizationDTO;
 import org.ballcat.business.system.model.entity.SysOrganization;

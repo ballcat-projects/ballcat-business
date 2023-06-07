@@ -4,9 +4,9 @@ import org.ballcat.business.notify.model.dto.AnnouncementDTO;
 import org.ballcat.business.notify.model.entity.Announcement;
 import org.ballcat.business.notify.model.qo.AnnouncementQO;
 import org.ballcat.business.notify.model.vo.AnnouncementPageVO;
-import com.hccake.ballcat.common.model.domain.PageParam;
-import com.hccake.ballcat.common.model.domain.PageResult;
-import com.hccake.extend.mybatis.plus.service.ExtendService;
+import org.ballcat.common.model.domain.PageParam;
+import org.ballcat.common.model.domain.PageResult;
+import org.ballcat.mybatisplus.service.ExtendService;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

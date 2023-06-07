@@ -3,10 +3,10 @@ package org.ballcat.business.system.service;
 import org.ballcat.business.system.model.entity.SysRole;
 import org.ballcat.business.system.model.qo.SysRoleQO;
 import org.ballcat.business.system.model.vo.SysRolePageVO;
-import com.hccake.ballcat.common.model.domain.PageParam;
-import com.hccake.ballcat.common.model.domain.PageResult;
-import com.hccake.ballcat.common.model.domain.SelectData;
-import com.hccake.extend.mybatis.plus.service.ExtendService;
+import org.ballcat.common.model.domain.PageParam;
+import org.ballcat.common.model.domain.PageResult;
+import org.ballcat.common.model.domain.SelectData;
+import org.ballcat.mybatisplus.service.ExtendService;
 
 import java.util.List;
 

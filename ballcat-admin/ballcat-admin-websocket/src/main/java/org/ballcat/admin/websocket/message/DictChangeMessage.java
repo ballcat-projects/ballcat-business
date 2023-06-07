@@ -1,6 +1,6 @@
 package org.ballcat.admin.websocket.message;
 
-import com.hccake.ballcat.common.websocket.message.JsonWebSocketMessage;
+import org.ballcat.websocket.message.JsonWebSocketMessage;
 import lombok.Getter;
 import lombok.Setter;
 

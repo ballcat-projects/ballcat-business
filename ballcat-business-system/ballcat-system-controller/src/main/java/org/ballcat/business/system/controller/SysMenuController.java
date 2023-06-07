@@ -1,14 +1,14 @@
 package org.ballcat.business.system.controller;
 
 import cn.hutool.core.collection.CollUtil;
-import com.hccake.ballcat.common.log.operation.annotation.CreateOperationLogging;
-import com.hccake.ballcat.common.log.operation.annotation.DeleteOperationLogging;
-import com.hccake.ballcat.common.log.operation.annotation.UpdateOperationLogging;
-import com.hccake.ballcat.common.model.result.BaseResultCode;
-import com.hccake.ballcat.common.model.result.R;
-import com.hccake.ballcat.common.security.constant.UserAttributeNameConstants;
-import com.hccake.ballcat.common.security.userdetails.User;
-import com.hccake.ballcat.common.security.util.SecurityUtils;
+import org.ballcat.log.operation.annotation.CreateOperationLogging;
+import org.ballcat.log.operation.annotation.DeleteOperationLogging;
+import org.ballcat.log.operation.annotation.UpdateOperationLogging;
+import org.ballcat.common.model.result.BaseResultCode;
+import org.ballcat.common.model.result.R;
+import org.ballcat.springsecurity.oauth2.constant.UserAttributeNameConstants;
+import org.ballcat.springsecurity.oauth2.userdetails.User;
+import org.ballcat.springsecurity.util.SecurityUtils;
 import org.ballcat.business.system.converter.SysMenuConverter;
 import org.ballcat.business.system.enums.SysMenuType;
 import org.ballcat.business.system.model.dto.SysMenuCreateDTO;

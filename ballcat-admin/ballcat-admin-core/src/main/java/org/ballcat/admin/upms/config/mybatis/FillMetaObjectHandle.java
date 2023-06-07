@@ -1,9 +1,9 @@
 package org.ballcat.admin.upms.config.mybatis;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
-import com.hccake.ballcat.common.core.constant.GlobalConstants;
-import com.hccake.ballcat.common.security.userdetails.User;
-import com.hccake.ballcat.common.security.util.SecurityUtils;
+import org.ballcat.common.core.constant.GlobalConstants;
+import org.ballcat.springsecurity.oauth2.userdetails.User;
+import org.ballcat.springsecurity.util.SecurityUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
 

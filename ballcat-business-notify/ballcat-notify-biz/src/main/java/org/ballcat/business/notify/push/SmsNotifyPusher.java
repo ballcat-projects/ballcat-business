@@ -4,7 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import org.ballcat.business.notify.enums.NotifyChannelEnum;
 import org.ballcat.business.notify.model.domain.NotifyInfo;
 import org.ballcat.business.system.model.entity.SysUser;
-import com.hccake.ballcat.common.util.HtmlUtils;
+import org.ballcat.common.util.HtmlUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

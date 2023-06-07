@@ -4,9 +4,9 @@ import org.ballcat.business.infra.mapper.SysDictItemMapper;
 import org.ballcat.business.infra.model.entity.SysDictItem;
 import org.ballcat.business.infra.model.vo.SysDictItemPageVO;
 import org.ballcat.business.infra.service.SysDictItemService;
-import com.hccake.ballcat.common.model.domain.PageParam;
-import com.hccake.ballcat.common.model.domain.PageResult;
-import com.hccake.extend.mybatis.plus.service.impl.ExtendServiceImpl;
+import org.ballcat.common.model.domain.PageParam;
+import org.ballcat.common.model.domain.PageResult;
+import org.ballcat.mybatisplus.service.impl.ExtendServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

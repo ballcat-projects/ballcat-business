@@ -1,6 +1,6 @@
 package org.ballcat.business.log.thread;
 
-import com.hccake.ballcat.common.core.thread.AbstractBlockingQueueThread;
+import org.ballcat.common.core.thread.AbstractBlockingQueueThread;
 import org.ballcat.business.log.model.entity.AccessLog;
 import org.ballcat.business.log.service.AccessLogService;
 import lombok.RequiredArgsConstructor;

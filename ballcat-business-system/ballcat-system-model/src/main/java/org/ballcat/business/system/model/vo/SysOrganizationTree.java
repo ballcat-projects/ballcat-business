@@ -1,6 +1,6 @@
 package org.ballcat.business.system.model.vo;
 
-import com.hccake.ballcat.common.util.tree.TreeNode;
+import org.ballcat.common.util.tree.TreeNode;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import lombok.Data;

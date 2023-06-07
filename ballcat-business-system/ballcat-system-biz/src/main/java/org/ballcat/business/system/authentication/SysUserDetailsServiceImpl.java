@@ -1,7 +1,7 @@
 package org.ballcat.business.system.authentication;
 
-import com.hccake.ballcat.common.security.constant.UserAttributeNameConstants;
-import com.hccake.ballcat.common.security.userdetails.User;
+import org.ballcat.springsecurity.oauth2.constant.UserAttributeNameConstants;
+import org.ballcat.springsecurity.oauth2.userdetails.User;
 import org.ballcat.business.system.model.dto.UserInfoDTO;
 import org.ballcat.business.system.model.entity.SysUser;
 import org.ballcat.business.system.service.SysUserService;

@@ -4,7 +4,7 @@ import org.ballcat.business.system.model.dto.SysMenuCreateDTO;
 import org.ballcat.business.system.model.dto.SysMenuUpdateDTO;
 import org.ballcat.business.system.model.entity.SysMenu;
 import org.ballcat.business.system.model.qo.SysMenuQO;
-import com.hccake.extend.mybatis.plus.service.ExtendService;
+import org.ballcat.mybatisplus.service.ExtendService;
 
 import java.util.List;
 

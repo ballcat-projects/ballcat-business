@@ -2,10 +2,10 @@ package org.ballcat.business.log.handler;
 
 import cn.hutool.http.useragent.UserAgent;
 import cn.hutool.http.useragent.UserAgentUtil;
-import com.hccake.ballcat.common.core.constant.MDCConstants;
-import com.hccake.ballcat.common.core.util.WebUtils;
-import com.hccake.ballcat.common.log.operation.enums.LogStatusEnum;
-import com.hccake.ballcat.common.util.IpUtils;
+import org.ballcat.common.core.constant.MDCConstants;
+import org.ballcat.common.core.util.WebUtils;
+import org.ballcat.log.operation.enums.LogStatusEnum;
+import org.ballcat.common.util.IpUtils;
 import org.ballcat.business.log.model.entity.LoginLog;
 import org.slf4j.MDC;
 

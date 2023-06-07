@@ -1,7 +1,7 @@
 package org.ballcat.business.i18n.listener;
 
-import com.hccake.ballcat.common.i18n.I18nMessage;
-import com.hccake.ballcat.common.i18n.I18nMessageCreateEvent;
+import org.ballcat.i18n.I18nMessage;
+import org.ballcat.i18n.I18nMessageCreateEvent;
 import org.ballcat.business.i18n.converter.I18nDataConverter;
 import org.ballcat.business.i18n.model.entity.I18nData;
 import org.ballcat.business.i18n.service.I18nDataService;

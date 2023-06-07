@@ -72,7 +72,7 @@ public class AnnouncementPageVO {
 
 	/**
 	 * 永久有效的
-	 * @see com.hccake.ballcat.common.core.constant.enums.BooleanEnum
+	 * @see org.ballcat.common.core.constant.enums.BooleanEnum
 	 */
 	@Schema(title = "永久有效的")
 	private Integer immortal;

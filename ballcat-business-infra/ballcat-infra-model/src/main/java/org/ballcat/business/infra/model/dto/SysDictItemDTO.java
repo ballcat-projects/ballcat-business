@@ -2,9 +2,9 @@ package org.ballcat.business.infra.model.dto;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
-import com.hccake.ballcat.common.core.validation.constraints.OneOfInts;
-import com.hccake.ballcat.common.core.validation.group.CreateGroup;
-import com.hccake.ballcat.common.core.validation.group.UpdateGroup;
+import org.ballcat.common.core.validation.constraints.OneOfInts;
+import org.ballcat.common.core.validation.group.CreateGroup;
+import org.ballcat.common.core.validation.group.UpdateGroup;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 

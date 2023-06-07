@@ -1,10 +1,10 @@
 package org.ballcat.business.notify.handler;
 
 import cn.hutool.core.collection.CollUtil;
-import com.hccake.ballcat.common.util.JsonUtils;
-import com.hccake.ballcat.common.websocket.distribute.MessageDO;
-import com.hccake.ballcat.common.websocket.distribute.MessageDistributor;
-import com.hccake.ballcat.common.websocket.message.JsonWebSocketMessage;
+import org.ballcat.common.util.JsonUtils;
+import org.ballcat.websocket.distribute.MessageDO;
+import org.ballcat.websocket.distribute.MessageDistributor;
+import org.ballcat.websocket.message.JsonWebSocketMessage;
 import org.ballcat.business.notify.model.domain.NotifyInfo;
 import org.ballcat.business.system.model.entity.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;

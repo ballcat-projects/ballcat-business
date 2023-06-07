@@ -1,10 +1,10 @@
 package org.ballcat.business.system.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.hccake.ballcat.common.core.validation.group.CreateGroup;
-import com.hccake.ballcat.common.core.validation.group.UpdateGroup;
-import com.hccake.ballcat.common.desensitize.enums.RegexDesensitizationTypeEnum;
-import com.hccake.ballcat.common.desensitize.json.annotation.JsonRegexDesensitize;
+import org.ballcat.common.core.validation.group.CreateGroup;
+import org.ballcat.common.core.validation.group.UpdateGroup;
+import org.ballcat.desensitize.enums.RegexDesensitizationTypeEnum;
+import org.ballcat.desensitize.json.annotation.JsonRegexDesensitize;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.hibernate.validator.constraints.Range;

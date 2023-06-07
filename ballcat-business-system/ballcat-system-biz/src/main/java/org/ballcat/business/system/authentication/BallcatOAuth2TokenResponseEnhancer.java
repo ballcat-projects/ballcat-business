@@ -1,8 +1,8 @@
 package org.ballcat.business.system.authentication;
 
-import com.hccake.ballcat.common.security.constant.TokenAttributeNameConstants;
-import com.hccake.ballcat.common.security.constant.UserAttributeNameConstants;
-import com.hccake.ballcat.common.security.userdetails.User;
+import org.ballcat.springsecurity.oauth2.constant.TokenAttributeNameConstants;
+import org.ballcat.springsecurity.oauth2.constant.UserAttributeNameConstants;
+import org.ballcat.springsecurity.oauth2.userdetails.User;
 import org.ballcat.business.system.model.vo.SysUserInfo;
 import org.ballcat.springsecurity.oauth2.server.authorization.web.authentication.OAuth2TokenResponseEnhancer;
 import org.springframework.security.core.Authentication;

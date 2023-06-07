@@ -1,7 +1,7 @@
 package org.ballcat.business.system.checker;
 
 import cn.hutool.core.text.CharSequenceUtil;
-import com.hccake.ballcat.common.security.util.SecurityUtils;
+import org.ballcat.springsecurity.util.SecurityUtils;
 import org.ballcat.business.system.model.entity.SysUser;
 import org.ballcat.business.system.properties.SystemProperties;
 import lombok.RequiredArgsConstructor;

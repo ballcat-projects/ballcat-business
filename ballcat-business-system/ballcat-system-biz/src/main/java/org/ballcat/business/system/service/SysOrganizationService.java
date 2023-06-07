@@ -4,7 +4,7 @@ import org.ballcat.business.system.model.dto.SysOrganizationDTO;
 import org.ballcat.business.system.model.entity.SysOrganization;
 import org.ballcat.business.system.model.qo.SysOrganizationQO;
 import org.ballcat.business.system.model.vo.SysOrganizationTree;
-import com.hccake.extend.mybatis.plus.service.ExtendService;
+import org.ballcat.mybatisplus.service.ExtendService;
 
 import java.util.List;
 

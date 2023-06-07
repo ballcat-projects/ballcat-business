@@ -1,7 +1,7 @@
 package org.ballcat.admin.upms.log;
 
-import com.hccake.ballcat.common.log.access.handler.AccessLogHandler;
-import com.hccake.ballcat.common.log.operation.handler.OperationLogHandler;
+import org.ballcat.log.access.handler.AccessLogHandler;
+import org.ballcat.log.operation.handler.OperationLogHandler;
 import org.ballcat.business.log.handler.CustomAccessLogHandler;
 import org.ballcat.business.log.handler.CustomOperationLogHandler;
 import org.ballcat.business.log.model.entity.AccessLog;

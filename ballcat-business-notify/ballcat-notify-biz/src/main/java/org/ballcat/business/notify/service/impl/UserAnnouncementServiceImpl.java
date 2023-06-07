@@ -6,9 +6,9 @@ import org.ballcat.business.notify.model.entity.UserAnnouncement;
 import org.ballcat.business.notify.model.qo.UserAnnouncementQO;
 import org.ballcat.business.notify.model.vo.UserAnnouncementPageVO;
 import org.ballcat.business.notify.service.UserAnnouncementService;
-import com.hccake.ballcat.common.model.domain.PageParam;
-import com.hccake.ballcat.common.model.domain.PageResult;
-import com.hccake.extend.mybatis.plus.service.impl.ExtendServiceImpl;
+import org.ballcat.common.model.domain.PageParam;
+import org.ballcat.common.model.domain.PageResult;
+import org.ballcat.mybatisplus.service.impl.ExtendServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

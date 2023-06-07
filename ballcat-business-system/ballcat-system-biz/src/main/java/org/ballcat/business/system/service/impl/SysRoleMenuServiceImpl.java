@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import org.ballcat.business.system.mapper.SysRoleMenuMapper;
 import org.ballcat.business.system.model.entity.SysRoleMenu;
 import org.ballcat.business.system.service.SysRoleMenuService;
-import com.hccake.extend.mybatis.plus.service.impl.ExtendServiceImpl;
+import org.ballcat.mybatisplus.service.impl.ExtendServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

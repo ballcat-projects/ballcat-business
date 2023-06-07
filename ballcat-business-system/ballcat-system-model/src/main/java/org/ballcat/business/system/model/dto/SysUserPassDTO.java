@@ -1,7 +1,7 @@
 package org.ballcat.business.system.model.dto;
 
-import com.hccake.ballcat.common.desensitize.enums.RegexDesensitizationTypeEnum;
-import com.hccake.ballcat.common.desensitize.json.annotation.JsonRegexDesensitize;
+import org.ballcat.desensitize.enums.RegexDesensitizationTypeEnum;
+import org.ballcat.desensitize.json.annotation.JsonRegexDesensitize;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 

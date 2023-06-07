@@ -1,14 +1,14 @@
 package org.ballcat.business.infra.controller;
 
-import com.hccake.ballcat.common.core.validation.group.CreateGroup;
-import com.hccake.ballcat.common.core.validation.group.UpdateGroup;
-import com.hccake.ballcat.common.log.operation.annotation.CreateOperationLogging;
-import com.hccake.ballcat.common.log.operation.annotation.DeleteOperationLogging;
-import com.hccake.ballcat.common.log.operation.annotation.UpdateOperationLogging;
-import com.hccake.ballcat.common.model.domain.PageParam;
-import com.hccake.ballcat.common.model.domain.PageResult;
-import com.hccake.ballcat.common.model.result.BaseResultCode;
-import com.hccake.ballcat.common.model.result.R;
+import org.ballcat.common.core.validation.group.CreateGroup;
+import org.ballcat.common.core.validation.group.UpdateGroup;
+import org.ballcat.log.operation.annotation.CreateOperationLogging;
+import org.ballcat.log.operation.annotation.DeleteOperationLogging;
+import org.ballcat.log.operation.annotation.UpdateOperationLogging;
+import org.ballcat.common.model.domain.PageParam;
+import org.ballcat.common.model.domain.PageResult;
+import org.ballcat.common.model.result.BaseResultCode;
+import org.ballcat.common.model.result.R;
 import org.ballcat.business.infra.manager.SysDictManager;
 import org.ballcat.business.infra.model.dto.SysDictItemDTO;
 import org.ballcat.business.infra.model.entity.SysDict;

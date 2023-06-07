@@ -1,6 +1,6 @@
 package org.ballcat.business.i18n.converter;
 
-import com.hccake.ballcat.common.i18n.I18nMessage;
+import org.ballcat.i18n.I18nMessage;
 import org.ballcat.business.i18n.model.dto.I18nDataDTO;
 import org.ballcat.business.i18n.model.entity.I18nData;
 import org.ballcat.business.i18n.model.vo.I18nDataExcelVO;

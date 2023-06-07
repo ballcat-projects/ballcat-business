@@ -11,11 +11,11 @@ import org.ballcat.business.i18n.model.dto.I18nDataDTO;
 import org.ballcat.business.i18n.model.entity.I18nData;
 import org.ballcat.business.i18n.model.qo.I18nDataQO;
 import org.ballcat.business.i18n.model.vo.I18nDataPageVO;
-import com.hccake.ballcat.common.model.domain.PageParam;
-import com.hccake.ballcat.common.model.domain.PageResult;
-import com.hccake.extend.mybatis.plus.conditions.query.LambdaQueryWrapperX;
-import com.hccake.extend.mybatis.plus.mapper.ExtendMapper;
-import com.hccake.extend.mybatis.plus.toolkit.WrappersX;
+import org.ballcat.common.model.domain.PageParam;
+import org.ballcat.common.model.domain.PageResult;
+import org.ballcat.mybatisplus.conditions.query.LambdaQueryWrapperX;
+import org.ballcat.mybatisplus.mapper.ExtendMapper;
+import org.ballcat.mybatisplus.toolkit.WrappersX;
 
 import java.util.List;
 

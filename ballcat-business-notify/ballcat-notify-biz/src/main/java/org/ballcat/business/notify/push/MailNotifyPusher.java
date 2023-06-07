@@ -1,8 +1,8 @@
 package org.ballcat.business.notify.push;
 
 import cn.hutool.core.util.StrUtil;
-import com.hccake.ballcat.common.mail.model.MailDetails;
-import com.hccake.ballcat.common.mail.sender.MailSender;
+import org.ballcat.mail.model.MailDetails;
+import org.ballcat.mail.sender.MailSender;
 import org.ballcat.business.notify.enums.NotifyChannelEnum;
 import org.ballcat.business.notify.model.domain.NotifyInfo;
 import org.ballcat.business.system.model.entity.SysUser;

@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.ballcat.business.system.model.dto.OrganizationMoveChildParam;
 import org.ballcat.business.system.model.entity.SysOrganization;
-import com.hccake.extend.mybatis.plus.mapper.ExtendMapper;
+import org.ballcat.mybatisplus.mapper.ExtendMapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.lang.Nullable;
 

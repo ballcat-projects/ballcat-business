@@ -1,8 +1,8 @@
 package org.ballcat.admin.websocket.component;
 
 import org.ballcat.admin.websocket.constant.AdminWebSocketConstants;
-import com.hccake.ballcat.common.security.userdetails.User;
-import com.hccake.ballcat.common.security.util.SecurityUtils;
+import org.ballcat.springsecurity.oauth2.userdetails.User;
+import org.ballcat.springsecurity.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;

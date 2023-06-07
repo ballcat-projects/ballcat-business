@@ -1,7 +1,7 @@
 package org.ballcat.business.system.service;
 
 import org.ballcat.business.system.model.entity.SysRoleMenu;
-import com.hccake.extend.mybatis.plus.service.ExtendService;
+import org.ballcat.mybatisplus.service.ExtendService;
 
 import java.io.Serializable;
 

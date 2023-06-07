@@ -1,9 +1,9 @@
 package org.ballcat.business.notify.controller;
 
-import com.hccake.ballcat.common.model.domain.PageParam;
-import com.hccake.ballcat.common.model.domain.PageResult;
-import com.hccake.ballcat.common.model.result.R;
-import com.hccake.ballcat.common.security.util.SecurityUtils;
+import org.ballcat.common.model.domain.PageParam;
+import org.ballcat.common.model.domain.PageResult;
+import org.ballcat.common.model.result.R;
+import org.ballcat.springsecurity.util.SecurityUtils;
 import org.ballcat.business.notify.model.qo.UserAnnouncementQO;
 import org.ballcat.business.notify.model.vo.UserAnnouncementPageVO;
 import org.ballcat.business.notify.service.UserAnnouncementService;

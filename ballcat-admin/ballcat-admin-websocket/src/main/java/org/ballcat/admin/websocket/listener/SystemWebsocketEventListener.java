@@ -1,8 +1,8 @@
 package org.ballcat.admin.websocket.listener;
 
-import com.hccake.ballcat.common.util.JsonUtils;
-import com.hccake.ballcat.common.websocket.distribute.MessageDO;
-import com.hccake.ballcat.common.websocket.distribute.MessageDistributor;
+import org.ballcat.common.util.JsonUtils;
+import org.ballcat.websocket.distribute.MessageDO;
+import org.ballcat.websocket.distribute.MessageDistributor;
 import org.ballcat.admin.websocket.message.DictChangeMessage;
 import org.ballcat.business.infra.event.DictChangeEvent;
 import lombok.RequiredArgsConstructor;

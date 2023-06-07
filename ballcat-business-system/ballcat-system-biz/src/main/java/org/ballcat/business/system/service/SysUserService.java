@@ -6,10 +6,10 @@ import org.ballcat.business.system.model.dto.UserInfoDTO;
 import org.ballcat.business.system.model.entity.SysUser;
 import org.ballcat.business.system.model.qo.SysUserQO;
 import org.ballcat.business.system.model.vo.SysUserPageVO;
-import com.hccake.ballcat.common.model.domain.PageParam;
-import com.hccake.ballcat.common.model.domain.PageResult;
-import com.hccake.ballcat.common.model.domain.SelectData;
-import com.hccake.extend.mybatis.plus.service.ExtendService;
+import org.ballcat.common.model.domain.PageParam;
+import org.ballcat.common.model.domain.PageResult;
+import org.ballcat.common.model.domain.SelectData;
+import org.ballcat.mybatisplus.service.ExtendService;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;

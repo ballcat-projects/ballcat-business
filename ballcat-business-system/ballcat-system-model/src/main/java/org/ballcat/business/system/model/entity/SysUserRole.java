@@ -2,7 +2,7 @@ package org.ballcat.business.system.model.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.hccake.extend.mybatis.plus.alias.TableAlias;
+import org.ballcat.mybatisplus.alias.TableAlias;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 

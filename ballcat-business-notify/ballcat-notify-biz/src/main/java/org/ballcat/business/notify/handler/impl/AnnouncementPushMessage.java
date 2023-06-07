@@ -1,6 +1,6 @@
 package org.ballcat.business.notify.handler.impl;
 
-import com.hccake.ballcat.common.websocket.message.JsonWebSocketMessage;
+import org.ballcat.websocket.message.JsonWebSocketMessage;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,7 +37,7 @@ public class AnnouncementPushMessage extends JsonWebSocketMessage {
 
 	/**
 	 * 永久有效的
-	 * @see com.hccake.ballcat.common.core.constant.enums.BooleanEnum
+	 * @see org.ballcat.common.core.constant.enums.BooleanEnum
 	 */
 	private Integer immortal;
 

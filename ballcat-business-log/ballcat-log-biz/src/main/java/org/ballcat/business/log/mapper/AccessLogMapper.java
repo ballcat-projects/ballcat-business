@@ -2,14 +2,14 @@ package org.ballcat.business.log.mapper;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.ballcat.business.log.converter.AccessLogConverter;
-import com.hccake.ballcat.common.model.domain.PageParam;
-import com.hccake.ballcat.common.model.domain.PageResult;
+import org.ballcat.common.model.domain.PageParam;
+import org.ballcat.common.model.domain.PageResult;
 import org.ballcat.business.log.model.entity.AccessLog;
 import org.ballcat.business.log.model.qo.AccessLogQO;
 import org.ballcat.business.log.model.vo.AccessLogPageVO;
-import com.hccake.extend.mybatis.plus.conditions.query.LambdaQueryWrapperX;
-import com.hccake.extend.mybatis.plus.mapper.ExtendMapper;
-import com.hccake.extend.mybatis.plus.toolkit.WrappersX;
+import org.ballcat.mybatisplus.conditions.query.LambdaQueryWrapperX;
+import org.ballcat.mybatisplus.mapper.ExtendMapper;
+import org.ballcat.mybatisplus.toolkit.WrappersX;
 
 /**
  * 后台访问日志

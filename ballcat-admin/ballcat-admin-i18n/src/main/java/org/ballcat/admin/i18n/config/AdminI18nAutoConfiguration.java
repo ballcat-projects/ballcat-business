@@ -1,8 +1,8 @@
 package org.ballcat.admin.i18n.config;
 
-import com.hccake.ballcat.autoconfigure.i18n.I18nMessageSourceAutoConfiguration;
-import com.hccake.ballcat.autoconfigure.redis.MessageEventListenerAutoConfiguration;
-import com.hccake.ballcat.common.i18n.I18nMessageProvider;
+import org.ballcat.autoconfigure.i18n.I18nMessageSourceAutoConfiguration;
+import org.ballcat.autoconfigure.redis.MessageEventListenerAutoConfiguration;
+import org.ballcat.i18n.I18nMessageProvider;
 import org.ballcat.business.i18n.provider.CustomI18nMessageProvider;
 import org.ballcat.business.i18n.service.I18nDataService;
 import org.mybatis.spring.annotation.MapperScan;
@@ -17,8 +17,8 @@ import org.springframework.context.annotation.ComponentScan;
  * @author hccake
  */
 @AutoConfiguration(before = { I18nMessageSourceAutoConfiguration.class, MessageEventListenerAutoConfiguration.class })
-@MapperScan("com.hccake.ballcat.i18n.mapper")
-@ComponentScan("com.hccake.ballcat.i18n")
+@MapperScan("org.ballcat.i18n.mapper")
+@ComponentScan("org.ballcat.i18n")
 public class AdminI18nAutoConfiguration {
 
 	@Bean

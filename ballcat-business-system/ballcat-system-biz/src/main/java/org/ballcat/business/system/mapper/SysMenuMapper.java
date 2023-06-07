@@ -5,9 +5,9 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import org.ballcat.business.system.model.entity.SysMenu;
 import org.ballcat.business.system.model.qo.SysMenuQO;
-import com.hccake.extend.mybatis.plus.conditions.query.LambdaQueryWrapperX;
-import com.hccake.extend.mybatis.plus.mapper.ExtendMapper;
-import com.hccake.extend.mybatis.plus.toolkit.WrappersX;
+import org.ballcat.mybatisplus.conditions.query.LambdaQueryWrapperX;
+import org.ballcat.mybatisplus.mapper.ExtendMapper;
+import org.ballcat.mybatisplus.toolkit.WrappersX;
 
 import java.io.Serializable;
 import java.util.List;

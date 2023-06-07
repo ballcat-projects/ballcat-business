@@ -2,16 +2,16 @@ package org.ballcat.business.system.mapper;
 
 import cn.hutool.core.text.CharSequenceUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.hccake.ballcat.common.model.domain.PageParam;
-import com.hccake.ballcat.common.model.domain.PageResult;
-import com.hccake.ballcat.common.model.domain.SelectData;
+import org.ballcat.common.model.domain.PageParam;
+import org.ballcat.common.model.domain.PageResult;
+import org.ballcat.common.model.domain.SelectData;
 import org.ballcat.business.system.converter.SysRoleConverter;
 import org.ballcat.business.system.model.entity.SysRole;
 import org.ballcat.business.system.model.qo.SysRoleQO;
 import org.ballcat.business.system.model.vo.SysRolePageVO;
-import com.hccake.extend.mybatis.plus.conditions.query.LambdaQueryWrapperX;
-import com.hccake.extend.mybatis.plus.mapper.ExtendMapper;
-import com.hccake.extend.mybatis.plus.toolkit.WrappersX;
+import org.ballcat.mybatisplus.conditions.query.LambdaQueryWrapperX;
+import org.ballcat.mybatisplus.mapper.ExtendMapper;
+import org.ballcat.mybatisplus.toolkit.WrappersX;
 
 import java.util.List;
 

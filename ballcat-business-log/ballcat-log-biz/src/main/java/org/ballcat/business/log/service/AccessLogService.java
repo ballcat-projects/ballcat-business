@@ -3,9 +3,9 @@ package org.ballcat.business.log.service;
 import org.ballcat.business.log.model.entity.AccessLog;
 import org.ballcat.business.log.model.qo.AccessLogQO;
 import org.ballcat.business.log.model.vo.AccessLogPageVO;
-import com.hccake.ballcat.common.model.domain.PageParam;
-import com.hccake.ballcat.common.model.domain.PageResult;
-import com.hccake.extend.mybatis.plus.service.ExtendService;
+import org.ballcat.common.model.domain.PageParam;
+import org.ballcat.common.model.domain.PageResult;
+import org.ballcat.mybatisplus.service.ExtendService;
 
 /**
  * 后台访问日志

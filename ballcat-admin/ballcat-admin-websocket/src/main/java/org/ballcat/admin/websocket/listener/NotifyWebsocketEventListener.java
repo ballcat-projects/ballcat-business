@@ -1,8 +1,8 @@
 package org.ballcat.admin.websocket.listener;
 
-import com.hccake.ballcat.common.util.JsonUtils;
-import com.hccake.ballcat.common.websocket.distribute.MessageDO;
-import com.hccake.ballcat.common.websocket.distribute.MessageDistributor;
+import org.ballcat.common.util.JsonUtils;
+import org.ballcat.websocket.distribute.MessageDO;
+import org.ballcat.websocket.distribute.MessageDistributor;
 import org.ballcat.admin.websocket.message.AnnouncementCloseMessage;
 import org.ballcat.business.notify.event.AnnouncementCloseEvent;
 import org.ballcat.business.notify.event.StationNotifyPushEvent;

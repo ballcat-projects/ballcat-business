@@ -3,9 +3,9 @@ package org.ballcat.business.infra.service;
 import org.ballcat.business.infra.model.entity.SysConfig;
 import org.ballcat.business.infra.model.qo.SysConfigQO;
 import org.ballcat.business.infra.model.vo.SysConfigPageVO;
-import com.hccake.ballcat.common.model.domain.PageParam;
-import com.hccake.ballcat.common.model.domain.PageResult;
-import com.hccake.extend.mybatis.plus.service.ExtendService;
+import org.ballcat.common.model.domain.PageParam;
+import org.ballcat.common.model.domain.PageResult;
+import org.ballcat.mybatisplus.service.ExtendService;
 
 /**
  * 系统配置表

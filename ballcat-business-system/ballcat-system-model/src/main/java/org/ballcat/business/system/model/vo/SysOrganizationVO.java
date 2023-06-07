@@ -1,6 +1,6 @@
 package org.ballcat.business.system.model.vo;
 
-import com.hccake.ballcat.common.model.entity.BaseEntity;
+import org.ballcat.common.model.entity.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

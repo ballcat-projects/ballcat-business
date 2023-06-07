@@ -1,8 +1,8 @@
 package org.ballcat.business.log.controller;
 
-import com.hccake.ballcat.common.model.domain.PageParam;
-import com.hccake.ballcat.common.model.domain.PageResult;
-import com.hccake.ballcat.common.model.result.R;
+import org.ballcat.common.model.domain.PageParam;
+import org.ballcat.common.model.domain.PageResult;
+import org.ballcat.common.model.result.R;
 import org.ballcat.business.log.model.qo.OperationLogQO;
 import org.ballcat.business.log.model.vo.OperationLogPageVO;
 import org.ballcat.business.log.service.OperationLogService;

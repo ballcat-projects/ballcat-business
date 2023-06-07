@@ -4,11 +4,11 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
-import com.hccake.ballcat.common.model.entity.LogicDeletedBaseEntity;
+import org.ballcat.common.model.entity.LogicDeletedBaseEntity;
 import org.ballcat.business.notify.enums.AnnouncementStatusEnum;
 import org.ballcat.business.notify.enums.NotifyChannelEnum;
 import org.ballcat.business.notify.enums.NotifyRecipientFilterTypeEnum;
-import com.hccake.extend.mybatis.plus.alias.TableAlias;
+import org.ballcat.mybatisplus.alias.TableAlias;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import lombok.Data;
@@ -83,7 +83,7 @@ public class Announcement extends LogicDeletedBaseEntity {
 
 	/**
 	 * 永久有效的
-	 * @see com.hccake.ballcat.common.core.constant.enums.BooleanEnum
+	 * @see org.ballcat.common.core.constant.enums.BooleanEnum
 	 */
 	@Schema(title = "永久有效的")
 	private Integer immortal;

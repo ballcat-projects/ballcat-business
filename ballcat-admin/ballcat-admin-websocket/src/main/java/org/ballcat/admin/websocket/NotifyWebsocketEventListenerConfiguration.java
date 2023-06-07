@@ -1,7 +1,7 @@
 package org.ballcat.admin.websocket;
 
 import org.ballcat.admin.websocket.listener.NotifyWebsocketEventListener;
-import com.hccake.ballcat.common.websocket.distribute.MessageDistributor;
+import org.ballcat.websocket.distribute.MessageDistributor;
 import org.ballcat.business.notify.handler.NotifyInfoDelegateHandler;
 import org.ballcat.business.notify.model.domain.NotifyInfo;
 import org.ballcat.business.notify.service.UserAnnouncementService;

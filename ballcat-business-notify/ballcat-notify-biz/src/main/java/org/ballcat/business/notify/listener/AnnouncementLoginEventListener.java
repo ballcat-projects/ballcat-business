@@ -6,7 +6,7 @@ import org.ballcat.business.notify.model.entity.UserAnnouncement;
 import org.ballcat.business.notify.recipient.RecipientHandler;
 import org.ballcat.business.notify.service.AnnouncementService;
 import org.ballcat.business.notify.service.UserAnnouncementService;
-import com.hccake.ballcat.common.security.userdetails.User;
+import org.ballcat.springsecurity.oauth2.userdetails.User;
 import org.ballcat.business.system.model.entity.SysUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

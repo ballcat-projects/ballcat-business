@@ -1,14 +1,14 @@
 package org.ballcat.business.log.handler;
 
 import cn.hutool.core.util.URLUtil;
-import com.hccake.ballcat.common.core.constant.MDCConstants;
-import com.hccake.ballcat.common.desensitize.DesensitizationHandlerHolder;
-import com.hccake.ballcat.common.desensitize.enums.RegexDesensitizationTypeEnum;
-import com.hccake.ballcat.common.log.access.handler.AccessLogHandler;
-import com.hccake.ballcat.common.log.util.LogUtils;
-import com.hccake.ballcat.common.security.util.SecurityUtils;
-import com.hccake.ballcat.common.util.IpUtils;
-import com.hccake.ballcat.common.util.JsonUtils;
+import org.ballcat.common.core.constant.MDCConstants;
+import org.ballcat.desensitize.DesensitizationHandlerHolder;
+import org.ballcat.desensitize.enums.RegexDesensitizationTypeEnum;
+import org.ballcat.log.access.handler.AccessLogHandler;
+import org.ballcat.log.util.LogUtils;
+import org.ballcat.springsecurity.util.SecurityUtils;
+import org.ballcat.common.util.IpUtils;
+import org.ballcat.common.util.JsonUtils;
 import org.ballcat.business.log.model.entity.AccessLog;
 import org.ballcat.business.log.thread.AccessLogSaveThread;
 import lombok.extern.slf4j.Slf4j;

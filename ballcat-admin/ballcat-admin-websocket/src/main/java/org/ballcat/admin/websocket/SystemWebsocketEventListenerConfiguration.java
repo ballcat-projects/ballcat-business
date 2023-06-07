@@ -1,7 +1,7 @@
 package org.ballcat.admin.websocket;
 
 import org.ballcat.admin.websocket.listener.SystemWebsocketEventListener;
-import com.hccake.ballcat.common.websocket.distribute.MessageDistributor;
+import org.ballcat.websocket.distribute.MessageDistributor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;

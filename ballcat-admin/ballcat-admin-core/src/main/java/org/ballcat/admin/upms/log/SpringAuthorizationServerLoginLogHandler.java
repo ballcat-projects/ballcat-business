@@ -1,8 +1,8 @@
 package org.ballcat.admin.upms.log;
 
-import com.hccake.ballcat.common.core.util.WebUtils;
-import com.hccake.ballcat.common.log.operation.enums.LogStatusEnum;
-import com.hccake.ballcat.common.security.util.SecurityUtils;
+import org.ballcat.common.core.util.WebUtils;
+import org.ballcat.log.operation.enums.LogStatusEnum;
+import org.ballcat.springsecurity.util.SecurityUtils;
 import org.ballcat.business.log.enums.LoginEventTypeEnum;
 import org.ballcat.business.log.model.entity.LoginLog;
 import org.ballcat.business.log.service.LoginLogService;

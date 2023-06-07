@@ -4,9 +4,9 @@ import org.ballcat.business.system.model.entity.SysRole;
 import org.ballcat.business.system.model.entity.SysUserRole;
 import org.ballcat.business.system.model.qo.RoleBindUserQO;
 import org.ballcat.business.system.model.vo.RoleBindUserVO;
-import com.hccake.ballcat.common.model.domain.PageParam;
-import com.hccake.ballcat.common.model.domain.PageResult;
-import com.hccake.extend.mybatis.plus.service.ExtendService;
+import org.ballcat.common.model.domain.PageParam;
+import org.ballcat.common.model.domain.PageResult;
+import org.ballcat.mybatisplus.service.ExtendService;
 
 import java.util.List;
 

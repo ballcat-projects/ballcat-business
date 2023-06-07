@@ -5,9 +5,9 @@ import org.ballcat.business.log.model.entity.LoginLog;
 import org.ballcat.business.log.model.qo.LoginLogQO;
 import org.ballcat.business.log.model.vo.LoginLogPageVO;
 import org.ballcat.business.log.service.LoginLogService;
-import com.hccake.ballcat.common.model.domain.PageParam;
-import com.hccake.ballcat.common.model.domain.PageResult;
-import com.hccake.extend.mybatis.plus.service.impl.ExtendServiceImpl;
+import org.ballcat.common.model.domain.PageParam;
+import org.ballcat.common.model.domain.PageResult;
+import org.ballcat.mybatisplus.service.impl.ExtendServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**

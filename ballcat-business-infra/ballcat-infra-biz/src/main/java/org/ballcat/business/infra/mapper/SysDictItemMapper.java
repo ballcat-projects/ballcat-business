@@ -7,9 +7,9 @@ import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import org.ballcat.business.infra.converter.SysDictItemConverter;
 import org.ballcat.business.infra.model.entity.SysDictItem;
 import org.ballcat.business.infra.model.vo.SysDictItemPageVO;
-import com.hccake.ballcat.common.model.domain.PageParam;
-import com.hccake.ballcat.common.model.domain.PageResult;
-import com.hccake.extend.mybatis.plus.mapper.ExtendMapper;
+import org.ballcat.common.model.domain.PageParam;
+import org.ballcat.common.model.domain.PageResult;
+import org.ballcat.mybatisplus.mapper.ExtendMapper;
 
 import java.util.List;
 

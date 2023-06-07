@@ -1,12 +1,12 @@
 package org.ballcat.business.i18n.service;
 
-import com.hccake.ballcat.common.model.domain.PageParam;
-import com.hccake.ballcat.common.model.domain.PageResult;
+import org.ballcat.common.model.domain.PageParam;
+import org.ballcat.common.model.domain.PageResult;
 import org.ballcat.business.i18n.model.dto.I18nDataDTO;
 import org.ballcat.business.i18n.model.entity.I18nData;
 import org.ballcat.business.i18n.model.qo.I18nDataQO;
 import org.ballcat.business.i18n.model.vo.I18nDataPageVO;
-import com.hccake.extend.mybatis.plus.service.ExtendService;
+import org.ballcat.mybatisplus.service.ExtendService;
 
 import java.util.List;
 

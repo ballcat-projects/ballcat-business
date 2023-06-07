@@ -1,6 +1,6 @@
 package org.ballcat.business.system.model.dto;
 
-import com.hccake.ballcat.common.i18n.I18nMessage;
+import org.ballcat.i18n.I18nMessage;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 

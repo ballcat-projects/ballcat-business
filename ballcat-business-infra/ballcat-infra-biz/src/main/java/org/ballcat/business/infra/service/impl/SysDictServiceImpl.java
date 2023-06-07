@@ -6,9 +6,9 @@ import org.ballcat.business.infra.model.entity.SysDict;
 import org.ballcat.business.infra.model.qo.SysDictQO;
 import org.ballcat.business.infra.model.vo.SysDictPageVO;
 import org.ballcat.business.infra.service.SysDictService;
-import com.hccake.ballcat.common.model.domain.PageParam;
-import com.hccake.ballcat.common.model.domain.PageResult;
-import com.hccake.extend.mybatis.plus.service.impl.ExtendServiceImpl;
+import org.ballcat.common.model.domain.PageParam;
+import org.ballcat.common.model.domain.PageResult;
+import org.ballcat.mybatisplus.service.impl.ExtendServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

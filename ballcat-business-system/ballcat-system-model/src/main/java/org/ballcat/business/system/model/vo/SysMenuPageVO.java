@@ -1,7 +1,7 @@
 package org.ballcat.business.system.model.vo;
 
-import com.hccake.ballcat.common.i18n.I18nClass;
-import com.hccake.ballcat.common.i18n.I18nField;
+import org.ballcat.i18n.I18nClass;
+import org.ballcat.i18n.I18nField;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import lombok.Data;
