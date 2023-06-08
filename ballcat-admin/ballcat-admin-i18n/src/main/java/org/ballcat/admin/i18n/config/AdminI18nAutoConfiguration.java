@@ -17,8 +17,8 @@ import org.springframework.context.annotation.ComponentScan;
  * @author hccake
  */
 @AutoConfiguration(before = { I18nMessageSourceAutoConfiguration.class, MessageEventListenerAutoConfiguration.class })
-@MapperScan("org.ballcat.i18n.mapper")
-@ComponentScan("org.ballcat.i18n")
+@MapperScan("org.ballcat.business.i18n.mapper")
+@ComponentScan("org.ballcat.business.i18n")
 public class AdminI18nAutoConfiguration {
 
 	@Bean
