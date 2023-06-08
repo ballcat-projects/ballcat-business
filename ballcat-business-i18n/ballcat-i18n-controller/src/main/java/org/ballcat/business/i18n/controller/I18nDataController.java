@@ -1,14 +1,8 @@
 package org.ballcat.business.i18n.controller;
 
-import cn.hutool.core.collection.CollUtil;
-import org.ballcat.common.core.constant.enums.ImportModeEnum;
-import org.ballcat.log.operation.annotation.CreateOperationLogging;
-import org.ballcat.log.operation.annotation.DeleteOperationLogging;
-import org.ballcat.log.operation.annotation.UpdateOperationLogging;
-import org.ballcat.common.model.domain.PageParam;
-import org.ballcat.common.model.domain.PageResult;
-import org.ballcat.common.model.result.BaseResultCode;
-import org.ballcat.common.model.result.R;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.ballcat.business.i18n.converter.I18nDataConverter;
 import org.ballcat.business.i18n.model.dto.I18nDataCreateDTO;
 import org.ballcat.business.i18n.model.dto.I18nDataDTO;
@@ -17,12 +11,18 @@ import org.ballcat.business.i18n.model.qo.I18nDataQO;
 import org.ballcat.business.i18n.model.vo.I18nDataExcelVO;
 import org.ballcat.business.i18n.model.vo.I18nDataPageVO;
 import org.ballcat.business.i18n.service.I18nDataService;
+import org.ballcat.common.core.constant.enums.ImportModeEnum;
+import org.ballcat.common.model.domain.PageParam;
+import org.ballcat.common.model.domain.PageResult;
+import org.ballcat.common.model.result.BaseResultCode;
+import org.ballcat.common.model.result.R;
 import org.ballcat.easyexcel.annotation.RequestExcel;
 import org.ballcat.easyexcel.annotation.ResponseExcel;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
+import org.ballcat.log.operation.annotation.CreateOperationLogging;
+import org.ballcat.log.operation.annotation.DeleteOperationLogging;
+import org.ballcat.log.operation.annotation.UpdateOperationLogging;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -133,7 +133,7 @@ public class I18nDataController {
 	public R<List<I18nData>> importI18nData(@RequestExcel List<I18nDataExcelVO> excelVos,
 			@RequestParam("importMode") ImportModeEnum importModeEnum) {
 
-		if (CollUtil.isEmpty(excelVos)) {
+		if (CollectionUtils.isEmpty(excelVos)) {
 			return R.ok();
 		}
 
@@ -167,7 +167,7 @@ public class I18nDataController {
 	@Operation(summary = "导出国际化信息", description = "导出国际化信息")
 	public List<I18nDataExcelVO> exportI18nData(I18nDataQO i18nDataQO) {
 		List<I18nData> list = i18nDataService.queryList(i18nDataQO);
-		if (CollUtil.isEmpty(list)) {
+		if (CollectionUtils.isEmpty(list)) {
 			return new ArrayList<>();
 		}
 		// 转换为 excel vo 对象

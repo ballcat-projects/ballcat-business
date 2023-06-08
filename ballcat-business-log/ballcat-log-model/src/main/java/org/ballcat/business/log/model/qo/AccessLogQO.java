@@ -8,8 +8,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
-import static cn.hutool.core.date.DatePattern.NORM_DATETIME_PATTERN;
-
 /**
  * 后台访问日志
  *
@@ -62,14 +60,14 @@ public class AccessLogQO {
 	/**
 	 * 登录时间区间（开始时间）
 	 */
-	@DateTimeFormat(pattern = NORM_DATETIME_PATTERN)
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@Parameter(description = "开始时间（登录时间区间）")
 	private LocalDateTime startTime;
 
 	/**
 	 * 登录时间区间（结束时间）
 	 */
-	@DateTimeFormat(pattern = NORM_DATETIME_PATTERN)
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@Parameter(description = "结束时间（登录时间区间）")
 	private LocalDateTime endTime;
 

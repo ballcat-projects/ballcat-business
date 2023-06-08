@@ -1,15 +1,8 @@
 package org.ballcat.business.notify.service.impl;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.text.StrPool;
-import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import org.ballcat.common.core.constant.enums.BooleanEnum;
-import org.ballcat.common.core.exception.BusinessException;
-import org.ballcat.common.model.domain.PageParam;
-import org.ballcat.common.model.domain.PageResult;
-import org.ballcat.common.model.result.BaseResultCode;
-import org.ballcat.common.model.result.SystemResultCode;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.ballcat.business.infra.service.FileService;
 import org.ballcat.business.notify.converter.AnnouncementConverter;
 import org.ballcat.business.notify.converter.NotifyInfoConverter;
@@ -23,9 +16,16 @@ import org.ballcat.business.notify.model.entity.Announcement;
 import org.ballcat.business.notify.model.qo.AnnouncementQO;
 import org.ballcat.business.notify.model.vo.AnnouncementPageVO;
 import org.ballcat.business.notify.service.AnnouncementService;
+import org.ballcat.common.constant.Symbol;
+import org.ballcat.common.core.constant.enums.BooleanEnum;
+import org.ballcat.common.core.exception.BusinessException;
+import org.ballcat.common.model.domain.PageParam;
+import org.ballcat.common.model.domain.PageResult;
+import org.ballcat.common.model.result.BaseResultCode;
+import org.ballcat.common.model.result.SystemResultCode;
+import org.ballcat.common.util.FileUtils;
 import org.ballcat.mybatisplus.service.impl.ExtendServiceImpl;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.bson.types.ObjectId;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -169,8 +169,7 @@ public class AnnouncementServiceImpl extends ExtendServiceImpl<AnnouncementMappe
 		List<String> objectNames = new ArrayList<>();
 		for (MultipartFile file : files) {
 			String objectName = "announcement/" + LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE)
-					+ StrPool.SLASH + IdUtil.fastSimpleUUID() + StrPool.DOT
-					+ FileUtil.extName(file.getOriginalFilename());
+					+ Symbol.SLASH + ObjectId.get() + Symbol.DOT + FileUtils.getExtension(file.getOriginalFilename());
 			try {
 				objectName = fileService.upload(file.getInputStream(), objectName, file.getSize());
 				objectNames.add(objectName);

@@ -1,18 +1,17 @@
 package org.ballcat.business.log.handler;
 
-import cn.hutool.core.util.URLUtil;
+import lombok.RequiredArgsConstructor;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.ballcat.business.log.model.entity.OperationLog;
+import org.ballcat.business.log.service.OperationLogService;
 import org.ballcat.common.core.constant.MDCConstants;
 import org.ballcat.common.core.util.WebUtils;
+import org.ballcat.common.util.IpUtils;
+import org.ballcat.common.util.JsonUtils;
 import org.ballcat.log.operation.annotation.OperationLogging;
 import org.ballcat.log.operation.enums.LogStatusEnum;
 import org.ballcat.log.operation.handler.AbstractOperationLogHandler;
 import org.ballcat.springsecurity.util.SecurityUtils;
-import org.ballcat.common.util.IpUtils;
-import org.ballcat.common.util.JsonUtils;
-import org.ballcat.business.log.model.entity.OperationLog;
-import org.ballcat.business.log.service.OperationLogService;
-import lombok.RequiredArgsConstructor;
-import org.aspectj.lang.ProceedingJoinPoint;
 import org.slf4j.MDC;
 import org.springframework.http.HttpHeaders;
 
@@ -39,7 +38,7 @@ public class CustomOperationLogHandler extends AbstractOperationLogHandler<Opera
 				.setIp(IpUtils.getIpAddr(request))
 				.setMethod(request.getMethod())
 				.setUserAgent(request.getHeader(HttpHeaders.USER_AGENT))
-				.setUri(URLUtil.getPath(request.getRequestURI()))
+				.setUri(request.getRequestURI())
 				.setType(operationLogging.type())
 				.setMsg(operationLogging.msg())
 				.setTraceId(MDC.get(MDCConstants.TRACE_ID_KEY));

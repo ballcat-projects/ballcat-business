@@ -1,11 +1,11 @@
 package org.ballcat.business.system.checker;
 
-import cn.hutool.core.text.CharSequenceUtil;
-import org.ballcat.springsecurity.util.SecurityUtils;
+import lombok.RequiredArgsConstructor;
 import org.ballcat.business.system.model.entity.SysUser;
 import org.ballcat.business.system.properties.SystemProperties;
-import lombok.RequiredArgsConstructor;
+import org.ballcat.springsecurity.util.SecurityUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 /**
  * 超级管理员账户规则配置
@@ -24,7 +24,7 @@ public class AdminUserCheckerImpl implements AdminUserChecker {
 		if (administrator.getUserId() == user.getUserId()) {
 			return true;
 		}
-		return CharSequenceUtil.isNotEmpty(administrator.getUsername())
+		return StringUtils.hasText(administrator.getUsername())
 				&& administrator.getUsername().equals(user.getUsername());
 	}
 

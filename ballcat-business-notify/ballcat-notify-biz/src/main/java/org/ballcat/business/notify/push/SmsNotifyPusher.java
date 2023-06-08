@@ -1,11 +1,11 @@
 package org.ballcat.business.notify.push;
 
-import cn.hutool.core.util.StrUtil;
 import org.ballcat.business.notify.enums.NotifyChannelEnum;
 import org.ballcat.business.notify.model.domain.NotifyInfo;
 import org.ballcat.business.system.model.entity.SysUser;
 import org.ballcat.common.util.HtmlUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,7 +33,7 @@ public class SmsNotifyPusher implements NotifyPusher {
 	public void push(NotifyInfo notifyInfo, List<SysUser> userList) {
 		List<String> phoneList = userList.stream()
 			.map(SysUser::getPhoneNumber)
-			.filter(StrUtil::isNotBlank)
+			.filter(StringUtils::hasText)
 			.collect(Collectors.toList());
 		// 短信文本去除 html 标签
 		String content = HtmlUtils.toText(notifyInfo.getContent());

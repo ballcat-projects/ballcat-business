@@ -1,17 +1,17 @@
 package org.ballcat.business.system.mapper;
 
-import cn.hutool.core.text.CharSequenceUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import org.ballcat.common.model.domain.PageParam;
-import org.ballcat.common.model.domain.PageResult;
-import org.ballcat.common.model.domain.SelectData;
 import org.ballcat.business.system.converter.SysRoleConverter;
 import org.ballcat.business.system.model.entity.SysRole;
 import org.ballcat.business.system.model.qo.SysRoleQO;
 import org.ballcat.business.system.model.vo.SysRolePageVO;
+import org.ballcat.common.model.domain.PageParam;
+import org.ballcat.common.model.domain.PageResult;
+import org.ballcat.common.model.domain.SelectData;
 import org.ballcat.mybatisplus.conditions.query.LambdaQueryWrapperX;
 import org.ballcat.mybatisplus.mapper.ExtendMapper;
 import org.ballcat.mybatisplus.toolkit.WrappersX;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -36,7 +36,7 @@ public interface SysRoleMapper extends ExtendMapper<SysRole> {
 		LambdaQueryWrapperX<SysRole> wrapper = WrappersX.lambdaQueryX(SysRole.class)
 			.likeIfPresent(SysRole::getName, qo.getName())
 			.likeIfPresent(SysRole::getCode, qo.getCode())
-			.between(CharSequenceUtil.isNotBlank(qo.getStartTime()) && CharSequenceUtil.isNotBlank(qo.getEndTime()),
+			.between(StringUtils.hasText(qo.getStartTime()) && StringUtils.hasText(qo.getEndTime()),
 					SysRole::getCreateTime, qo.getStartTime(), qo.getEndTime());
 		this.selectPage(page, wrapper);
 		IPage<SysRolePageVO> voPage = page.convert(SysRoleConverter.INSTANCE::poToPageVo);

@@ -1,12 +1,8 @@
 package org.ballcat.business.system.service.impl;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import org.ballcat.common.core.exception.BusinessException;
-import org.ballcat.i18n.I18nMessage;
-import org.ballcat.i18n.I18nMessageCreateEvent;
-import org.ballcat.common.model.result.BaseResultCode;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.ballcat.business.system.converter.SysMenuConverter;
 import org.ballcat.business.system.mapper.SysMenuMapper;
 import org.ballcat.business.system.model.dto.SysMenuCreateDTO;
@@ -15,12 +11,16 @@ import org.ballcat.business.system.model.entity.SysMenu;
 import org.ballcat.business.system.model.qo.SysMenuQO;
 import org.ballcat.business.system.service.SysMenuService;
 import org.ballcat.business.system.service.SysRoleMenuService;
+import org.ballcat.common.core.exception.BusinessException;
+import org.ballcat.common.util.Assert;
+import org.ballcat.common.model.result.BaseResultCode;
+import org.ballcat.i18n.I18nMessage;
+import org.ballcat.i18n.I18nMessageCreateEvent;
 import org.ballcat.mybatisplus.service.impl.ExtendServiceImpl;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
 import java.util.List;
@@ -76,7 +76,7 @@ public class SysMenuServiceImpl extends ExtendServiceImpl<SysMenuMapper, SysMenu
 
 		// 多语言保存事件发布
 		List<I18nMessage> i18nMessages = sysMenuCreateDTO.getI18nMessages();
-		if (CollUtil.isNotEmpty(i18nMessages)) {
+		if (!CollectionUtils.isEmpty(i18nMessages)) {
 			eventPublisher.publishEvent(new I18nMessageCreateEvent(i18nMessages));
 		}
 
