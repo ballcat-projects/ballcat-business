@@ -31,9 +31,9 @@ import org.springframework.security.oauth2.server.resource.introspection.OpaqueT
  */
 @EnableAsync
 @AutoConfiguration
-@MapperScan("org.ballcat.**.mapper")
-@ComponentScan({ "org.ballcat.admin.upms", "org.ballcat.system", "org.ballcat.log", "org.ballcat.file",
-		"org.ballcat.notify" })
+@MapperScan("org.ballcat.business.**.mapper")
+@ComponentScan({ "org.ballcat.admin.upms", "org.ballcat.business.system", "org.ballcat.business.log",
+		"org.ballcat.business.infra", "org.ballcat.business.notify" })
 @EnableConfigurationProperties({ SystemProperties.class, SecurityProperties.class })
 @Import(LogConfiguration.class)
 public class UpmsAutoConfiguration {
