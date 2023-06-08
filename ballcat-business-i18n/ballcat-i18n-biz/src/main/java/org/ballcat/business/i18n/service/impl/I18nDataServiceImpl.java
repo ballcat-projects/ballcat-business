@@ -1,12 +1,8 @@
 package org.ballcat.business.i18n.service.impl;
 
-import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import org.ballcat.common.model.domain.PageParam;
-import org.ballcat.common.model.domain.PageResult;
-import org.ballcat.redis.core.annotation.CacheDel;
-import org.ballcat.redis.core.annotation.Cached;
-import org.ballcat.common.util.JsonUtils;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.ballcat.business.i18n.constant.I18nRedisKeyConstants;
 import org.ballcat.business.i18n.converter.I18nDataConverter;
 import org.ballcat.business.i18n.mapper.I18nDataMapper;
@@ -16,13 +12,17 @@ import org.ballcat.business.i18n.model.entity.I18nData;
 import org.ballcat.business.i18n.model.qo.I18nDataQO;
 import org.ballcat.business.i18n.model.vo.I18nDataPageVO;
 import org.ballcat.business.i18n.service.I18nDataService;
+import org.ballcat.common.model.domain.PageParam;
+import org.ballcat.common.model.domain.PageResult;
+import org.ballcat.common.util.JsonUtils;
 import org.ballcat.mybatisplus.service.impl.ExtendServiceImpl;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import org.ballcat.redis.core.annotation.CacheDel;
+import org.ballcat.redis.core.annotation.Cached;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -131,7 +131,7 @@ public class I18nDataServiceImpl extends ExtendServiceImpl<I18nDataMapper, I18nD
 		// 删除已存在的数据
 		list.removeAll(existsI18nData);
 		// 落库
-		if (CollUtil.isNotEmpty(list)) {
+		if (!CollectionUtils.isEmpty(list)) {
 			baseMapper.insertBatchSomeColumn(list);
 		}
 		return existsI18nData;
@@ -200,7 +200,7 @@ public class I18nDataServiceImpl extends ExtendServiceImpl<I18nDataMapper, I18nD
 		@Transactional(rollbackFor = Exception.class)
 		public void saveAndUpdate(List<I18nData> insertList, List<I18nDataDTO> updateList) {
 			// 插入不存的数据
-			if (CollUtil.isNotEmpty(insertList)) {
+			if (!CollectionUtils.isEmpty(insertList)) {
 				i18nDataMapper.insertBatchSomeColumn(insertList);
 			}
 			// 更新已有数据

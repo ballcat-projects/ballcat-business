@@ -1,12 +1,6 @@
 package org.ballcat.business.infra.manager;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.util.IdUtil;
-import org.ballcat.common.core.exception.BusinessException;
-import org.ballcat.common.model.domain.PageParam;
-import org.ballcat.common.model.domain.PageResult;
-import org.ballcat.common.model.result.BaseResultCode;
+import lombok.RequiredArgsConstructor;
 import org.ballcat.business.infra.converter.SysDictItemConverter;
 import org.ballcat.business.infra.event.DictChangeEvent;
 import org.ballcat.business.infra.model.dto.SysDictItemDTO;
@@ -19,10 +13,16 @@ import org.ballcat.business.infra.model.vo.SysDictItemPageVO;
 import org.ballcat.business.infra.model.vo.SysDictPageVO;
 import org.ballcat.business.infra.service.SysDictItemService;
 import org.ballcat.business.infra.service.SysDictService;
-import lombok.RequiredArgsConstructor;
+import org.ballcat.common.core.exception.BusinessException;
+import org.ballcat.common.util.Assert;
+import org.ballcat.common.model.domain.PageParam;
+import org.ballcat.common.model.domain.PageResult;
+import org.ballcat.common.model.result.BaseResultCode;
+import org.bson.types.ObjectId;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -59,7 +59,7 @@ public class SysDictManager {
 	 * @return 执行是否成功
 	 */
 	public boolean dictSave(SysDict sysDict) {
-		sysDict.setHashCode(IdUtil.fastSimpleUUID());
+		sysDict.setHashCode(ObjectId.get().toString());
 		return sysDictService.save(sysDict);
 	}
 
@@ -71,7 +71,7 @@ public class SysDictManager {
 	public boolean updateDictById(SysDict sysDict) {
 		// 查询现有数据
 		SysDict dict = sysDictService.getById(sysDict.getId());
-		sysDict.setHashCode(IdUtil.fastSimpleUUID());
+		sysDict.setHashCode(ObjectId.get().toString());
 		boolean result = sysDictService.updateById(sysDict);
 		if (result) {
 			eventPublisher.publishEvent(new DictChangeEvent(dict.getCode()));
@@ -91,7 +91,7 @@ public class SysDictManager {
 		String dictCode = dict.getCode();
 
 		// 有关联字典项则不允许删除
-		Assert.isFalse(sysDictItemService.exist(dictCode),
+		Assert.isTrue(!sysDictItemService.exist(dictCode),
 				() -> new BusinessException(BaseResultCode.LOGIC_CHECK_ERROR.getCode(), "该字典下存在字典项，不允许删除！"));
 
 		// 删除字典
@@ -208,7 +208,7 @@ public class SysDictManager {
 	public List<DictDataVO> queryDictDataAndHashVO(String[] dictCodes) {
 		// 查询对应hash值，以及字典项数据
 		List<SysDict> sysDictList = sysDictService.listByCodes(dictCodes);
-		if (CollUtil.isEmpty(sysDictList)) {
+		if (CollectionUtils.isEmpty(sysDictList)) {
 			return new ArrayList<>();
 		}
 

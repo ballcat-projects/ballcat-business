@@ -1,17 +1,16 @@
 package org.ballcat.business.log.handler;
 
-import cn.hutool.core.util.URLUtil;
+import lombok.extern.slf4j.Slf4j;
+import org.ballcat.business.log.model.entity.AccessLog;
+import org.ballcat.business.log.thread.AccessLogSaveThread;
 import org.ballcat.common.core.constant.MDCConstants;
+import org.ballcat.common.util.IpUtils;
+import org.ballcat.common.util.JsonUtils;
 import org.ballcat.desensitize.DesensitizationHandlerHolder;
 import org.ballcat.desensitize.enums.RegexDesensitizationTypeEnum;
 import org.ballcat.log.access.handler.AccessLogHandler;
 import org.ballcat.log.util.LogUtils;
 import org.ballcat.springsecurity.util.SecurityUtils;
-import org.ballcat.common.util.IpUtils;
-import org.ballcat.common.util.JsonUtils;
-import org.ballcat.business.log.model.entity.AccessLog;
-import org.ballcat.business.log.thread.AccessLogSaveThread;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.web.servlet.HandlerMapping;
 
@@ -62,7 +61,7 @@ public class CustomAccessLogHandler implements AccessLogHandler<AccessLog> {
 		Object matchingPatternAttr = request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
 		String matchingPattern = matchingPatternAttr == null ? "" : String.valueOf(matchingPatternAttr);
 		// @formatter:off
-		String uri = URLUtil.getPath(request.getRequestURI());
+		String uri = request.getRequestURI();
 		AccessLog accessLog = new AccessLog()
 				.setTraceId(MDC.get(MDCConstants.TRACE_ID_KEY))
 				.setCreateTime(LocalDateTime.now())

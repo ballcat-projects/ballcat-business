@@ -1,14 +1,8 @@
 package org.ballcat.business.system.controller;
 
-import cn.hutool.core.collection.CollUtil;
-import org.ballcat.log.operation.annotation.CreateOperationLogging;
-import org.ballcat.log.operation.annotation.DeleteOperationLogging;
-import org.ballcat.log.operation.annotation.UpdateOperationLogging;
-import org.ballcat.common.model.result.BaseResultCode;
-import org.ballcat.common.model.result.R;
-import org.ballcat.springsecurity.oauth2.constant.UserAttributeNameConstants;
-import org.ballcat.springsecurity.oauth2.userdetails.User;
-import org.ballcat.springsecurity.util.SecurityUtils;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.ballcat.business.system.converter.SysMenuConverter;
 import org.ballcat.business.system.enums.SysMenuType;
 import org.ballcat.business.system.model.dto.SysMenuCreateDTO;
@@ -19,10 +13,16 @@ import org.ballcat.business.system.model.vo.SysMenuGrantVO;
 import org.ballcat.business.system.model.vo.SysMenuPageVO;
 import org.ballcat.business.system.model.vo.SysMenuRouterVO;
 import org.ballcat.business.system.service.SysMenuService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
+import org.ballcat.common.model.result.BaseResultCode;
+import org.ballcat.common.model.result.R;
+import org.ballcat.log.operation.annotation.CreateOperationLogging;
+import org.ballcat.log.operation.annotation.DeleteOperationLogging;
+import org.ballcat.log.operation.annotation.UpdateOperationLogging;
+import org.ballcat.springsecurity.oauth2.constant.UserAttributeNameConstants;
+import org.ballcat.springsecurity.oauth2.userdetails.User;
+import org.ballcat.springsecurity.util.SecurityUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -60,7 +60,7 @@ public class SysMenuController {
 
 		@SuppressWarnings("unchecked")
 		Collection<String> roleCodes = (Collection<String>) rolesObject;
-		if (CollUtil.isEmpty(roleCodes)) {
+		if (CollectionUtils.isEmpty(roleCodes)) {
 			return R.ok(new ArrayList<>());
 		}
 
@@ -88,7 +88,7 @@ public class SysMenuController {
 	@Operation(summary = "查询菜单列表", description = "查询菜单列表")
 	public R<List<SysMenuPageVO>> getSysMenuPage(SysMenuQO sysMenuQO) {
 		List<SysMenu> sysMenus = sysMenuService.listOrderBySort(sysMenuQO);
-		if (CollUtil.isEmpty(sysMenus)) {
+		if (CollectionUtils.isEmpty(sysMenus)) {
 			R.ok(new ArrayList<>());
 		}
 		List<SysMenuPageVO> voList = sysMenus.stream()
@@ -106,7 +106,7 @@ public class SysMenuController {
 	@Operation(summary = "查询授权菜单列表", description = "查询授权菜单列表")
 	public R<List<SysMenuGrantVO>> getSysMenuGrantList() {
 		List<SysMenu> sysMenus = sysMenuService.list();
-		if (CollUtil.isEmpty(sysMenus)) {
+		if (CollectionUtils.isEmpty(sysMenus)) {
 			R.ok(new ArrayList<>());
 		}
 		List<SysMenuGrantVO> voList = sysMenus.stream()

@@ -1,16 +1,8 @@
 package org.ballcat.business.system.service.impl;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.text.StrPool;
-import cn.hutool.core.util.IdUtil;
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import org.ballcat.common.core.exception.BusinessException;
-import org.ballcat.common.model.domain.PageParam;
-import org.ballcat.common.model.domain.PageResult;
-import org.ballcat.common.model.domain.SelectData;
-import org.ballcat.common.model.result.BaseResultCode;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.ballcat.business.infra.service.FileService;
 import org.ballcat.business.system.checker.AdminUserChecker;
 import org.ballcat.business.system.component.PasswordHelper;
@@ -31,13 +23,21 @@ import org.ballcat.business.system.service.SysMenuService;
 import org.ballcat.business.system.service.SysRoleService;
 import org.ballcat.business.system.service.SysUserRoleService;
 import org.ballcat.business.system.service.SysUserService;
+import org.ballcat.common.constant.Symbol;
+import org.ballcat.common.core.exception.BusinessException;
+import org.ballcat.common.util.Assert;
+import org.ballcat.common.model.domain.PageParam;
+import org.ballcat.common.model.domain.PageResult;
+import org.ballcat.common.model.domain.SelectData;
+import org.ballcat.common.model.result.BaseResultCode;
+import org.ballcat.common.util.FileUtils;
 import org.ballcat.mybatisplus.service.impl.ExtendServiceImpl;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.bson.types.ObjectId;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -127,7 +127,7 @@ public class SysUserServiceImpl extends ExtendServiceImpl<SysUserMapper, SysUser
 			menus.addAll(sysMenuList);
 			List<String> permissionList = sysMenuList.stream()
 				.map(SysMenu::getPermission)
-				.filter(StrUtil::isNotEmpty)
+				.filter(StringUtils::hasText)
 				.collect(Collectors.toList());
 			permissions.addAll(permissionList);
 		}
@@ -184,7 +184,7 @@ public class SysUserServiceImpl extends ExtendServiceImpl<SysUserMapper, SysUser
 	@Transactional(rollbackFor = Exception.class)
 	public boolean updateSysUser(SysUserDTO sysUserDTO) {
 		SysUser entity = SysUserConverter.INSTANCE.dtoToPo(sysUserDTO);
-		Assert.isTrue(adminUserChecker.hasModifyPermission(entity), "当前用户不允许修改!");
+		org.springframework.util.Assert.isTrue(adminUserChecker.hasModifyPermission(entity), "当前用户不允许修改!");
 
 		// 如果不更新组织，直接执行
 		Long currentOrganizationId = entity.getOrganizationId();
@@ -195,7 +195,7 @@ public class SysUserServiceImpl extends ExtendServiceImpl<SysUserMapper, SysUser
 		// 查询出当前库中用户
 		Long userId = entity.getUserId();
 		SysUser oldUser = baseMapper.selectById(userId);
-		Assert.notNull(oldUser, "修改用户失败，当前用户不存在：{}", userId);
+		org.springframework.util.Assert.notNull(oldUser, "修改用户失败，当前用户不存在：" + userId);
 
 		// 是否修改了组织
 		Long originOrganizationId = oldUser.getOrganizationId();
@@ -231,7 +231,7 @@ public class SysUserServiceImpl extends ExtendServiceImpl<SysUserMapper, SysUser
 	 */
 	@Override
 	public boolean deleteByUserId(Long userId) {
-		Assert.isFalse(adminUserChecker.isAdminUser(getById(userId)), "管理员不允许删除!");
+		org.springframework.util.Assert.isTrue(!adminUserChecker.isAdminUser(getById(userId)), "管理员不允许删除!");
 		return SqlHelper.retBool(baseMapper.deleteById(userId));
 	}
 
@@ -243,7 +243,7 @@ public class SysUserServiceImpl extends ExtendServiceImpl<SysUserMapper, SysUser
 	 */
 	@Override
 	public boolean updatePassword(Long userId, String rawPassword) {
-		Assert.isTrue(adminUserChecker.hasModifyPermission(getById(userId)), "当前用户不允许修改!");
+		org.springframework.util.Assert.isTrue(adminUserChecker.hasModifyPermission(getById(userId)), "当前用户不允许修改!");
 		// 密码加密加密
 		String encodedPassword = passwordHelper.encode(rawPassword);
 		return baseMapper.updatePassword(userId, encodedPassword);
@@ -258,13 +258,13 @@ public class SysUserServiceImpl extends ExtendServiceImpl<SysUserMapper, SysUser
 	public boolean updateUserStatusBatch(Collection<Long> userIds, Integer status) {
 
 		List<SysUser> userList = baseMapper.listByUserIds(userIds);
-		Assert.notEmpty(userList, "更新用户状态失败，待更新用户列表为空");
+		org.springframework.util.Assert.notEmpty(userList, "更新用户状态失败，待更新用户列表为空");
 
 		// 移除无权限更改的用户id
 		Map<Long, SysUser> userMap = userList.stream()
 			.collect(Collectors.toMap(SysUser::getUserId, Function.identity()));
 		userIds.removeIf(id -> !adminUserChecker.hasModifyPermission(userMap.get(id)));
-		Assert.notEmpty(userIds, "更新用户状态失败，无权限更新用户");
+		org.springframework.util.Assert.notEmpty(userIds, "更新用户状态失败，无权限更新用户");
 
 		return baseMapper.updateUserStatusBatch(userIds, status);
 	}
@@ -272,10 +272,10 @@ public class SysUserServiceImpl extends ExtendServiceImpl<SysUserMapper, SysUser
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public String updateAvatar(MultipartFile file, Long userId) throws IOException {
-		Assert.isTrue(adminUserChecker.hasModifyPermission(getById(userId)), "当前用户不允许修改!");
+		org.springframework.util.Assert.isTrue(adminUserChecker.hasModifyPermission(getById(userId)), "当前用户不允许修改!");
 		// 获取系统用户头像的文件名
 		String objectName = "sysuser/" + userId + "/avatar/" + LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE)
-				+ StrPool.SLASH + IdUtil.fastSimpleUUID() + StrPool.DOT + FileUtil.extName(file.getOriginalFilename());
+				+ Symbol.SLASH + ObjectId.get() + Symbol.DOT + FileUtils.getExtension(file.getOriginalFilename());
 		objectName = fileService.upload(file.getInputStream(), objectName, file.getSize());
 
 		SysUser sysUser = new SysUser();

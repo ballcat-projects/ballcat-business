@@ -1,11 +1,11 @@
 package org.ballcat.business.notify.recipient;
 
-import cn.hutool.core.collection.CollUtil;
+import lombok.RequiredArgsConstructor;
 import org.ballcat.business.notify.enums.NotifyRecipientFilterTypeEnum;
 import org.ballcat.business.system.model.entity.SysUser;
 import org.ballcat.business.system.service.SysUserService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -64,7 +64,7 @@ public class SpecifyRoleRecipientFilter implements RecipientFilter {
 			return false;
 		}
 		List<String> roleCodes = (List<String>) filterAttr;
-		if (CollUtil.isEmpty(roleCodes)) {
+		if (CollectionUtils.isEmpty(roleCodes)) {
 			return false;
 		}
 		for (Object roleCode : roleCodes) {

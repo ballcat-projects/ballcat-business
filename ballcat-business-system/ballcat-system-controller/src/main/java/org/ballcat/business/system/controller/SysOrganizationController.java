@@ -1,11 +1,8 @@
 package org.ballcat.business.system.controller;
 
-import cn.hutool.core.collection.CollUtil;
-import org.ballcat.log.operation.annotation.CreateOperationLogging;
-import org.ballcat.log.operation.annotation.DeleteOperationLogging;
-import org.ballcat.log.operation.annotation.UpdateOperationLogging;
-import org.ballcat.common.model.result.BaseResultCode;
-import org.ballcat.common.model.result.R;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.ballcat.business.system.converter.SysOrganizationConverter;
 import org.ballcat.business.system.model.dto.SysOrganizationDTO;
 import org.ballcat.business.system.model.entity.SysOrganization;
@@ -13,10 +10,13 @@ import org.ballcat.business.system.model.qo.SysOrganizationQO;
 import org.ballcat.business.system.model.vo.SysOrganizationTree;
 import org.ballcat.business.system.model.vo.SysOrganizationVO;
 import org.ballcat.business.system.service.SysOrganizationService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
+import org.ballcat.common.model.result.BaseResultCode;
+import org.ballcat.common.model.result.R;
+import org.ballcat.log.operation.annotation.CreateOperationLogging;
+import org.ballcat.log.operation.annotation.DeleteOperationLogging;
+import org.ballcat.log.operation.annotation.UpdateOperationLogging;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public class SysOrganizationController {
 	@Operation(summary = "组织架构列表查询")
 	public R<List<SysOrganizationVO>> listOrganization() {
 		List<SysOrganization> list = sysOrganizationService.list();
-		if (CollUtil.isEmpty(list)) {
+		if (CollectionUtils.isEmpty(list)) {
 			return R.ok(new ArrayList<>());
 		}
 		List<SysOrganizationVO> voList = list.stream()

@@ -1,12 +1,12 @@
 package org.ballcat.business.notify.push;
 
-import cn.hutool.core.util.StrUtil;
-import org.ballcat.mail.model.MailDetails;
-import org.ballcat.mail.sender.MailSender;
+import lombok.RequiredArgsConstructor;
 import org.ballcat.business.notify.enums.NotifyChannelEnum;
 import org.ballcat.business.notify.model.domain.NotifyInfo;
 import org.ballcat.business.system.model.entity.SysUser;
-import lombok.RequiredArgsConstructor;
+import org.ballcat.mail.model.MailDetails;
+import org.ballcat.mail.sender.MailSender;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -33,7 +33,7 @@ public class MailNotifyPusher implements NotifyPusher {
 
 	@Override
 	public void push(NotifyInfo notifyInfo, List<SysUser> userList) {
-		String[] emails = userList.stream().map(SysUser::getEmail).filter(StrUtil::isNotBlank).toArray(String[]::new);
+		String[] emails = userList.stream().map(SysUser::getEmail).filter(StringUtils::hasText).toArray(String[]::new);
 
 		// 密送群发，不展示其他收件人
 		MailDetails mailDetails = new MailDetails();

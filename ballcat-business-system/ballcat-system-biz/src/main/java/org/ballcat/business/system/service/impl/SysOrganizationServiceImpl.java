@@ -1,15 +1,8 @@
 package org.ballcat.business.system.service.impl;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.text.CharSequenceUtil;
-import cn.hutool.core.util.ArrayUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import org.ballcat.common.core.constant.GlobalConstants;
-import org.ballcat.common.core.exception.BusinessException;
-import org.ballcat.common.model.result.BaseResultCode;
-import org.ballcat.common.util.tree.TreeUtils;
+import lombok.RequiredArgsConstructor;
 import org.ballcat.business.system.converter.SysOrganizationConverter;
 import org.ballcat.business.system.mapper.SysOrganizationMapper;
 import org.ballcat.business.system.model.dto.OrganizationMoveChildParam;
@@ -19,13 +12,20 @@ import org.ballcat.business.system.model.qo.SysOrganizationQO;
 import org.ballcat.business.system.model.vo.SysOrganizationTree;
 import org.ballcat.business.system.service.SysOrganizationService;
 import org.ballcat.business.system.service.SysUserService;
+import org.ballcat.common.core.constant.GlobalConstants;
+import org.ballcat.common.core.exception.BusinessException;
+import org.ballcat.common.model.result.BaseResultCode;
+import org.ballcat.common.util.tree.TreeUtils;
 import org.ballcat.mybatisplus.service.impl.ExtendServiceImpl;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -55,7 +55,7 @@ public class SysOrganizationServiceImpl extends ExtendServiceImpl<SysOrganizatio
 
 		// 如果有名称的查询条件，则进行剪枝操作
 		String name = sysOrganizationQO.getName();
-		if (CharSequenceUtil.isNotEmpty(name)) {
+		if (StringUtils.hasText(name)) {
 			return TreeUtils.pruneTree(tree, node -> node.getName() != null && node.getName().contains(name));
 		}
 
@@ -100,12 +100,12 @@ public class SysOrganizationServiceImpl extends ExtendServiceImpl<SysOrganizatio
 		}
 
 		// 移动了父节点，先判断不是选择自己作为父节点
-		Assert.isFalse(targetParentId.equals(organizationId), "父节点不能是自己！");
+		Assert.isTrue(!targetParentId.equals(organizationId), "父节点不能是自己！");
 		// 再判断是否是自己的子节点，根节点跳过判断
 		if (!GlobalConstants.TREE_ROOT_ID_LONG.equals(targetParentId)) {
 			SysOrganization targetParentOrganization = baseMapper.selectById(targetParentId);
 			String[] targetParentHierarchy = targetParentOrganization.getHierarchy().split("-");
-			if (ArrayUtil.contains(targetParentHierarchy, String.valueOf(organizationId))) {
+			if (Arrays.asList(targetParentHierarchy).contains(String.valueOf(organizationId))) {
 				throw new BusinessException(BaseResultCode.LOGIC_CHECK_ERROR.getCode(), "父节点不能是自己的子节点！");
 			}
 		}
@@ -184,7 +184,7 @@ public class SysOrganizationServiceImpl extends ExtendServiceImpl<SysOrganizatio
 			String hierarchy) {
 		// 获取对应 parentId 下的所有子节点
 		List<SysOrganization> sysOrganizations = map.get(parentId);
-		if (CollUtil.isEmpty(sysOrganizations)) {
+		if (CollectionUtils.isEmpty(sysOrganizations)) {
 			return;
 		}
 		// 递归更新子节点数据

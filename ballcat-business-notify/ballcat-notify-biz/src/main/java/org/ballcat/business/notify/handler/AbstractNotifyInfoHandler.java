@@ -1,13 +1,13 @@
 package org.ballcat.business.notify.handler;
 
-import cn.hutool.core.collection.CollUtil;
+import org.ballcat.business.notify.model.domain.NotifyInfo;
+import org.ballcat.business.system.model.entity.SysUser;
 import org.ballcat.common.util.JsonUtils;
 import org.ballcat.websocket.distribute.MessageDO;
 import org.ballcat.websocket.distribute.MessageDistributor;
 import org.ballcat.websocket.message.JsonWebSocketMessage;
-import org.ballcat.business.notify.model.domain.NotifyInfo;
-import org.ballcat.business.system.model.entity.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -44,7 +44,7 @@ public abstract class AbstractNotifyInfoHandler<T extends NotifyInfo, M extends 
 		persistMessage(userList, notifyInfo);
 		MessageDO messageDO = new MessageDO().setMessageText(msg)
 			.setSessionKeys(sessionKeys)
-			.setNeedBroadcast(CollUtil.isEmpty(sessionKeys));
+			.setNeedBroadcast(CollectionUtils.isEmpty(sessionKeys));
 		messageDistributor.distribute(messageDO);
 	}
 

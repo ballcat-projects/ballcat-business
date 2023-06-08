@@ -1,8 +1,8 @@
 package org.ballcat.admin.upms.config.task;
 
-import cn.hutool.core.map.MapUtil;
 import org.slf4j.MDC;
 import org.springframework.core.task.TaskDecorator;
+import org.springframework.util.ObjectUtils;
 
 import java.util.Map;
 
@@ -17,7 +17,7 @@ public class MdcTaskDecorator implements TaskDecorator {
 	public Runnable decorate(Runnable runnable) {
 		final Map<String, String> copyOfContextMap = MDC.getCopyOfContextMap();
 		return () -> {
-			if (MapUtil.isNotEmpty(copyOfContextMap)) {
+			if (!ObjectUtils.isEmpty(copyOfContextMap)) {
 				// 现在：@Async线程上下文！ 恢复Web线程上下文的MDC数据
 				MDC.setContextMap(copyOfContextMap);
 			}

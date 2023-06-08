@@ -1,8 +1,7 @@
 package org.ballcat.business.system.service.impl;
 
-import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import lombok.extern.slf4j.Slf4j;
 import org.ballcat.business.system.mapper.SysUserRoleMapper;
 import org.ballcat.business.system.model.entity.SysRole;
 import org.ballcat.business.system.model.entity.SysUserRole;
@@ -13,11 +12,12 @@ import org.ballcat.common.core.exception.BusinessException;
 import org.ballcat.common.model.domain.PageParam;
 import org.ballcat.common.model.domain.PageResult;
 import org.ballcat.common.model.result.BaseResultCode;
+import org.ballcat.common.util.Assert;
 import org.ballcat.mybatisplus.service.impl.ExtendServiceImpl;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +61,7 @@ public class SysUserRoleServiceImpl extends ExtendServiceImpl<SysUserRoleMapper,
 		}
 
 		// 没有的新授权的角色直接返回
-		if (CollectionUtil.isEmpty(roleCodes)) {
+		if (CollectionUtils.isEmpty(roleCodes)) {
 			return true;
 		}
 

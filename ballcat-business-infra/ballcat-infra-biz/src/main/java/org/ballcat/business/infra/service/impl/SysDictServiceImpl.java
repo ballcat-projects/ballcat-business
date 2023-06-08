@@ -1,6 +1,5 @@
 package org.ballcat.business.infra.service.impl;
 
-import cn.hutool.core.util.IdUtil;
 import org.ballcat.business.infra.mapper.SysDictMapper;
 import org.ballcat.business.infra.model.entity.SysDict;
 import org.ballcat.business.infra.model.qo.SysDictQO;
@@ -9,6 +8,7 @@ import org.ballcat.business.infra.service.SysDictService;
 import org.ballcat.common.model.domain.PageParam;
 import org.ballcat.common.model.domain.PageResult;
 import org.ballcat.mybatisplus.service.impl.ExtendServiceImpl;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -63,7 +63,7 @@ public class SysDictServiceImpl extends ExtendServiceImpl<SysDictMapper, SysDict
 	 */
 	@Override
 	public boolean updateHashCode(String dictCode) {
-		return baseMapper.updateHashCode(dictCode, IdUtil.fastSimpleUUID());
+		return baseMapper.updateHashCode(dictCode, ObjectId.get().toString());
 	}
 
 }

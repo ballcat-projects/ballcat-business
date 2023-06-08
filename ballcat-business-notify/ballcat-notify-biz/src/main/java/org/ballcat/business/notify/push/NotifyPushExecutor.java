@@ -1,11 +1,11 @@
 package org.ballcat.business.notify.push;
 
-import cn.hutool.core.collection.CollUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.ballcat.business.notify.model.domain.NotifyInfo;
 import org.ballcat.business.notify.recipient.RecipientHandler;
 import org.ballcat.business.system.model.entity.SysUser;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -27,7 +27,7 @@ public class NotifyPushExecutor {
 
 	public NotifyPushExecutor(RecipientHandler recipientHandler, List<NotifyPusher> notifyPusherList) {
 		this.recipientHandler = recipientHandler;
-		if (CollUtil.isNotEmpty(notifyPusherList)) {
+		if (!CollectionUtils.isEmpty(notifyPusherList)) {
 			for (NotifyPusher notifyPusher : notifyPusherList) {
 				this.addNotifyPusher(notifyPusher);
 			}

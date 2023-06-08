@@ -1,14 +1,14 @@
 package org.ballcat.business.system.component;
 
-import cn.hutool.core.text.CharSequenceUtil;
-import cn.hutool.crypto.CryptoException;
-import org.ballcat.common.core.exception.BusinessException;
-import org.ballcat.springsecurity.util.PasswordUtils;
 import org.ballcat.business.system.properties.SystemProperties;
+import org.ballcat.common.core.exception.BusinessException;
 import org.ballcat.security.properties.SecurityProperties;
+import org.ballcat.springsecurity.util.PasswordUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
+import java.security.GeneralSecurityException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,7 +31,7 @@ public class PasswordHelper {
 		this.securityProperties = securityProperties;
 		this.passwordEncoder = passwordEncoder;
 		String passwordRule = systemProperties.getPasswordRule();
-		this.passwordPattern = CharSequenceUtil.isEmpty(passwordRule) ? null : Pattern.compile(passwordRule);
+		this.passwordPattern = StringUtils.hasText(passwordRule) ? Pattern.compile(passwordRule) : null;
 	}
 
 	/**
@@ -52,7 +52,7 @@ public class PasswordHelper {
 		try {
 			return PasswordUtils.decodeAES(aesPass, securityProperties.getPasswordSecretKey());
 		}
-		catch (CryptoException ex) {
+		catch (GeneralSecurityException ex) {
 			throw new BusinessException(400, "密码密文解密异常！");
 		}
 	}

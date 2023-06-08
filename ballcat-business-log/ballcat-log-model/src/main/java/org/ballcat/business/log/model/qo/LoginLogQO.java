@@ -1,15 +1,13 @@
 package org.ballcat.business.log.model.qo;
 
-import org.ballcat.business.log.enums.LoginEventTypeEnum;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import org.ballcat.business.log.enums.LoginEventTypeEnum;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
-
-import static cn.hutool.core.date.DatePattern.NORM_DATETIME_PATTERN;
 
 /**
  * 登录日志 查询对象
@@ -58,14 +56,14 @@ public class LoginLogQO {
 	/**
 	 * 登录时间区间（开始时间）
 	 */
-	@DateTimeFormat(pattern = NORM_DATETIME_PATTERN)
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@Parameter(description = "开始时间（登录时间区间）")
 	private LocalDateTime startTime;
 
 	/**
 	 * 登录时间区间（结束时间）
 	 */
-	@DateTimeFormat(pattern = NORM_DATETIME_PATTERN)
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@Parameter(description = "结束时间（登录时间区间）")
 	private LocalDateTime endTime;
 
