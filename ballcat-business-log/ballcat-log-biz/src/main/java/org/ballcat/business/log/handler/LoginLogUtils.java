@@ -1,12 +1,11 @@
 package org.ballcat.business.log.handler;
 
-import cn.hutool.http.useragent.UserAgent;
-import cn.hutool.http.useragent.UserAgentUtil;
+import org.ballcat.business.log.model.entity.LoginLog;
 import org.ballcat.common.core.constant.MDCConstants;
 import org.ballcat.common.core.util.WebUtils;
-import org.ballcat.log.operation.enums.LogStatusEnum;
 import org.ballcat.common.util.IpUtils;
-import org.ballcat.business.log.model.entity.LoginLog;
+import org.ballcat.common.util.UserAgentUtils;
+import org.ballcat.log.operation.enums.LogStatusEnum;
 import org.slf4j.MDC;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,17 +27,56 @@ public final class LoginLogUtils {
 	public static LoginLog prodLoginLog(String username) {
 		// 获取 Request
 		HttpServletRequest request = WebUtils.getRequest();
-		LoginLog loginLog = new LoginLog().setLoginTime(LocalDateTime.now())
+		return new LoginLog().setLoginTime(LocalDateTime.now())
 			.setIp(IpUtils.getIpAddr(request))
+			.setOs(detectOS(request))
+			.setBrowser(detectBrowser(request))
 			.setStatus(LogStatusEnum.SUCCESS.getValue())
 			.setTraceId(MDC.get(MDCConstants.TRACE_ID_KEY))
 			.setUsername(username);
-		// 根据 ua 获取浏览器和操作系统
-		UserAgent ua = UserAgentUtil.parse(request.getHeader("user-agent"));
-		if (ua != null) {
-			loginLog.setBrowser(ua.getBrowser().getName()).setOs(ua.getOs().getName());
+	}
+
+	/**
+	 * 获取浏览器 现代浏览器基本支持Client Hints，Firefox IE11等不支持的走UserAgentUtils.detect判断
+	 */
+	private static String detectBrowser(HttpServletRequest request) {
+		String secChUa = request.getHeader("sec-ch-ua");
+		String ua = request.getHeader("user-agent");
+		if (secChUa != null) {
+			// 剔除Brand和多余符号
+			return secChUa.replaceAll("(,\\s+)?\\S+/Brand\\S+\\d+\"(,\\s+)?", "")
+				.replaceAll("\"", "")
+				.replaceAll(";v=", " ");
 		}
-		return loginLog;
+		else {
+			try {
+				return UserAgentUtils.detectBrowser(ua);
+			}
+			catch (Exception e) {
+				// 确保即便解析失败也不会报错
+				return null;
+			}
+		}
+	}
+
+	/**
+	 * 获取OS
+	 */
+	private static String detectOS(HttpServletRequest request) {
+		String secChUaPlatform = request.getHeader("sec-ch-ua-platform");
+		String ua = request.getHeader("user-agent");
+		if (secChUaPlatform != null) {
+			return secChUaPlatform.replaceAll("\"", "");
+		}
+		else {
+			try {
+				return UserAgentUtils.detectOS(ua);
+			}
+			catch (Exception e) {
+				// 确保即便解析失败也不会报错
+				return null;
+			}
+		}
 	}
 
 }
