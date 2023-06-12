@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import org.ballcat.mybatisplus.injector.CustomSqlInjector;
 import org.ballcat.mybatisplus.methods.InsertBatchSomeColumnByCollection;
+import org.ballcat.security.core.PrincipalAttributeAccessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,8 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author hccake
- * @date 2020/04/19 默认配置MybatisPlus分页插件，通过conditional注解达到覆盖效用
+ * 默认配置MybatisPlus分页插件，通过conditional注解达到覆盖效用
+ *
+ * @author hccake 2020/04/19
  */
 @Configuration
 public class MybatisPlusConfig {
@@ -42,8 +44,8 @@ public class MybatisPlusConfig {
 	 */
 	@Bean
 	@ConditionalOnMissingBean(MetaObjectHandler.class)
-	public MetaObjectHandler fillMetaObjectHandle() {
-		return new FillMetaObjectHandle();
+	public MetaObjectHandler fillMetaObjectHandle(PrincipalAttributeAccessor principalAttributeAccessor) {
+		return new FillMetaObjectHandle(principalAttributeAccessor);
 	}
 
 	/**

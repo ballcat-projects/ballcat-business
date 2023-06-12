@@ -1,5 +1,6 @@
-package org.ballcat.business.system.authentication;
+package org.ballcat.admin.springsecurity;
 
+import org.ballcat.admin.springsecurity.UserInfoCoordinator;
 import org.ballcat.business.system.model.dto.UserInfoDTO;
 
 import java.util.Map;

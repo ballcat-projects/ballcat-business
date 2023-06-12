@@ -21,7 +21,7 @@ import org.ballcat.easyexcel.annotation.ResponseExcel;
 import org.ballcat.log.operation.annotation.CreateOperationLogging;
 import org.ballcat.log.operation.annotation.DeleteOperationLogging;
 import org.ballcat.log.operation.annotation.UpdateOperationLogging;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.ballcat.security.annotation.Authorize;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -52,7 +52,7 @@ public class I18nDataController {
 	 * @return R 通用返回体
 	 */
 	@GetMapping("/page")
-	@PreAuthorize("@per.hasPermission('i18n:i18n-data:read')")
+	@Authorize("hasPermission('i18n:i18n-data:read')")
 	@Operation(summary = "分页查询", description = "分页查询")
 	public R<PageResult<I18nDataPageVO>> getI18nDataPage(@Validated PageParam pageParam, I18nDataQO i18nDataQO) {
 		return R.ok(i18nDataService.queryPage(pageParam, i18nDataQO));
@@ -64,7 +64,7 @@ public class I18nDataController {
 	 * @return R 通用返回体
 	 */
 	@GetMapping("/list")
-	@PreAuthorize("@per.hasPermission('i18n:i18n-data:read')")
+	@Authorize("hasPermission('i18n:i18n-data:read')")
 	@Operation(summary = "查询指定国际化标识的所有数据", description = "查询指定国际化标识的所有数据")
 	public R<List<I18nData>> listByCode(@RequestParam("code") String code) {
 		return R.ok(i18nDataService.listByCode(code));
@@ -77,7 +77,7 @@ public class I18nDataController {
 	 */
 	@CreateOperationLogging(msg = "新增国际化信息")
 	@PostMapping
-	@PreAuthorize("@per.hasPermission('i18n:i18n-data:add')")
+	@Authorize("hasPermission('i18n:i18n-data:add')")
 	@Operation(summary = "新增国际化信息", description = "新增国际化信息")
 	public R<Void> save(@Valid @RequestBody I18nDataCreateDTO i18nDataCreateDTO) {
 		// 转换为实体类列表
@@ -101,7 +101,7 @@ public class I18nDataController {
 	 */
 	@UpdateOperationLogging(msg = "修改国际化信息")
 	@PutMapping
-	@PreAuthorize("@per.hasPermission('i18n:i18n-data:edit')")
+	@Authorize("hasPermission('i18n:i18n-data:edit')")
 	@Operation(summary = "修改国际化信息", description = "修改国际化信息")
 	public R<Void> updateById(@RequestBody I18nDataDTO i18nDataDTO) {
 		return i18nDataService.updateByCodeAndLanguageTag(i18nDataDTO) ? R.ok()
@@ -116,7 +116,7 @@ public class I18nDataController {
 	 */
 	@DeleteOperationLogging(msg = "通过id删除国际化信息")
 	@DeleteMapping
-	@PreAuthorize("@per.hasPermission('i18n:i18n-data:del')")
+	@Authorize("hasPermission('i18n:i18n-data:del')")
 	@Operation(summary = "通过id删除国际化信息", description = "通过id删除国际化信息")
 	public R<Void> removeById(@RequestParam("code") String code, @RequestParam("languageTag") String languageTag) {
 		return i18nDataService.removeByCodeAndLanguageTag(code, languageTag) ? R.ok()
@@ -128,7 +128,7 @@ public class I18nDataController {
 	 * @return R 通用返回体
 	 */
 	@PostMapping("/import")
-	@PreAuthorize("@per.hasPermission('i18n:i18n-data:import')")
+	@Authorize("hasPermission('i18n:i18n-data:import')")
 	@Operation(summary = "导入国际化信息", description = "导入国际化信息")
 	public R<List<I18nData>> importI18nData(@RequestExcel List<I18nDataExcelVO> excelVos,
 			@RequestParam("importMode") ImportModeEnum importModeEnum) {
@@ -163,7 +163,7 @@ public class I18nDataController {
 	 */
 	@ResponseExcel(name = "国际化信息", i18nHeader = true)
 	@GetMapping("/export")
-	@PreAuthorize("@per.hasPermission('i18n:i18n-data:export')")
+	@Authorize("hasPermission('i18n:i18n-data:export')")
 	@Operation(summary = "导出国际化信息", description = "导出国际化信息")
 	public List<I18nDataExcelVO> exportI18nData(I18nDataQO i18nDataQO) {
 		List<I18nData> list = i18nDataService.queryList(i18nDataQO);
@@ -180,7 +180,7 @@ public class I18nDataController {
 	 */
 	@ResponseExcel(name = "国际化信息模板", i18nHeader = true)
 	@GetMapping("/excel-template")
-	@PreAuthorize("@per.hasPermission('i18n:i18n-data:import')")
+	@Authorize("hasPermission('i18n:i18n-data:import')")
 	@Operation(summary = "国际化信息 Excel 模板", description = "国际化信息 Excel 模板")
 	public List<I18nDataExcelVO> excelTemplate() {
 		List<I18nDataExcelVO> list = new ArrayList<>();

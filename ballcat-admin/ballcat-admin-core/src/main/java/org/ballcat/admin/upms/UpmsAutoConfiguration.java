@@ -1,12 +1,12 @@
 package org.ballcat.admin.upms;
 
+import org.ballcat.admin.springsecurity.*;
+import org.ballcat.admin.springsecurity.oauth2.BallcatOAuth2TokenResponseEnhancer;
 import org.ballcat.admin.upms.log.LogConfiguration;
-import org.ballcat.business.system.authentication.BallcatOAuth2TokenResponseEnhancer;
-import org.ballcat.business.system.authentication.DefaultUserInfoCoordinatorImpl;
-import org.ballcat.business.system.authentication.SysUserDetailsServiceImpl;
-import org.ballcat.business.system.authentication.UserInfoCoordinator;
+import org.ballcat.business.system.component.PasswordHelper;
 import org.ballcat.business.system.properties.SystemProperties;
 import org.ballcat.business.system.service.SysUserService;
+import org.ballcat.security.core.PrincipalAttributeAccessor;
 import org.ballcat.security.properties.SecurityProperties;
 import org.ballcat.springsecurity.oauth2.server.authorization.web.authentication.OAuth2TokenResponseEnhancer;
 import org.ballcat.springsecurity.oauth2.server.resource.introspection.SpringAuthorizationServerSharedStoredOpaqueTokenIntrospector;
@@ -22,6 +22,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.resource.introspection.OpaqueTokenIntrospector;
@@ -44,7 +45,7 @@ public class UpmsAutoConfiguration {
 	 * @author hccake
 	 */
 	@Configuration(proxyBeanMethods = false)
-	@ConditionalOnClass(SysUserService.class)
+	@ConditionalOnClass({ UserDetailsService.class, SysUserService.class })
 	@ConditionalOnMissingBean(UserDetailsService.class)
 	static class UserDetailsServiceConfiguration {
 
@@ -67,6 +68,19 @@ public class UpmsAutoConfiguration {
 		@ConditionalOnMissingBean
 		public UserInfoCoordinator userInfoCoordinator() {
 			return new DefaultUserInfoCoordinatorImpl();
+		}
+
+		@Bean
+		@ConditionalOnMissingBean
+		public PasswordHelper passwordHelper(SecurityProperties securityProperties, SystemProperties systemProperties,
+				PasswordEncoder passwordEncoder) {
+			return new SpringSecurityPasswordHelper(securityProperties, systemProperties, passwordEncoder);
+		}
+
+		@Bean
+		@ConditionalOnMissingBean
+		public PrincipalAttributeAccessor principalAttributeAccessor() {
+			return new SpringSecurityPrincipalAttributeAccessor();
 		}
 
 	}

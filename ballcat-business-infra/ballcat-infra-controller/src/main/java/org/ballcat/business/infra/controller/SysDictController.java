@@ -19,7 +19,7 @@ import org.ballcat.business.infra.model.vo.SysDictPageVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.ballcat.security.annotation.Authorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -77,7 +77,7 @@ public class SysDictController {
 	 * @return R<PageResult<SysDictVO>>
 	 */
 	@GetMapping("/page")
-	@PreAuthorize("@per.hasPermission('system:dict:read')")
+	@Authorize("hasPermission('system:dict:read')")
 	@Operation(summary = "分页查询", description = "分页查询")
 	public R<PageResult<SysDictPageVO>> getSysDictPage(@Validated PageParam pageParam, SysDictQO sysDictQO) {
 		return R.ok(sysDictManager.dictPage(pageParam, sysDictQO));
@@ -90,7 +90,7 @@ public class SysDictController {
 	 */
 	@CreateOperationLogging(msg = "新增字典表")
 	@PostMapping
-	@PreAuthorize("@per.hasPermission('system:dict:add')")
+	@Authorize("hasPermission('system:dict:add')")
 	@Operation(summary = "新增字典表", description = "新增字典表")
 	public R<Void> save(@RequestBody SysDict sysDict) {
 		return sysDictManager.dictSave(sysDict) ? R.ok() : R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "新增字典表失败");
@@ -103,7 +103,7 @@ public class SysDictController {
 	 */
 	@UpdateOperationLogging(msg = "修改字典表")
 	@PutMapping
-	@PreAuthorize("@per.hasPermission('system:dict:edit')")
+	@Authorize("hasPermission('system:dict:edit')")
 	@Operation(summary = "修改字典表", description = "修改字典表")
 	public R<Void> updateById(@RequestBody SysDict sysDict) {
 		return sysDictManager.updateDictById(sysDict) ? R.ok()
@@ -117,7 +117,7 @@ public class SysDictController {
 	 */
 	@DeleteOperationLogging(msg = "通过id删除字典表")
 	@DeleteMapping("/{id}")
-	@PreAuthorize("@per.hasPermission('system:dict:del')")
+	@Authorize("hasPermission('system:dict:del')")
 	@Operation(summary = "通过id删除字典表", description = "通过id删除字典表")
 	public R<Void> removeById(@PathVariable("id") Long id) {
 		sysDictManager.removeDictById(id);
@@ -131,7 +131,7 @@ public class SysDictController {
 	 * @return R
 	 */
 	@GetMapping("/item/page")
-	@PreAuthorize("@per.hasPermission('system:dict:read')")
+	@Authorize("hasPermission('system:dict:read')")
 	@Operation(summary = "分页查询", description = "分页查询")
 	public R<PageResult<SysDictItemPageVO>> getSysDictItemPage(PageParam pageParam,
 			@RequestParam("dictCode") String dictCode) {
@@ -145,7 +145,7 @@ public class SysDictController {
 	 */
 	@CreateOperationLogging(msg = "新增字典项")
 	@PostMapping("item")
-	@PreAuthorize("@per.hasPermission('system:dict:add')")
+	@Authorize("hasPermission('system:dict:add')")
 	@Operation(summary = "新增字典项", description = "新增字典项")
 	public R<Void> saveItem(
 			@Validated({ Default.class, CreateGroup.class }) @RequestBody SysDictItemDTO sysDictItemDTO) {
@@ -160,7 +160,7 @@ public class SysDictController {
 	 */
 	@UpdateOperationLogging(msg = "修改字典项")
 	@PutMapping("item")
-	@PreAuthorize("@per.hasPermission('system:dict:edit')")
+	@Authorize("hasPermission('system:dict:edit')")
 	@Operation(summary = "修改字典项", description = "修改字典项")
 	public R<Void> updateItemById(
 			@Validated({ Default.class, UpdateGroup.class }) @RequestBody SysDictItemDTO sysDictItemDTO) {
@@ -175,7 +175,7 @@ public class SysDictController {
 	 */
 	@DeleteOperationLogging(msg = "通过id删除字典项")
 	@DeleteMapping("/item/{id}")
-	@PreAuthorize("@per.hasPermission('system:dict:del')")
+	@Authorize("hasPermission('system:dict:del')")
 	@Operation(summary = "通过id删除字典项", description = "通过id删除字典项")
 	public R<Void> removeItemById(@PathVariable("id") Long id) {
 		return sysDictManager.removeDictItemById(id) ? R.ok()
@@ -189,7 +189,7 @@ public class SysDictController {
 	 */
 	@UpdateOperationLogging(msg = "通过id修改字典项状态")
 	@PatchMapping("/item/{id}")
-	@PreAuthorize("@per.hasPermission('system:dict:edit')")
+	@Authorize("hasPermission('system:dict:edit')")
 	@Operation(summary = "通过id修改字典项状态", description = "通过id修改字典项状态")
 	public R<Void> updateDictItemStatusById(@PathVariable("id") Long id, @RequestParam("status") Integer status) {
 		sysDictManager.updateDictItemStatusById(id, status);

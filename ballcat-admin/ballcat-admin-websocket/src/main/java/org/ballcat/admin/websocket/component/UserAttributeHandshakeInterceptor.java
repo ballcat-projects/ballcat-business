@@ -1,9 +1,8 @@
 package org.ballcat.admin.websocket.component;
 
-import org.ballcat.admin.websocket.constant.AdminWebSocketConstants;
-import org.ballcat.springsecurity.oauth2.userdetails.User;
-import org.ballcat.springsecurity.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
+import org.ballcat.admin.websocket.constant.AdminWebSocketConstants;
+import org.ballcat.security.core.PrincipalAttributeAccessor;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.http.server.ServletServerHttpRequest;
@@ -20,6 +19,8 @@ import java.util.Map;
  */
 @RequiredArgsConstructor
 public class UserAttributeHandshakeInterceptor implements HandshakeInterceptor {
+
+	private final PrincipalAttributeAccessor principalAttributeAccessor;
 
 	/**
 	 * Invoked before the handshake is processed.
@@ -42,9 +43,9 @@ public class UserAttributeHandshakeInterceptor implements HandshakeInterceptor {
 			accessToken = serverRequest.getServletRequest().getParameter(AdminWebSocketConstants.TOKEN_ATTR_NAME);
 		}
 		// 由于 WebSocket 握手是由 http 升级的，携带 token 已经被 Security 拦截验证了，所以可以直接获取到用户
-		User user = SecurityUtils.getUser();
+		Long userId = principalAttributeAccessor.getUserId();
 		attributes.put(AdminWebSocketConstants.TOKEN_ATTR_NAME, accessToken);
-		attributes.put(AdminWebSocketConstants.USER_KEY_ATTR_NAME, user.getUserId());
+		attributes.put(AdminWebSocketConstants.USER_KEY_ATTR_NAME, userId);
 		return true;
 	}
 

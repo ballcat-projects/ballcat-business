@@ -1,4 +1,4 @@
-package org.ballcat.business.notify.listener;
+package org.ballcat.admin.springsecurity.login;
 
 import org.ballcat.business.notify.enums.NotifyChannelEnum;
 import org.ballcat.business.notify.model.entity.Announcement;
@@ -13,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
-import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +24,6 @@ import java.util.stream.Collectors;
  * @version 1.0
  */
 @Slf4j
-@Component
 @RequiredArgsConstructor
 public class AnnouncementLoginEventListener {
 
@@ -36,11 +34,11 @@ public class AnnouncementLoginEventListener {
 	private final UserAnnouncementService userAnnouncementService;
 
 	/**
-	 * 登录成功时间监听 用户未读公告生成
+	 * 登录成功时监听 用户未读公告生成
 	 * @param event 登录成功 event
 	 */
 	@EventListener(AuthenticationSuccessEvent.class)
-	public void onAuthenticationSuccessEvent(AuthenticationSuccessEvent event) throws InterruptedException {
+	public void onAuthenticationSuccessEvent(AuthenticationSuccessEvent event) {
 
 		AbstractAuthenticationToken source = (AbstractAuthenticationToken) event.getSource();
 		Object details = source.getDetails();

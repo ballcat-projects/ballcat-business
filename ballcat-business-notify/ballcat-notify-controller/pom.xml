@@ -11,12 +11,16 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.ballcat.business</groupId>
+			<artifactId>ballcat-notify-biz</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.ballcat</groupId>
 			<artifactId>ballcat-log</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.ballcat.business</groupId>
-			<artifactId>ballcat-notify-biz</artifactId>
+			<groupId>org.ballcat</groupId>
+			<artifactId>ballcat-security-core</artifactId>
 		</dependency>
 	</dependencies>
 </project>

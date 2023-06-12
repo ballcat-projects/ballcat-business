@@ -10,7 +10,7 @@ import org.ballcat.desensitize.DesensitizationHandlerHolder;
 import org.ballcat.desensitize.enums.RegexDesensitizationTypeEnum;
 import org.ballcat.log.access.handler.AccessLogHandler;
 import org.ballcat.log.util.LogUtils;
-import org.ballcat.springsecurity.util.SecurityUtils;
+import org.ballcat.security.core.PrincipalAttributeAccessor;
 import org.slf4j.MDC;
 import org.springframework.web.servlet.HandlerMapping;
 
@@ -35,11 +35,15 @@ public class CustomAccessLogHandler implements AccessLogHandler<AccessLog> {
 
 	private final AccessLogSaveThread accessLogSaveThread;
 
-	public CustomAccessLogHandler(AccessLogSaveThread accessLogSaveThread) {
+	private final PrincipalAttributeAccessor principalAttributeAccessor;
+
+	public CustomAccessLogHandler(AccessLogSaveThread accessLogSaveThread,
+			PrincipalAttributeAccessor principalAttributeAccessor) {
 		if (!accessLogSaveThread.isAlive()) {
 			accessLogSaveThread.start();
 		}
 		this.accessLogSaveThread = accessLogSaveThread;
+		this.principalAttributeAccessor = principalAttributeAccessor;
 	}
 
 	/**
@@ -90,10 +94,8 @@ public class CustomAccessLogHandler implements AccessLogHandler<AccessLog> {
 		}
 
 		// 如果登录用户 则记录用户名和用户id
-		Optional.ofNullable(SecurityUtils.getUser()).ifPresent(x -> {
-			accessLog.setUserId(x.getUserId());
-			accessLog.setUsername(x.getUsername());
-		});
+		accessLog.setUserId(principalAttributeAccessor.getUserId());
+		accessLog.setUsername(principalAttributeAccessor.getName());
 
 		return accessLog;
 	}

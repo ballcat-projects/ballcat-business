@@ -1,11 +1,10 @@
 package org.ballcat.admin.upms.config.mybatis;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
-import org.ballcat.common.core.constant.GlobalConstants;
-import org.ballcat.springsecurity.oauth2.userdetails.User;
-import org.ballcat.springsecurity.util.SecurityUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
+import org.ballcat.common.core.constant.GlobalConstants;
+import org.ballcat.security.core.PrincipalAttributeAccessor;
 
 import java.time.LocalDateTime;
 
@@ -15,6 +14,12 @@ import java.time.LocalDateTime;
 @Slf4j
 public class FillMetaObjectHandle implements MetaObjectHandler {
 
+	private final PrincipalAttributeAccessor principalAttributeAccessor;
+
+	public FillMetaObjectHandle(PrincipalAttributeAccessor principalAttributeAccessor) {
+		this.principalAttributeAccessor = principalAttributeAccessor;
+	}
+
 	@Override
 	public void insertFill(MetaObject metaObject) {
 		// 逻辑删除标识
@@ -22,9 +27,9 @@ public class FillMetaObjectHandle implements MetaObjectHandler {
 		// 创建时间
 		this.strictInsertFill(metaObject, "createTime", LocalDateTime.class, LocalDateTime.now());
 		// 创建人
-		User user = SecurityUtils.getUser();
-		if (user != null) {
-			this.strictInsertFill(metaObject, "createBy", Long.class, user.getUserId());
+		Long userId = principalAttributeAccessor.getUserId();
+		if (userId != null) {
+			this.strictInsertFill(metaObject, "createBy", Long.class, userId);
 		}
 	}
 
@@ -33,9 +38,9 @@ public class FillMetaObjectHandle implements MetaObjectHandler {
 		// 修改时间
 		this.strictUpdateFill(metaObject, "updateTime", LocalDateTime.class, LocalDateTime.now());
 		// 修改人
-		User user = SecurityUtils.getUser();
-		if (user != null) {
-			this.strictUpdateFill(metaObject, "updateBy", Long.class, user.getUserId());
+		Long userId = principalAttributeAccessor.getUserId();
+		if (userId != null) {
+			this.strictUpdateFill(metaObject, "updateBy", Long.class, userId);
 		}
 	}
 

@@ -10,10 +10,9 @@
 	<artifactId>ballcat-admin-core</artifactId>
 
 	<dependencies>
-		<!--mybatis plus-->
 		<dependency>
-			<groupId>com.baomidou</groupId>
-			<artifactId>mybatis-plus-boot-starter</artifactId>
+			<groupId>org.ballcat</groupId>
+			<artifactId>ballcat-spring-boot-starter-web</artifactId>
 		</dependency>
 		<!-- 脱敏工具 -->
 		<dependency>
@@ -39,21 +38,13 @@
 		</dependency>
 		<dependency>
 			<groupId>org.ballcat</groupId>
-			<artifactId>ballcat-spring-boot-starter-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.ballcat</groupId>
 			<artifactId>ballcat-spring-boot-starter-xss</artifactId>
 		</dependency>
-		<!-- 基于 spring authorization server 的授权服务器 -->
+
+		<!--mybatis plus-->
 		<dependency>
-			<groupId>org.ballcat</groupId>
-			<artifactId>ballcat-spring-security-oauth2-authorization-server</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.ballcat</groupId>
-			<artifactId>ballcat-spring-security-oauth2-resource-server</artifactId>
+			<groupId>com.baomidou</groupId>
+			<artifactId>mybatis-plus-boot-starter</artifactId>
 		</dependency>
 
 		<!-- 业务模块 -->
@@ -72,6 +63,19 @@
 		<dependency>
 			<groupId>org.ballcat.business</groupId>
 			<artifactId>ballcat-system-controller</artifactId>
+		</dependency>
+
+		<!-- 基于 spring authorization server 的授权服务器 -->
+		<dependency>
+			<groupId>org.ballcat</groupId>
+			<artifactId>ballcat-spring-security-oauth2-authorization-server</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<!-- 基于 spring security 的资源服务器 -->
+		<dependency>
+			<groupId>org.ballcat</groupId>
+			<artifactId>ballcat-spring-security-oauth2-resource-server</artifactId>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>

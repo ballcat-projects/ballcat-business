@@ -14,5 +14,5 @@
 		<module>ballcat-admin-core</module>
 		<module>ballcat-admin-i18n</module>
 		<module>ballcat-admin-websocket</module>
-	</modules>
+    </modules>
 </project>

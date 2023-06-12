@@ -9,9 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.List;
 
 /**
- * @author Hccake
- * @version 1.0
- * @date 2019/10/16 15:30
+ * @author Hccake 2019/10/16 15:30
  */
 @Slf4j
 @RequiredArgsConstructor

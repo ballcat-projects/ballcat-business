@@ -13,7 +13,7 @@ import org.ballcat.common.model.result.R;
 import org.ballcat.log.operation.annotation.CreateOperationLogging;
 import org.ballcat.log.operation.annotation.DeleteOperationLogging;
 import org.ballcat.log.operation.annotation.UpdateOperationLogging;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.ballcat.security.annotation.Authorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,7 +37,7 @@ public class SysConfigController {
 	 * @return R<PageResult<SysConfigVO>>
 	 */
 	@GetMapping("/page")
-	@PreAuthorize("@per.hasPermission('system:config:read')")
+	@Authorize("hasPermission('system:config:read')")
 	@Operation(summary = "分页查询", description = "分页查询")
 	public R<PageResult<SysConfigPageVO>> getSysConfigPage(@Validated PageParam pageParam, SysConfigQO sysConfigQO) {
 		return R.ok(sysConfigService.queryPage(pageParam, sysConfigQO));
@@ -50,7 +50,7 @@ public class SysConfigController {
 	 */
 	@CreateOperationLogging(msg = "新增系统配置")
 	@PostMapping
-	@PreAuthorize("@per.hasPermission('system:config:add')")
+	@Authorize("hasPermission('system:config:add')")
 	@Operation(summary = "新增系统配置", description = "新增系统配置")
 	public R<Boolean> save(@RequestBody SysConfig sysConfig) {
 		return R.ok(sysConfigService.save(sysConfig));
@@ -63,7 +63,7 @@ public class SysConfigController {
 	 */
 	@UpdateOperationLogging(msg = "修改系统配置")
 	@PutMapping
-	@PreAuthorize("@per.hasPermission('system:config:edit')")
+	@Authorize("hasPermission('system:config:edit')")
 	@Operation(summary = "修改系统配置")
 	public R<Boolean> updateById(@RequestBody SysConfig sysConfig) {
 		return R.ok(sysConfigService.updateByKey(sysConfig));
@@ -76,7 +76,7 @@ public class SysConfigController {
 	 */
 	@DeleteOperationLogging(msg = "删除系统配置")
 	@DeleteMapping
-	@PreAuthorize("@per.hasPermission('system:config:del')")
+	@Authorize("hasPermission('system:config:del')")
 	@Operation(summary = "删除系统配置")
 	public R<Boolean> removeById(@RequestParam("confKey") String confKey) {
 		return R.ok(sysConfigService.removeByKey(confKey));

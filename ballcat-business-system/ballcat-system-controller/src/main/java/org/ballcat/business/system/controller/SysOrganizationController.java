@@ -15,7 +15,7 @@ import org.ballcat.common.model.result.R;
 import org.ballcat.log.operation.annotation.CreateOperationLogging;
 import org.ballcat.log.operation.annotation.DeleteOperationLogging;
 import org.ballcat.log.operation.annotation.UpdateOperationLogging;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.ballcat.security.annotation.Authorize;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,7 +42,7 @@ public class SysOrganizationController {
 	 * @return R 通用返回体
 	 */
 	@GetMapping("/list")
-	@PreAuthorize("@per.hasPermission('system:organization:read')")
+	@Authorize("hasPermission('system:organization:read')")
 	@Operation(summary = "组织架构列表查询")
 	public R<List<SysOrganizationVO>> listOrganization() {
 		List<SysOrganization> list = sysOrganizationService.list();
@@ -62,7 +62,7 @@ public class SysOrganizationController {
 	 * @return R 通用返回体
 	 */
 	@GetMapping("/tree")
-	@PreAuthorize("@per.hasPermission('system:organization:read')")
+	@Authorize("hasPermission('system:organization:read')")
 	@Operation(summary = "组织架构树查询")
 	public R<List<SysOrganizationTree>> getOrganizationTree(SysOrganizationQO qo) {
 		return R.ok(sysOrganizationService.listTree(qo));
@@ -75,7 +75,7 @@ public class SysOrganizationController {
 	 */
 	@CreateOperationLogging(msg = "新增组织架构")
 	@PostMapping
-	@PreAuthorize("@per.hasPermission('system:organization:add')")
+	@Authorize("hasPermission('system:organization:add')")
 	@Operation(summary = "新增组织架构")
 	public R<Void> save(@RequestBody SysOrganizationDTO sysOrganizationDTO) {
 		return sysOrganizationService.create(sysOrganizationDTO) ? R.ok()
@@ -89,7 +89,7 @@ public class SysOrganizationController {
 	 */
 	@UpdateOperationLogging(msg = "修改组织架构")
 	@PutMapping
-	@PreAuthorize("@per.hasPermission('system:organization:edit')")
+	@Authorize("hasPermission('system:organization:edit')")
 	@Operation(summary = "修改组织架构")
 	public R<Void> updateById(@RequestBody SysOrganizationDTO sysOrganizationDTO) {
 		return sysOrganizationService.update(sysOrganizationDTO) ? R.ok()
@@ -103,7 +103,7 @@ public class SysOrganizationController {
 	 */
 	@DeleteOperationLogging(msg = "通过id删除组织架构")
 	@DeleteMapping("/{id}")
-	@PreAuthorize("@per.hasPermission('system:organization:del')")
+	@Authorize("hasPermission('system:organization:del')")
 	@Operation(summary = "通过id删除组织架构")
 	public R<Void> removeById(@PathVariable("id") Long id) {
 		return sysOrganizationService.removeById(id) ? R.ok()
@@ -116,7 +116,7 @@ public class SysOrganizationController {
 	 */
 	@UpdateOperationLogging(msg = "校正组织机构层级和深度")
 	@PatchMapping("/revised")
-	@PreAuthorize("@per.hasPermission('system:organization:revised')")
+	@Authorize("hasPermission('system:organization:revised')")
 	@Operation(summary = "校正组织机构层级和深度")
 	public R<Void> revisedHierarchyAndPath() {
 		return sysOrganizationService.revisedHierarchyAndPath() ? R.ok()

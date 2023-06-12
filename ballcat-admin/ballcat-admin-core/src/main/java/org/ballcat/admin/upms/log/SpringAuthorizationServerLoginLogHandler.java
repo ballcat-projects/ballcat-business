@@ -2,7 +2,6 @@ package org.ballcat.admin.upms.log;
 
 import org.ballcat.common.core.util.WebUtils;
 import org.ballcat.log.operation.enums.LogStatusEnum;
-import org.ballcat.springsecurity.util.SecurityUtils;
 import org.ballcat.business.log.enums.LoginEventTypeEnum;
 import org.ballcat.business.log.model.entity.LoginLog;
 import org.ballcat.business.log.service.LoginLogService;
@@ -14,6 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.authentication.event.AbstractAuthenticationFailureEvent;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.authentication.event.LogoutSuccessEvent;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
 import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AccessTokenAuthenticationToken;
 import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AuthorizationGrantAuthenticationToken;
@@ -50,7 +50,7 @@ public class SpringAuthorizationServerLoginLogHandler implements LoginLogHandler
 
 		// Oauth2登录 和表单登录 处理分开
 		if (isOauth2LoginRequest && source instanceof OAuth2AccessTokenAuthenticationToken) {
-			username = SecurityUtils.getAuthentication().getName();
+			username = SecurityContextHolder.getContext().getAuthentication().getName();
 		}
 		else if (!isOauth2LoginRequest && source instanceof UsernamePasswordAuthenticationToken) {
 			username = ((UsernamePasswordAuthenticationToken) source).getName();

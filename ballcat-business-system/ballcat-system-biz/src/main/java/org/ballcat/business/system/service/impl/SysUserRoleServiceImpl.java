@@ -138,4 +138,9 @@ public class SysUserRoleServiceImpl extends ExtendServiceImpl<SysUserRoleMapper,
 		return !baseMapper.existsRoleBind(userId, roleCode) || baseMapper.deleteUserRole(userId, roleCode);
 	}
 
+	@Override
+	public List<String> listRoleCodes(Long userId) {
+		return baseMapper.selectRoleCodeByUserId(userId);
+	}
+
 }

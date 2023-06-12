@@ -37,10 +37,5 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
-        <dependency>
-            <groupId>org.ballcat</groupId>
-            <artifactId>ballcat-spring-security-oauth2-authorization-server</artifactId>
-            <optional>true</optional>
-        </dependency>
     </dependencies>
 </project>

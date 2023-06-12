@@ -7,7 +7,7 @@ import org.ballcat.common.model.domain.PageParam;
 import org.ballcat.common.model.domain.PageResult;
 import org.ballcat.common.model.result.BaseResultCode;
 import org.ballcat.common.model.result.R;
-import org.ballcat.springsecurity.util.SecurityUtils;
+import org.ballcat.security.annotation.Authorize;
 import org.ballcat.business.notify.model.dto.AnnouncementDTO;
 import org.ballcat.business.notify.model.entity.Announcement;
 import org.ballcat.business.notify.model.qo.AnnouncementQO;
@@ -16,7 +16,7 @@ import org.ballcat.business.notify.service.AnnouncementService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.ballcat.security.core.PrincipalAttributeAccessor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,6 +46,8 @@ public class AnnouncementController {
 
 	private final AnnouncementService announcementService;
 
+	private final PrincipalAttributeAccessor principalAttributeAccessor;
+
 	/**
 	 * 分页查询
 	 * @param pageParam 分页对象
@@ -53,7 +55,7 @@ public class AnnouncementController {
 	 * @return R 通用返回体
 	 */
 	@GetMapping("/page")
-	@PreAuthorize("@per.hasPermission('notify:announcement:read')")
+	@Authorize("hasPermission('notify:announcement:read')")
 	@Operation(summary = "分页查询", description = "分页查询")
 	public R<PageResult<AnnouncementPageVO>> getAnnouncementPage(@Validated PageParam pageParam,
 			AnnouncementQO announcementQO) {
@@ -67,7 +69,7 @@ public class AnnouncementController {
 	 */
 	@CreateOperationLogging(msg = "新增公告信息")
 	@PostMapping
-	@PreAuthorize("@per.hasPermission('notify:announcement:add')")
+	@Authorize("hasPermission('notify:announcement:add')")
 	@Operation(summary = "新增公告信息", description = "新增公告信息")
 	public R<Void> save(@Valid @RequestBody AnnouncementDTO announcementDTO) {
 		return announcementService.addAnnouncement(announcementDTO) ? R.ok()
@@ -81,7 +83,7 @@ public class AnnouncementController {
 	 */
 	@UpdateOperationLogging(msg = "修改公告信息")
 	@PutMapping
-	@PreAuthorize("@per.hasPermission('notify:announcement:edit')")
+	@Authorize("hasPermission('notify:announcement:edit')")
 	@Operation(summary = "修改公告信息", description = "修改公告信息")
 	public R<Void> updateById(@Valid @RequestBody AnnouncementDTO announcementDTO) {
 		return announcementService.updateAnnouncement(announcementDTO) ? R.ok()
@@ -95,7 +97,7 @@ public class AnnouncementController {
 	 */
 	@DeleteOperationLogging(msg = "通过id删除公告信息")
 	@DeleteMapping("/{id}")
-	@PreAuthorize("@per.hasPermission('notify:announcement:del')")
+	@Authorize("hasPermission('notify:announcement:del')")
 	@Operation(summary = "通过id删除公告信息", description = "通过id删除公告信息")
 	public R<Void> removeById(@PathVariable("id") Long id) {
 		return announcementService.removeById(id) ? R.ok()
@@ -108,7 +110,7 @@ public class AnnouncementController {
 	 */
 	@UpdateOperationLogging(msg = "发布公告信息")
 	@PatchMapping("/publish/{announcementId}")
-	@PreAuthorize("@per.hasPermission('notify:announcement:edit')")
+	@Authorize("hasPermission('notify:announcement:edit')")
 	@Operation(summary = "发布公告信息", description = "发布公告信息")
 	public R<Void> enableAnnouncement(@PathVariable("announcementId") Long announcementId) {
 		return announcementService.publish(announcementId) ? R.ok()
@@ -121,7 +123,7 @@ public class AnnouncementController {
 	 */
 	@UpdateOperationLogging(msg = "关闭公告信息")
 	@PatchMapping("/close/{announcementId}")
-	@PreAuthorize("@per.hasPermission('notify:announcement:edit')")
+	@Authorize("hasPermission('notify:announcement:edit')")
 	@Operation(summary = "关闭公告信息", description = "关闭公告信息")
 	public R<Void> disableAnnouncement(@PathVariable("announcementId") Long announcementId) {
 		return announcementService.close(announcementId) ? R.ok()
@@ -129,7 +131,7 @@ public class AnnouncementController {
 	}
 
 	@UpdateOperationLogging(msg = "公告内容图片上传", recordParams = false)
-	@PreAuthorize("@per.hasPermission('notify:announcement:edit')")
+	@Authorize("hasPermission('notify:announcement:edit')")
 	@PostMapping("/image")
 	@Operation(summary = "公告内容图片上传", description = "公告内容图片上传")
 	public R<List<String>> uploadImages(@RequestParam("files") List<MultipartFile> files) {
@@ -138,10 +140,10 @@ public class AnnouncementController {
 	}
 
 	@GetMapping("/user")
-	@PreAuthorize("@per.hasPermission('notify:userannouncement:read')")
+	@Authorize("hasPermission('notify:userannouncement:read')")
 	@Operation(summary = "用户公告信息", description = "用户公告信息")
 	public R<List<Announcement>> getUserAnnouncements() {
-		Long userId = SecurityUtils.getUser().getUserId();
+		Long userId = principalAttributeAccessor.getUserId();
 		return R.ok(announcementService.listActiveAnnouncements(userId));
 	}
 

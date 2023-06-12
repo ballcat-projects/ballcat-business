@@ -11,7 +11,7 @@ import org.ballcat.common.util.JsonUtils;
 import org.ballcat.log.operation.annotation.OperationLogging;
 import org.ballcat.log.operation.enums.LogStatusEnum;
 import org.ballcat.log.operation.handler.AbstractOperationLogHandler;
-import org.ballcat.springsecurity.util.SecurityUtils;
+import org.ballcat.security.core.PrincipalAttributeAccessor;
 import org.slf4j.MDC;
 import org.springframework.http.HttpHeaders;
 
@@ -26,6 +26,8 @@ import java.util.Optional;
 public class CustomOperationLogHandler extends AbstractOperationLogHandler<OperationLog> {
 
 	private final OperationLogService operationLogService;
+
+	private final PrincipalAttributeAccessor principalAttributeAccessor;
 
 	@Override
 	public OperationLog buildLog(OperationLogging operationLogging, ProceedingJoinPoint joinPoint) {
@@ -50,7 +52,7 @@ public class CustomOperationLogHandler extends AbstractOperationLogHandler<Opera
 		}
 
 		// 操作用户
-		Optional.ofNullable(SecurityUtils.getUser()).ifPresent(x -> operationLog.setOperator(x.getUsername()));
+		operationLog.setOperator(principalAttributeAccessor.getName());
 
 		return operationLog;
 	}

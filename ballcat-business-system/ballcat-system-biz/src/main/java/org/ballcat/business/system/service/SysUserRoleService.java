@@ -63,4 +63,11 @@ public interface SysUserRoleService extends ExtendService<SysUserRole> {
 	 */
 	boolean unbindRoleUser(Long userId, String roleCode);
 
+	/**
+	 * 通过用户ID，查询角色Code列表
+	 * @param userId 用户ID
+	 * @return List<String>
+	 */
+	List<String> listRoleCodes(Long userId);
+
 }

@@ -10,8 +10,7 @@ import org.ballcat.mybatisplus.service.ExtendService;
 /**
  * 后台访问日志
  *
- * @author hccake
- * @date 2019-10-16 16:09:25
+ * @author hccake 2019-10-16 16:09:25
  */
 public interface AccessLogService extends ExtendService<AccessLog> {
 

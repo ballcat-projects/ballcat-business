@@ -3,14 +3,14 @@ package org.ballcat.business.notify.controller;
 import org.ballcat.common.model.domain.PageParam;
 import org.ballcat.common.model.domain.PageResult;
 import org.ballcat.common.model.result.R;
-import org.ballcat.springsecurity.util.SecurityUtils;
+import org.ballcat.security.annotation.Authorize;
+import org.ballcat.security.core.PrincipalAttributeAccessor;
 import org.ballcat.business.notify.model.qo.UserAnnouncementQO;
 import org.ballcat.business.notify.model.vo.UserAnnouncementPageVO;
 import org.ballcat.business.notify.service.UserAnnouncementService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -31,6 +31,8 @@ public class UserAnnouncementController {
 
 	private final UserAnnouncementService userAnnouncementService;
 
+	private final PrincipalAttributeAccessor principalAttributeAccessor;
+
 	/**
 	 * 分页查询
 	 * @param pageParam 分页参数
@@ -38,7 +40,7 @@ public class UserAnnouncementController {
 	 * @return R 通用返回体
 	 */
 	@GetMapping("/page")
-	@PreAuthorize("@per.hasPermission('notify:userannouncement:read')")
+	@Authorize("hasPermission('notify:userannouncement:read')")
 	@Operation(summary = "分页查询", description = "分页查询")
 	public R<PageResult<UserAnnouncementPageVO>> getUserAnnouncementPage(@Validated PageParam pageParam,
 			UserAnnouncementQO userAnnouncementQO) {
@@ -46,10 +48,10 @@ public class UserAnnouncementController {
 	}
 
 	@PatchMapping("/read/{announcementId}")
-	@PreAuthorize("@per.hasPermission('notify:userannouncement:read')")
+	@Authorize("hasPermission('notify:userannouncement:read')")
 	@Operation(summary = "用户公告已读上报", description = "用户公告已读上报")
 	public R<Void> readAnnouncement(@PathVariable("announcementId") Long announcementId) {
-		Long userId = SecurityUtils.getUser().getUserId();
+		Long userId = principalAttributeAccessor.getUserId();
 		userAnnouncementService.readAnnouncement(userId, announcementId);
 		return R.ok();
 	}

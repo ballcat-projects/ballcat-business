@@ -33,7 +33,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.ballcat</groupId>
-			<artifactId>ballcat-spring-security-oauth2-core</artifactId>
+			<artifactId>ballcat-security-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>jakarta.servlet</groupId>

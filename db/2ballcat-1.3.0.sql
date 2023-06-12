@@ -614,7 +614,6 @@ INSERT INTO `sys_user_role` VALUES (1, 1, 'ROLE_ADMIN');
 INSERT INTO `sys_user_role` VALUES (6, 10, 'ROLE_SALES_EXECUTIVE');
 INSERT INTO `sys_user_role` VALUES (4, 1, 'ROLE_TEST');
 
-
 /*
 IMPORTANT:
     If using PostgreSQL, update ALL columns defined with 'blob' to 'text',

@@ -10,6 +10,7 @@ import org.ballcat.business.log.service.AccessLogService;
 import org.ballcat.business.log.service.LoginLogService;
 import org.ballcat.business.log.service.OperationLogService;
 import org.ballcat.business.log.thread.AccessLogSaveThread;
+import org.ballcat.security.core.PrincipalAttributeAccessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -25,6 +26,12 @@ import org.springframework.security.oauth2.server.authorization.settings.Authori
 @ConditionalOnClass(LoginLogService.class)
 public class LogConfiguration {
 
+	private final PrincipalAttributeAccessor principalAttributeAccessor;
+
+	public LogConfiguration(PrincipalAttributeAccessor principalAttributeAccessor) {
+		this.principalAttributeAccessor = principalAttributeAccessor;
+	}
+
 	/**
 	 * 访问日志保存
 	 * @param accessLogService 访问日志Service
@@ -34,7 +41,7 @@ public class LogConfiguration {
 	@ConditionalOnBean(AccessLogService.class)
 	@ConditionalOnMissingBean(AccessLogHandler.class)
 	public AccessLogHandler<AccessLog> customAccessLogHandler(AccessLogService accessLogService) {
-		return new CustomAccessLogHandler(new AccessLogSaveThread(accessLogService));
+		return new CustomAccessLogHandler(new AccessLogSaveThread(accessLogService), principalAttributeAccessor);
 	}
 
 	/**
@@ -46,7 +53,7 @@ public class LogConfiguration {
 	@ConditionalOnBean(OperationLogService.class)
 	@ConditionalOnMissingBean(OperationLogHandler.class)
 	public OperationLogHandler<OperationLog> customOperationLogHandler(OperationLogService operationLogService) {
-		return new CustomOperationLogHandler(operationLogService);
+		return new CustomOperationLogHandler(operationLogService, principalAttributeAccessor);
 	}
 
 	@ConditionalOnClass(OAuth2AuthorizationServerConfigurer.class)

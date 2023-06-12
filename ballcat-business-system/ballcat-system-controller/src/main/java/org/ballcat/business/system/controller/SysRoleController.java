@@ -24,7 +24,7 @@ import org.ballcat.business.system.service.SysUserRoleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.ballcat.security.annotation.Authorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,7 +63,7 @@ public class SysRoleController {
 	 * @return PageResult 分页结果
 	 */
 	@GetMapping("/page")
-	@PreAuthorize("@per.hasPermission('system:role:read')")
+	@Authorize("hasPermission('system:role:read')")
 	public R<PageResult<SysRolePageVO>> getRolePage(@Validated PageParam pageParam, SysRoleQO sysRoleQo) {
 		return R.ok(sysRoleService.queryPage(pageParam, sysRoleQo));
 	}
@@ -74,7 +74,7 @@ public class SysRoleController {
 	 * @return 角色信息
 	 */
 	@GetMapping("/{id}")
-	@PreAuthorize("@per.hasPermission('system:role:read')")
+	@Authorize("hasPermission('system:role:read')")
 	public R<SysRole> getById(@PathVariable("id") Long id) {
 		return R.ok(sysRoleService.getById(id));
 	}
@@ -86,7 +86,7 @@ public class SysRoleController {
 	 */
 	@CreateOperationLogging(msg = "新增系统角色")
 	@PostMapping
-	@PreAuthorize("@per.hasPermission('system:role:add')")
+	@Authorize("hasPermission('system:role:add')")
 	@Operation(summary = "新增系统角色", description = "新增系统角色")
 	public R<Boolean> save(@Valid @RequestBody SysRole sysRole) {
 		return sysRoleService.save(sysRole) ? R.ok() : R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "新建角色失败");
@@ -99,7 +99,7 @@ public class SysRoleController {
 	 */
 	@UpdateOperationLogging(msg = "修改系统角色")
 	@PutMapping
-	@PreAuthorize("@per.hasPermission('system:role:edit')")
+	@Authorize("hasPermission('system:role:edit')")
 	@Operation(summary = "修改系统角色", description = "修改系统角色")
 	public R<Boolean> update(@Valid @RequestBody SysRoleUpdateDTO roleUpdateDTO) {
 		SysRole sysRole = SysRoleConverter.INSTANCE.dtoToPo(roleUpdateDTO);
@@ -113,7 +113,7 @@ public class SysRoleController {
 	 */
 	@DeleteMapping("/{id}")
 	@DeleteOperationLogging(msg = "通过id删除系统角色")
-	@PreAuthorize("@per.hasPermission('system:role:del')")
+	@Authorize("hasPermission('system:role:del')")
 	@Operation(summary = "通过id删除系统角色", description = "通过id删除系统角色")
 	public R<Boolean> removeById(@PathVariable("id") Long id) {
 		SysRole oldRole = sysRoleService.getById(id);
@@ -143,7 +143,7 @@ public class SysRoleController {
 	 */
 	@PutMapping("/permission/code/{roleCode}")
 	@UpdateOperationLogging(msg = "更新角色权限")
-	@PreAuthorize("@per.hasPermission('system:role:grant')")
+	@Authorize("hasPermission('system:role:grant')")
 	@Operation(summary = "更新角色权限", description = "更新角色权限")
 	public R<Boolean> savePermissionIds(@PathVariable("roleCode") String roleCode, @RequestBody Long[] permissionIds) {
 		return R.ok(sysRoleMenuService.saveRoleMenus(roleCode, permissionIds));
@@ -176,7 +176,7 @@ public class SysRoleController {
 	 * @return R
 	 */
 	@GetMapping("/user/page")
-	@PreAuthorize("@per.hasPermission('system:role:grant')")
+	@Authorize("hasPermission('system:role:grant')")
 	@Operation(summary = "查看已授权指定角色的用户列表", description = "查看已授权指定角色的用户列表")
 	public R<PageResult<RoleBindUserVO>> queryUserPageByRoleCode(PageParam pageParam,
 			@Valid RoleBindUserQO roleBindUserQO) {
@@ -188,7 +188,7 @@ public class SysRoleController {
 	 * @return R
 	 */
 	@DeleteMapping("/user")
-	@PreAuthorize("@per.hasPermission('system:role:grant')")
+	@Authorize("hasPermission('system:role:grant')")
 	@Operation(summary = "解绑与用户绑定关系", description = "解绑与用户绑定关系")
 	public R<Boolean> unbindRoleUser(@RequestParam("userId") Long userId, @RequestParam("roleCode") String roleCode) {
 		return R.ok(sysUserRoleService.unbindRoleUser(userId, roleCode));

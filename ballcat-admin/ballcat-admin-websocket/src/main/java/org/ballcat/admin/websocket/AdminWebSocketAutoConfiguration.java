@@ -2,6 +2,7 @@ package org.ballcat.admin.websocket;
 
 import org.ballcat.admin.websocket.component.UserAttributeHandshakeInterceptor;
 import org.ballcat.admin.websocket.component.UserSessionKeyGenerator;
+import org.ballcat.security.core.PrincipalAttributeAccessor;
 import org.ballcat.websocket.session.SessionKeyGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -21,8 +22,9 @@ public class AdminWebSocketAutoConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean(UserAttributeHandshakeInterceptor.class)
-	public HandshakeInterceptor authenticationHandshakeInterceptor() {
-		return new UserAttributeHandshakeInterceptor();
+	public HandshakeInterceptor authenticationHandshakeInterceptor(
+			PrincipalAttributeAccessor principalAttributeAccessor) {
+		return new UserAttributeHandshakeInterceptor(principalAttributeAccessor);
 	}
 
 	@Bean

@@ -100,4 +100,11 @@ public interface SysUserRoleMapper extends ExtendMapper<SysUserRole> {
 	 */
 	IPage<RoleBindUserVO> queryUserPageByRoleCode(IPage<RoleBindUserVO> page, @Param("qo") RoleBindUserQO roleCode);
 
+	/**
+	 * 通过用户ID，查询角色codes
+	 * @param userId 用户ID
+	 * @return 用户拥有的角色code集合
+	 */
+	List<String> selectRoleCodeByUserId(Long userId);
+
 }

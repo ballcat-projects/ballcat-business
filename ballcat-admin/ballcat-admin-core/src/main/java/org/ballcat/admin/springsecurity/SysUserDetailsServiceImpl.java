@@ -1,4 +1,4 @@
-package org.ballcat.business.system.authentication;
+package org.ballcat.admin.springsecurity;
 
 import org.ballcat.springsecurity.oauth2.constant.UserAttributeNameConstants;
 import org.ballcat.springsecurity.oauth2.userdetails.User;
