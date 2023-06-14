@@ -8,9 +8,9 @@ import org.ballcat.common.util.IpUtils;
 import org.ballcat.common.util.JsonUtils;
 import org.ballcat.desensitize.DesensitizationHandlerHolder;
 import org.ballcat.desensitize.enums.RegexDesensitizationTypeEnum;
-import org.ballcat.log.access.handler.AccessLogHandler;
 import org.ballcat.log.util.LogUtils;
 import org.ballcat.security.core.PrincipalAttributeAccessor;
+import org.ballcat.web.accesslog.AccessLogHandler;
 import org.slf4j.MDC;
 import org.springframework.web.servlet.HandlerMapping;
 

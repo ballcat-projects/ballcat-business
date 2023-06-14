@@ -1,6 +1,5 @@
 package org.ballcat.admin.upms.log;
 
-import org.ballcat.log.access.handler.AccessLogHandler;
 import org.ballcat.log.operation.handler.OperationLogHandler;
 import org.ballcat.business.log.handler.CustomAccessLogHandler;
 import org.ballcat.business.log.handler.CustomOperationLogHandler;
@@ -11,6 +10,7 @@ import org.ballcat.business.log.service.LoginLogService;
 import org.ballcat.business.log.service.OperationLogService;
 import org.ballcat.business.log.thread.AccessLogSaveThread;
 import org.ballcat.security.core.PrincipalAttributeAccessor;
+import org.ballcat.web.accesslog.AccessLogHandler;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
