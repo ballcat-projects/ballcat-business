@@ -120,8 +120,8 @@ public class CustomAccessLogHandler implements AccessLogHandler<AccessLog> {
 	 * @return 记录返回 true，否则返回 false
 	 */
 	protected boolean shouldRecordResponseBody(HttpServletResponse response, String uri) {
-		// 只对 content-type 为 application/json 的响应记录响应体（分页请求除外）
-		return !uri.endsWith("/page") && response.getContentType() != null
+		// 只对 content-type 为 application/json 的响应记录响应体（验证码、分页请求除外）
+		return !uri.endsWith("/page") && !uri.matches("^/captcha/.*$") && response.getContentType() != null
 				&& response.getContentType().contains(APPLICATION_JSON);
 	}
 
