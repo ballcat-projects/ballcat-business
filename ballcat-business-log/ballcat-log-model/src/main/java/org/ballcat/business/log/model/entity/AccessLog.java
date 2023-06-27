@@ -48,10 +48,10 @@ public class AccessLog {
 	private String username;
 
 	/**
-	 * 访问IP地址
+	 * 客户端IP地址
 	 */
-	@Schema(title = "访问IP地址")
-	private String ip;
+	@Schema(title = "客户端IP地址")
+	private String clientIp;
 
 	/**
 	 * 用户代理
@@ -63,7 +63,7 @@ public class AccessLog {
 	 * 请求URI
 	 */
 	@Schema(title = "请求URI")
-	private String uri;
+	private String requestUri;
 
 	/**
 	 * 请求映射地址
@@ -72,46 +72,46 @@ public class AccessLog {
 	private String matchingPattern;
 
 	/**
-	 * 操作方式
+	 * 请求方法
 	 */
-	@Schema(title = "操作方式")
-	private String method;
+	@Schema(title = "请求方法")
+	private String requestMethod;
 
 	/**
-	 * 请求参数
+	 * 查询参数
 	 */
-	@Schema(title = "请求参数")
-	private String reqParams;
+	@Schema(title = "查询参数")
+	private String queryString;
 
 	/**
-	 * 请求body
+	 * 请求体
 	 */
-	@Schema(title = "请求body")
-	private String reqBody;
+	@Schema(title = "请求体")
+	private String requestBody;
 
 	/**
 	 * 响应状态码
 	 */
 	@Schema(title = "响应状态码")
-	private Integer httpStatus;
+	private Integer responseStatus;
 
 	/**
-	 * 响应信息
+	 * 响应体
 	 */
-	@Schema(title = "响应信息")
-	private String result;
+	@Schema(title = "响应体")
+	private String responseBody;
 
 	/**
 	 * 错误消息
 	 */
 	@Schema(title = "错误消息")
-	private String errorMsg;
+	private String errorMessage;
 
 	/**
 	 * 执行时长
 	 */
 	@Schema(title = "执行时长")
-	private Long time;
+	private Long executionTime;
 
 	/**
 	 * 创建时间

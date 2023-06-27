@@ -14,8 +14,7 @@ import org.ballcat.mybatisplus.toolkit.WrappersX;
 /**
  * 后台访问日志
  *
- * @author hccake
- * @date 2019-10-16 16:09:25
+ * @author hccake 2019-10-16 16:09:25
  */
 public interface AccessLogMapper extends ExtendMapper<AccessLog> {
 
@@ -31,9 +30,9 @@ public interface AccessLogMapper extends ExtendMapper<AccessLog> {
 			.eqIfPresent(AccessLog::getUserId, qo.getUserId())
 			.eqIfPresent(AccessLog::getTraceId, qo.getTraceId())
 			.eqIfPresent(AccessLog::getMatchingPattern, qo.getMatchingPattern())
-			.eqIfPresent(AccessLog::getUri, qo.getUri())
-			.eqIfPresent(AccessLog::getHttpStatus, qo.getHttpStatus())
-			.eqIfPresent(AccessLog::getIp, qo.getIp())
+			.eqIfPresent(AccessLog::getRequestUri, qo.getRequestUri())
+			.eqIfPresent(AccessLog::getResponseStatus, qo.getResponseStatus())
+			.eqIfPresent(AccessLog::getClientIp, qo.getClientIp())
 			.gtIfPresent(AccessLog::getCreateTime, qo.getStartTime())
 			.ltIfPresent(AccessLog::getCreateTime, qo.getEndTime());
 		this.selectPage(page, wrapperX);

@@ -11,8 +11,7 @@ import java.time.LocalDateTime;
 /**
  * 后台访问日志
  *
- * @author hccake
- * @date 2019-10-16 16:09:25
+ * @author hccake 2019-10-16 16:09:25
  */
 @Data
 @Schema(title = "后台访问日志查询对象")
@@ -34,16 +33,16 @@ public class AccessLogQO {
 	private Long userId;
 
 	/**
-	 * 访问IP地址
+	 * 客户端IP地址
 	 */
-	@Parameter(description = "访问IP地址")
-	private String ip;
+	@Schema(title = "客户端IP地址")
+	private String clientIp;
 
 	/**
-	 * 请求Uri
+	 * 请求URI
 	 */
-	@Parameter(description = "请求Uri")
-	private String uri;
+	@Schema(title = "请求URI")
+	private String requestUri;
 
 	/**
 	 * 请求映射地址
@@ -54,18 +53,18 @@ public class AccessLogQO {
 	/**
 	 * 响应状态码
 	 */
-	@Parameter(description = "响应状态码")
-	private Integer httpStatus;
+	@Schema(title = "响应状态码")
+	private Integer responseStatus;
 
 	/**
-	 * 登录时间区间（开始时间）
+	 * 访问时间区间（开始时间）
 	 */
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@Parameter(description = "开始时间（登录时间区间）")
 	private LocalDateTime startTime;
 
 	/**
-	 * 登录时间区间（结束时间）
+	 * 访问时间区间（结束时间）
 	 */
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@Parameter(description = "结束时间（登录时间区间）")
