@@ -1,7 +1,7 @@
 package org.ballcat.admin.springsecurity;
 
 import org.ballcat.security.core.PrincipalAttributeAccessor;
-import org.ballcat.springsecurity.oauth2.userdetails.User;
+import org.ballcat.springsecurity.userdetails.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -28,7 +28,7 @@ public class SpringSecurityPrincipalAttributeAccessor implements PrincipalAttrib
 	}
 
 	@Override
-	public String getName() {
+	public String getUsername() {
 		User user = getUser();
 		if (user != null) {
 			return user.getUsername();

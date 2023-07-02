@@ -2,12 +2,13 @@ package org.ballcat.admin.upms;
 
 import org.ballcat.admin.springsecurity.*;
 import org.ballcat.admin.springsecurity.oauth2.BallcatOAuth2TokenResponseEnhancer;
-import org.ballcat.admin.upms.log.LogConfiguration;
+import org.ballcat.admin.upms.log.BallcatLogConfiguration;
 import org.ballcat.business.system.component.PasswordHelper;
 import org.ballcat.business.system.properties.SystemProperties;
 import org.ballcat.business.system.service.SysUserService;
 import org.ballcat.security.core.PrincipalAttributeAccessor;
 import org.ballcat.security.properties.SecurityProperties;
+import org.ballcat.springsecurity.configuer.SpringSecurityConfigurerCustomizer;
 import org.ballcat.springsecurity.oauth2.server.authorization.web.authentication.OAuth2TokenResponseEnhancer;
 import org.ballcat.springsecurity.oauth2.server.resource.introspection.SpringAuthorizationServerSharedStoredOpaqueTokenIntrospector;
 import org.mybatis.spring.annotation.MapperScan;
@@ -36,7 +37,7 @@ import org.springframework.security.oauth2.server.resource.introspection.OpaqueT
 @ComponentScan({ "org.ballcat.admin.upms", "org.ballcat.business.system", "org.ballcat.business.log",
 		"org.ballcat.business.infra", "org.ballcat.business.notify" })
 @EnableConfigurationProperties({ SystemProperties.class, SecurityProperties.class })
-@Import(LogConfiguration.class)
+@Import(BallcatLogConfiguration.class)
 public class UpmsAutoConfiguration {
 
 	/**
@@ -46,8 +47,17 @@ public class UpmsAutoConfiguration {
 	 */
 	@Configuration(proxyBeanMethods = false)
 	@ConditionalOnClass({ UserDetailsService.class, SysUserService.class })
-	@ConditionalOnMissingBean(UserDetailsService.class)
 	static class UserDetailsServiceConfiguration {
+
+		/**
+		 * 用户信息协调者
+		 * @return UserInfoCoordinator
+		 */
+		@Bean
+		@ConditionalOnMissingBean({ UserDetailsService.class, UserInfoCoordinator.class })
+		public UserInfoCoordinator userInfoCoordinator() {
+			return new DefaultUserInfoCoordinatorImpl();
+		}
 
 		/**
 		 * 用户详情处理类
@@ -58,29 +68,6 @@ public class UpmsAutoConfiguration {
 		public UserDetailsService userDetailsService(SysUserService sysUserService,
 				UserInfoCoordinator userInfoCoordinator) {
 			return new SysUserDetailsServiceImpl(sysUserService, userInfoCoordinator);
-		}
-
-		/**
-		 * 用户信息协调者
-		 * @return UserInfoCoordinator
-		 */
-		@Bean
-		@ConditionalOnMissingBean
-		public UserInfoCoordinator userInfoCoordinator() {
-			return new DefaultUserInfoCoordinatorImpl();
-		}
-
-		@Bean
-		@ConditionalOnMissingBean
-		public PasswordHelper passwordHelper(SecurityProperties securityProperties, SystemProperties systemProperties,
-				PasswordEncoder passwordEncoder) {
-			return new SpringSecurityPasswordHelper(securityProperties, systemProperties, passwordEncoder);
-		}
-
-		@Bean
-		@ConditionalOnMissingBean
-		public PrincipalAttributeAccessor principalAttributeAccessor() {
-			return new SpringSecurityPrincipalAttributeAccessor();
 		}
 
 	}
@@ -108,11 +95,36 @@ public class UpmsAutoConfiguration {
 		 */
 		@Bean
 		@ConditionalOnMissingBean
-		@ConditionalOnProperty(prefix = "ballcat.security.oauth2.resourceserver", name = "shared-stored-token",
+		@ConditionalOnProperty(prefix = "ballcat.springsecurity.oauth2.resourceserver", name = "shared-stored-token",
 				havingValue = "true", matchIfMissing = true)
 		public OpaqueTokenIntrospector sharedStoredOpaqueTokenIntrospector(
 				OAuth2AuthorizationService authorizationService) {
 			return new SpringAuthorizationServerSharedStoredOpaqueTokenIntrospector(authorizationService);
+		}
+
+	}
+
+	@ConditionalOnClass(SpringSecurityConfigurerCustomizer.class)
+	@Configuration(proxyBeanMethods = false)
+	static class SpringSecurityConfiguration {
+
+		@Bean
+		@ConditionalOnMissingBean
+		public PasswordHelper passwordHelper(SecurityProperties securityProperties, SystemProperties systemProperties,
+				PasswordEncoder passwordEncoder) {
+			return new SpringSecurityPasswordHelper(securityProperties, systemProperties, passwordEncoder);
+		}
+
+		@Bean
+		@ConditionalOnMissingBean
+		public PrincipalAttributeAccessor principalAttributeAccessor() {
+			return new SpringSecurityPrincipalAttributeAccessor();
+		}
+
+		@Bean
+		@ConditionalOnMissingBean
+		public SpringSecurityAuthenticationSuccessHandler springSecurityAuthenticationSuccessHandler() {
+			return new SpringSecurityAuthenticationSuccessHandler();
 		}
 
 	}

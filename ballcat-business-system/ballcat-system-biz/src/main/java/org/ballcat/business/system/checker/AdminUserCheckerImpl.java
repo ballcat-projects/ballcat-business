@@ -34,7 +34,7 @@ public class AdminUserCheckerImpl implements AdminUserChecker {
 	public boolean hasModifyPermission(SysUser targetUser) {
 		// 如果需要修改的用户是超级管理员，则只能本人修改
 		if (this.isAdminUser(targetUser)) {
-			return principalAttributeAccessor.getName().equals(targetUser.getUsername());
+			return principalAttributeAccessor.getUsername().equals(targetUser.getUsername());
 		}
 		return true;
 	}

@@ -88,7 +88,7 @@ public class BusinessAccessLogFilter extends DefaultAccessLogFilter {
 
 		// 如果登录用户 则记录用户名和用户id
 		accessLog.setUserId(principalAttributeAccessor.getUserId());
-		accessLog.setUsername(principalAttributeAccessor.getName());
+		accessLog.setUsername(principalAttributeAccessor.getUsername());
 
 		accessLogSaveThread.put(accessLog);
 	}

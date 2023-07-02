@@ -52,7 +52,7 @@ public class CustomOperationLogHandler extends AbstractOperationLogHandler<Opera
 		}
 
 		// 操作用户
-		operationLog.setOperator(principalAttributeAccessor.getName());
+		operationLog.setOperator(principalAttributeAccessor.getUsername());
 
 		return operationLog;
 	}

@@ -1,12 +1,12 @@
 package org.ballcat.admin.springsecurity;
 
 import org.ballcat.springsecurity.oauth2.constant.UserAttributeNameConstants;
-import org.ballcat.springsecurity.oauth2.userdetails.User;
 import org.ballcat.business.system.model.dto.UserInfoDTO;
 import org.ballcat.business.system.model.entity.SysUser;
 import org.ballcat.business.system.service.SysUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.ballcat.springsecurity.userdetails.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;

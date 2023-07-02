@@ -1,41 +1,42 @@
-package org.ballcat.admin.springsecurity.oauth2;
+package org.ballcat.admin.springsecurity;
 
+import org.ballcat.business.system.model.vo.SysUserInfo;
+import org.ballcat.common.util.JsonUtils;
 import org.ballcat.springsecurity.oauth2.constant.TokenAttributeNameConstants;
 import org.ballcat.springsecurity.oauth2.constant.UserAttributeNameConstants;
-import org.ballcat.business.system.model.vo.SysUserInfo;
-import org.ballcat.springsecurity.oauth2.server.authorization.web.authentication.OAuth2TokenResponseEnhancer;
-import org.ballcat.springsecurity.oauth2.userdetails.DefaultOAuth2User;
+import org.ballcat.springsecurity.userdetails.User;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AccessTokenAuthenticationToken;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 /**
- * token 响应增强
- *
  * @author Hccake
+ * @since 2.0.0
  */
-public class BallcatOAuth2TokenResponseEnhancer implements OAuth2TokenResponseEnhancer {
+public class SpringSecurityAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
 	@Override
-	public Map<String, Object> enhance(OAuth2AccessTokenAuthenticationToken accessTokenAuthentication) {
+	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+			Authentication authentication) throws IOException {
 		Object principal = Optional.ofNullable(SecurityContextHolder.getContext())
 			.map(SecurityContext::getAuthentication)
 			.map(Authentication::getPrincipal)
 			.orElse(null);
 
-		// token 附属信息
-		Map<String, Object> additionalParameters = accessTokenAuthentication.getAdditionalParameters();
-		if (additionalParameters == null) {
-			additionalParameters = new HashMap<>(8);
-		}
-
-		if (principal instanceof DefaultOAuth2User) {
-			DefaultOAuth2User user = (DefaultOAuth2User) principal;
+		Map<String, Object> additionalParameters = new HashMap<>();
+		if (principal instanceof User) {
+			User user = (User) principal;
 			// 用户基本信息
 			SysUserInfo sysUserInfo = getSysUserInfo(user);
 			additionalParameters.put(TokenAttributeNameConstants.INFO, sysUserInfo);
@@ -50,7 +51,11 @@ public class BallcatOAuth2TokenResponseEnhancer implements OAuth2TokenResponseEn
 			additionalParameters.put(TokenAttributeNameConstants.ATTRIBUTES, resultAttributes);
 		}
 
-		return additionalParameters;
+		response.setHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE);
+		response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
+		response.setStatus(HttpStatus.OK.value());
+
+		response.getWriter().write(JsonUtils.toJson(additionalParameters));
 	}
 
 	/**
@@ -58,7 +63,7 @@ public class BallcatOAuth2TokenResponseEnhancer implements OAuth2TokenResponseEn
 	 * @param user User
 	 * @return SysUserInfo
 	 */
-	public SysUserInfo getSysUserInfo(DefaultOAuth2User user) {
+	public SysUserInfo getSysUserInfo(User user) {
 		SysUserInfo sysUserInfo = new SysUserInfo();
 		sysUserInfo.setUserId(user.getUserId());
 		sysUserInfo.setUsername(user.getUsername());
