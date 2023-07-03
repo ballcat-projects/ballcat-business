@@ -96,7 +96,7 @@ public class UpmsAutoConfiguration {
 		@Bean
 		@ConditionalOnMissingBean
 		@ConditionalOnProperty(prefix = "ballcat.springsecurity.oauth2.resourceserver", name = "shared-stored-token",
-				havingValue = "true", matchIfMissing = true)
+				havingValue = "true")
 		public OpaqueTokenIntrospector sharedStoredOpaqueTokenIntrospector(
 				OAuth2AuthorizationService authorizationService) {
 			return new SpringAuthorizationServerSharedStoredOpaqueTokenIntrospector(authorizationService);
