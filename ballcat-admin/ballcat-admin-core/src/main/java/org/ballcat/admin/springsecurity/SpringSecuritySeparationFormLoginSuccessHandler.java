@@ -5,12 +5,12 @@ import org.ballcat.common.util.JsonUtils;
 import org.ballcat.springsecurity.oauth2.constant.TokenAttributeNameConstants;
 import org.ballcat.springsecurity.oauth2.constant.UserAttributeNameConstants;
 import org.ballcat.springsecurity.userdetails.User;
+import org.ballcat.springsecurity.web.FormLoginSuccessHandler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,10 +21,12 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
+ * 使用 Spring Security 前后端分离时的表单登录成功处理器
+ *
  * @author Hccake
  * @since 2.0.0
  */
-public class SpringSecurityAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+public class SpringSecuritySeparationFormLoginSuccessHandler implements FormLoginSuccessHandler {
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,

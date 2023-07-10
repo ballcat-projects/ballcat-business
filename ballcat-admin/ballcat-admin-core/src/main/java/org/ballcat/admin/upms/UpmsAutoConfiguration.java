@@ -123,8 +123,10 @@ public class UpmsAutoConfiguration {
 
 		@Bean
 		@ConditionalOnMissingBean
-		public SpringSecurityAuthenticationSuccessHandler springSecurityAuthenticationSuccessHandler() {
-			return new SpringSecurityAuthenticationSuccessHandler();
+		@ConditionalOnProperty(prefix = "ballcat.springsecurity.form-login", name = { "enabled", "separated" },
+				havingValue = "true")
+		public SpringSecuritySeparationFormLoginSuccessHandler springSecurityAuthenticationSuccessHandler() {
+			return new SpringSecuritySeparationFormLoginSuccessHandler();
 		}
 
 	}
