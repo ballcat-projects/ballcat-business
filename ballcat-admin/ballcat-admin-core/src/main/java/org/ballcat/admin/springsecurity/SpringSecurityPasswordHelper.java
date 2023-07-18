@@ -26,4 +26,9 @@ public class SpringSecurityPasswordHelper extends AbstractPasswordHelper {
 		return passwordEncoder.encode(rawPassword);
 	}
 
+	@Override
+	public boolean matches(String rawPassword, String encodedPassword) {
+		return passwordEncoder.matches(rawPassword, encodedPassword);
+	}
+
 }

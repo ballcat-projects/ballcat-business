@@ -28,4 +28,12 @@ public interface PasswordHelper {
 	 */
 	boolean validateRule(String rawPassword);
 
+	/**
+	 * 校验密码
+	 * @param rawPassword 明文密码
+	 * @param encodedPassword 加密密码(数据库密码)
+	 * @return 符合返回 true
+	 */
+	boolean matches(String rawPassword, String encodedPassword);
+
 }
