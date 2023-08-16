@@ -32,9 +32,9 @@ public interface NotifyInfo {
 
 	/**
 	 * 对应接收人筛选方式的条件信息
-	 * @return List<Object>
+	 * @return List<String>
 	 */
-	List<Object> getRecipientFilterCondition();
+	List<String> getRecipientFilterCondition();
 
 	/**
 	 * 接收方式，值与通知渠道一一对应

@@ -22,7 +22,7 @@ public class RecipientHandler {
 		}
 	}
 
-	public List<SysUser> query(Integer filterType, List<Object> filterCondition) {
+	public List<SysUser> query(Integer filterType, List<String> filterCondition) {
 		RecipientFilter recipientFilter = recipientFilterMap.get(filterType);
 		if (recipientFilter == null) {
 			log.error("Unknown recipient filter：[{}]，filterCondition：{}", filterType, filterCondition);
@@ -38,7 +38,7 @@ public class RecipientHandler {
 	 * @param recipientFilterCondition 筛选条件
 	 * @return boolean true：匹配
 	 */
-	public boolean match(Integer recipientFilterType, Object filterAttr, List<Object> recipientFilterCondition) {
+	public boolean match(Integer recipientFilterType, Object filterAttr, List<String> recipientFilterCondition) {
 		RecipientFilter recipientFilter = recipientFilterMap.get(recipientFilterType);
 		return recipientFilter != null && recipientFilter.match(filterAttr, recipientFilterCondition);
 	}

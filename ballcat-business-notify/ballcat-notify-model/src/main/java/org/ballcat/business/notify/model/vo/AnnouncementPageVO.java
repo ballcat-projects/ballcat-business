@@ -53,7 +53,7 @@ public class AnnouncementPageVO {
 	 */
 	@TableField(typeHandler = JacksonTypeHandler.class)
 	@Schema(title = "对应接收人筛选方式的条件信息。如角色标识，组织ID，用户类型，用户ID等")
-	private List<Object> recipientFilterCondition;
+	private List<String> recipientFilterCondition;
 
 	/**
 	 * 接收方式，值与通知渠道一一对应

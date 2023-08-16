@@ -50,7 +50,7 @@ public class NotifyPushExecutor {
 	public void push(NotifyInfo notifyInfo) {
 		// 获取通知接收人
 		Integer recipientFilterType = notifyInfo.getRecipientFilterType();
-		List<Object> recipientFilterCondition = notifyInfo.getRecipientFilterCondition();
+		List<String> recipientFilterCondition = notifyInfo.getRecipientFilterCondition();
 		List<SysUser> userList = recipientHandler.query(recipientFilterType, recipientFilterCondition);
 
 		// 执行推送

@@ -49,7 +49,7 @@ public class AnnouncementNotifyInfo implements NotifyInfo {
 	 * 对应接收人筛选方式的条件信息
 	 */
 	@Schema(title = "对应接收人筛选方式的条件信息")
-	private List<Object> recipientFilterCondition;
+	private List<String> recipientFilterCondition;
 
 	/**
 	 * 接收方式，值与通知渠道一一对应

@@ -25,7 +25,7 @@ public interface RecipientFilter {
 	 * @param filterCondition 筛选条件
 	 * @return 接收者集合
 	 */
-	List<SysUser> filter(List<Object> filterCondition);
+	List<SysUser> filter(List<String> filterCondition);
 
 	/**
 	 * 获取当前用户的过滤属性
@@ -40,6 +40,6 @@ public interface RecipientFilter {
 	 * @param filterCondition 筛选条件
 	 * @return boolean true: 是否匹配
 	 */
-	boolean match(Object filterAttr, List<Object> filterCondition);
+	boolean match(Object filterAttr, List<String> filterCondition);
 
 }

@@ -34,7 +34,7 @@ public class AllRecipientFilter implements RecipientFilter {
 	 * @return 接收者集合
 	 */
 	@Override
-	public List<SysUser> filter(List<Object> filterCondition) {
+	public List<SysUser> filter(List<String> filterCondition) {
 		return sysUserService.list();
 	}
 
@@ -55,7 +55,7 @@ public class AllRecipientFilter implements RecipientFilter {
 	 * @return boolean true: 是否匹配
 	 */
 	@Override
-	public boolean match(Object filterAttr, List<Object> filterCondition) {
+	public boolean match(Object filterAttr, List<String> filterCondition) {
 		return true;
 	}
 

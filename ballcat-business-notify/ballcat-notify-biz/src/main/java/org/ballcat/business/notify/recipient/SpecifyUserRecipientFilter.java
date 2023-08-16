@@ -35,8 +35,8 @@ public class SpecifyUserRecipientFilter implements RecipientFilter {
 	 * @return 接收者集合
 	 */
 	@Override
-	public List<SysUser> filter(List<Object> filterCondition) {
-		List<Long> userIds = filterCondition.stream().map(Long.class::cast).collect(Collectors.toList());
+	public List<SysUser> filter(List<String> filterCondition) {
+		List<Long> userIds = filterCondition.stream().map(Long::valueOf).collect(Collectors.toList());
 		return sysUserService.listByUserIds(userIds);
 	}
 
@@ -57,9 +57,9 @@ public class SpecifyUserRecipientFilter implements RecipientFilter {
 	 * @return boolean true: 是否匹配
 	 */
 	@Override
-	public boolean match(Object filterAttr, List<Object> filterCondition) {
+	public boolean match(Object filterAttr, List<String> filterCondition) {
 		Long userId = (Long) filterAttr;
-		return filterCondition.stream().map(Long.class::cast).anyMatch(x -> x.equals(userId));
+		return filterCondition.stream().map(Long::valueOf).anyMatch(x -> x.equals(userId));
 	}
 
 }
