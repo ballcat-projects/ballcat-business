@@ -2,6 +2,8 @@ package org.ballcat.admin.upms;
 
 import org.ballcat.admin.springsecurity.*;
 import org.ballcat.admin.springsecurity.oauth2.BallcatOAuth2TokenResponseEnhancer;
+import org.ballcat.admin.springsecurity.oauth2.OAuth2SpringSecurityPrincipalAttributeAccessor;
+import org.ballcat.admin.springsecurity.oauth2.OAuth2SysUserDetailsServiceImpl;
 import org.ballcat.admin.upms.log.BallcatLogConfiguration;
 import org.ballcat.business.system.component.PasswordHelper;
 import org.ballcat.business.system.properties.SystemProperties;
@@ -41,13 +43,17 @@ import org.springframework.security.oauth2.server.resource.introspection.OpaqueT
 public class UpmsAutoConfiguration {
 
 	/**
-	 * 用户详情处理类
-	 *
-	 * @author hccake
+	 * 新版本 spring-security-oauth2-authorization-server 使用配置类
 	 */
 	@Configuration(proxyBeanMethods = false)
-	@ConditionalOnClass({ UserDetailsService.class, SysUserService.class })
-	static class UserDetailsServiceConfiguration {
+	@ConditionalOnClass(OAuth2Authorization.class)
+	static class SpringOAuth2AuthorizationServerConfiguration {
+
+		@Bean
+		@ConditionalOnMissingBean
+		public PrincipalAttributeAccessor principalAttributeAccessor() {
+			return new OAuth2SpringSecurityPrincipalAttributeAccessor();
+		}
 
 		/**
 		 * 用户信息协调者
@@ -61,23 +67,14 @@ public class UpmsAutoConfiguration {
 
 		/**
 		 * 用户详情处理类
-		 * @return SysUserDetailsServiceImpl
+		 * @return OAuth2SysUserDetailsServiceImpl
 		 */
 		@Bean
 		@ConditionalOnMissingBean
 		public UserDetailsService userDetailsService(SysUserService sysUserService,
 				UserInfoCoordinator userInfoCoordinator) {
-			return new SysUserDetailsServiceImpl(sysUserService, userInfoCoordinator);
+			return new OAuth2SysUserDetailsServiceImpl(sysUserService, userInfoCoordinator);
 		}
-
-	}
-
-	/**
-	 * 新版本 spring-security-oauth2-authorization-server 使用配置类
-	 */
-	@Configuration(proxyBeanMethods = false)
-	@ConditionalOnClass(OAuth2Authorization.class)
-	static class SpringOAuth2AuthorizationServerConfiguration {
 
 		/**
 		 * token 端点响应增强，追加一些自定义信息
@@ -127,6 +124,38 @@ public class UpmsAutoConfiguration {
 				havingValue = "true")
 		public SpringSecuritySeparationFormLoginSuccessHandler springSecurityAuthenticationSuccessHandler() {
 			return new SpringSecuritySeparationFormLoginSuccessHandler();
+		}
+
+	}
+
+	/**
+	 * 用户详情处理类
+	 *
+	 * @author hccake
+	 */
+	@Configuration(proxyBeanMethods = false)
+	@ConditionalOnClass({ UserDetailsService.class, SysUserService.class })
+	static class UserDetailsServiceConfiguration {
+
+		/**
+		 * 用户信息协调者
+		 * @return UserInfoCoordinator
+		 */
+		@Bean
+		@ConditionalOnMissingBean({ UserDetailsService.class, UserInfoCoordinator.class })
+		public UserInfoCoordinator userInfoCoordinator() {
+			return new DefaultUserInfoCoordinatorImpl();
+		}
+
+		/**
+		 * 用户详情处理类
+		 * @return SysUserDetailsServiceImpl
+		 */
+		@Bean
+		@ConditionalOnMissingBean
+		public UserDetailsService userDetailsService(SysUserService sysUserService,
+				UserInfoCoordinator userInfoCoordinator) {
+			return new SysUserDetailsServiceImpl(sysUserService, userInfoCoordinator);
 		}
 
 	}
