@@ -1,7 +1,7 @@
 package org.ballcat.business.infra.service;
 
-import org.ballcat.oss.OssClient;
 import org.ballcat.file.core.FileClient;
+import org.ballcat.oss.OssTemplate;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
@@ -14,20 +14,20 @@ import java.io.InputStream;
 @Component
 public class FileService {
 
-	private OssClient ossClient;
+	private OssTemplate ossTemplate;
 
 	private final FileClient fileClient;
 
 	public FileService(ApplicationContext context) {
 		try {
-			ossClient = context.getBean(OssClient.class);
+			ossTemplate = context.getBean(OssTemplate.class);
 		}
 		catch (Exception ignore) {
-			ossClient = null;
+			ossTemplate = null;
 		}
 
 		// oss 为空或者未配置
-		if (ossClient == null || !ossClient.isEnable()) {
+		if (ossTemplate == null) {
 			fileClient = context.getBean(FileClient.class);
 		}
 		else {
@@ -40,7 +40,9 @@ public class FileService {
 			return fileClient.upload(stream, relativePath);
 		}
 
-		return ossClient.upload(stream, relativePath, size);
+		String bucket = ossTemplate.getOssProperties().getBucket();
+		ossTemplate.putObject(bucket, relativePath, stream, size);
+		return relativePath;
 	}
 
 }
