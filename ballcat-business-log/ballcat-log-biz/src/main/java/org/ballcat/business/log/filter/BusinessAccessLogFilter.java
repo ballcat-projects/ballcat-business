@@ -6,8 +6,8 @@ import org.ballcat.business.log.thread.AccessLogSaveThread;
 import org.ballcat.common.core.constant.MDCConstants;
 import org.ballcat.common.util.IpUtils;
 import org.ballcat.security.core.PrincipalAttributeAccessor;
+import org.ballcat.web.accesslog.AccessLogRecordOptions;
 import org.ballcat.web.accesslog.AccessLogRule;
-import org.ballcat.web.accesslog.AccessLogSettings;
 import org.ballcat.web.accesslog.DefaultAccessLogFilter;
 import org.slf4j.MDC;
 import org.springframework.http.HttpMethod;
@@ -31,9 +31,9 @@ public class BusinessAccessLogFilter extends DefaultAccessLogFilter {
 
 	private final PrincipalAttributeAccessor principalAttributeAccessor;
 
-	public BusinessAccessLogFilter(List<AccessLogRule> logRules, AccessLogSaveThread accessLogSaveThread,
-			PrincipalAttributeAccessor principalAttributeAccessor) {
-		super(logRules);
+	public BusinessAccessLogFilter(AccessLogRecordOptions defaultRecordOptions, List<AccessLogRule> logRules,
+			AccessLogSaveThread accessLogSaveThread, PrincipalAttributeAccessor principalAttributeAccessor) {
+		super(defaultRecordOptions, logRules);
 		if (!accessLogSaveThread.isAlive()) {
 			accessLogSaveThread.start();
 		}
@@ -48,7 +48,7 @@ public class BusinessAccessLogFilter extends DefaultAccessLogFilter {
 
 	@Override
 	protected void afterRequest(HttpServletRequest request, HttpServletResponse response, Long executionTime,
-			Throwable throwable, AccessLogSettings accessLogSettings) {
+			Throwable throwable, AccessLogRecordOptions recordOptions) {
 		// 默认不记录 options 请求
 		if (HttpMethod.OPTIONS.name().equalsIgnoreCase(request.getMethod())) {
 			return;
@@ -72,17 +72,17 @@ public class BusinessAccessLogFilter extends DefaultAccessLogFilter {
 		// @formatter:on
 
 		// 记录查询参数
-		if (accessLogSettings.shouldRecordQueryString()) {
+		if (recordOptions.isIncludeQueryString()) {
 			accessLog.setQueryString(request.getQueryString());
 		}
 
 		// 记录请求体
-		if (accessLogSettings.shouldRecordQueryString()) {
+		if (recordOptions.isIncludeRequestBody()) {
 			accessLog.setRequestBody(getRequestBody(request));
 		}
 
 		// 记录响应体
-		if (accessLogSettings.shouldRecordResponseBody()) {
+		if (recordOptions.isIncludeResponseBody()) {
 			accessLog.setResponseBody(getResponseBody(response));
 		}
 

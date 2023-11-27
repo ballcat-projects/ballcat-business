@@ -1,5 +1,6 @@
 package org.ballcat.admin.upms.log;
 
+import lombok.RequiredArgsConstructor;
 import org.ballcat.autoconfigure.web.accesslog.AccessLogProperties;
 import org.ballcat.business.log.filter.BusinessAccessLogFilter;
 import org.ballcat.business.log.handler.CustomOperationLogHandler;
@@ -13,6 +14,9 @@ import org.ballcat.security.core.PrincipalAttributeAccessor;
 import org.ballcat.springsecurity.configuer.SpringSecurityConfigurerCustomizer;
 import org.ballcat.springsecurity.oauth2.server.authorization.config.configurer.OAuth2AuthorizationServerConfigurerExtension;
 import org.ballcat.web.accesslog.AbstractAccessLogFilter;
+import org.ballcat.web.accesslog.AccessLogRecordOptions;
+import org.ballcat.web.accesslog.AccessLogRule;
+import org.ballcat.web.accesslog.annotation.AccessLogRuleFinder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -21,6 +25,9 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+
+import java.util.List;
 
 /**
  * @author hccake
@@ -29,8 +36,11 @@ import org.springframework.security.oauth2.server.authorization.settings.Authori
 @ConditionalOnClass(LoginLogService.class)
 public class BallcatLogConfiguration {
 
+	@RequiredArgsConstructor
 	@Configuration(proxyBeanMethods = false)
 	static class LogConfiguration {
+
+		private final RequestMappingHandlerMapping requestMappingHandlerMapping;
 
 		/**
 		 * 访问日志保存
@@ -43,9 +53,16 @@ public class BallcatLogConfiguration {
 		@ConditionalOnMissingBean(AbstractAccessLogFilter.class)
 		public AbstractAccessLogFilter businessAccessLogFilter(AccessLogService accessLogService,
 				AccessLogProperties accessLogProperties, PrincipalAttributeAccessor principalAttributeAccessor) {
-			BusinessAccessLogFilter businessAccessLogFilter = new BusinessAccessLogFilter(
-					accessLogProperties.getSettings(), new AccessLogSaveThread(accessLogService),
-					principalAttributeAccessor);
+			// 合并 annotationRules 和 propertiesRules, 注解高于配置
+			List<AccessLogRule> annotationRules = AccessLogRuleFinder
+				.findRulesFormAnnotation(requestMappingHandlerMapping);
+			List<AccessLogRule> propertiesRules = accessLogProperties.getAccessLogRules();
+			List<AccessLogRule> accessLogRules = AccessLogRuleFinder.mergeRules(annotationRules, propertiesRules);
+
+			AccessLogRecordOptions defaultRecordOptions = accessLogProperties.getDefaultAccessLogRecordOptions();
+
+			BusinessAccessLogFilter businessAccessLogFilter = new BusinessAccessLogFilter(defaultRecordOptions,
+					accessLogRules, new AccessLogSaveThread(accessLogService), principalAttributeAccessor);
 			businessAccessLogFilter.setMaxBodyLength(accessLogProperties.getMaxBodyLength());
 			businessAccessLogFilter.setOrder(accessLogProperties.getFilterOrder());
 			return businessAccessLogFilter;
