@@ -1,6 +1,7 @@
 package org.ballcat.admin.upms.log;
 
 import lombok.RequiredArgsConstructor;
+import org.ballcat.autoconfigure.web.accesslog.AccessLogAutoConfiguration;
 import org.ballcat.autoconfigure.web.accesslog.AccessLogProperties;
 import org.ballcat.business.log.filter.BusinessAccessLogFilter;
 import org.ballcat.business.log.handler.CustomOperationLogHandler;
@@ -75,6 +76,8 @@ public class BallcatLogConfiguration {
 		 */
 		@Bean
 		@ConditionalOnBean(AbstractAccessLogFilter.class)
+		@ConditionalOnMissingBean(name = AccessLogAutoConfiguration.ACCESS_LOG_FILTER_CLOSE_REGISTRATION_BEAN_NAME)
+		@ConditionalOnProperty(prefix = AccessLogProperties.PREFIX, name = "filterAutoRegister", havingValue = "false")
 		public FilterRegistrationBean<AbstractAccessLogFilter> accessLogFilterCloseRegistrationBean(
 				AbstractAccessLogFilter accessLogFilter) {
 			FilterRegistrationBean<AbstractAccessLogFilter> registrationBean = new FilterRegistrationBean<>(
