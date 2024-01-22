@@ -86,19 +86,6 @@ public class UpmsAutoConfiguration {
 			return new BallcatOAuth2TokenResponseEnhancer();
 		}
 
-		/**
-		 * 当资源服务器和授权服务器的 token 共享存储时，直接使用 OAuth2AuthorizationService 读取 token 信息
-		 * @return SpringAuthorizationServerSharedStoredOpaqueTokenIntrospector
-		 */
-		@Bean
-		@ConditionalOnMissingBean
-		@ConditionalOnProperty(prefix = "ballcat.springsecurity.oauth2.resourceserver", name = "shared-stored-token",
-				havingValue = "true")
-		public OpaqueTokenIntrospector sharedStoredOpaqueTokenIntrospector(
-				OAuth2AuthorizationService authorizationService) {
-			return new SpringAuthorizationServerSharedStoredOpaqueTokenIntrospector(authorizationService);
-		}
-
 	}
 
 	@ConditionalOnClass(SpringSecurityConfigurerCustomizer.class)
