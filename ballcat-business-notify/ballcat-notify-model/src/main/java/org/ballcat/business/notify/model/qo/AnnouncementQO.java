@@ -34,4 +34,7 @@ public class AnnouncementQO {
 	@Parameter(description = "状态")
 	private Integer[] status;
 
+	@Parameter(description = "接收方式")
+	private Integer[] receiveMode;
+
 }

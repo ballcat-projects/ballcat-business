@@ -37,6 +37,12 @@
 			notify_announcement a
 		LEFT JOIN sys_user su ON a.create_by = su.user_id
 		${ew.customSqlSegment}
+		<if test="qo.receiveMode != null and qo.receiveMode.length > 0">
+			AND JSON_CONTAINS(a.receive_mode,
+			<foreach collection="qo.receiveMode" item="receiveMode" separator="," open="JSON_ARRAY(" close=")">
+				#{receiveMode}
+			</foreach>)
+		</if>
 	</select>
 
 	<!-- com.baomidou.mybatisplus.core.metadata.TableInfo.initResultMapIfNeed -->
