@@ -39,7 +39,7 @@ public interface AnnouncementMapper extends ExtendMapper<Announcement> {
 			.inIfPresent(Announcement::getStatus, (Object[]) qo.getStatus())
 			.eqIfPresent(Announcement::getRecipientFilterType, qo.getRecipientFilterType())
 			.eq(Announcement::getDeleted, GlobalConstants.NOT_DELETED_FLAG);
-		IPage<AnnouncementPageVO> voPage = this.selectByPage(page, wrapperX);
+		IPage<AnnouncementPageVO> voPage = this.selectByPage(page, wrapperX, qo);
 		return new PageResult<>(voPage.getRecords(), voPage.getTotal());
 	}
 
@@ -50,7 +50,7 @@ public interface AnnouncementMapper extends ExtendMapper<Announcement> {
 	 * @return 分页封装对象
 	 */
 	IPage<AnnouncementPageVO> selectByPage(IPage<Announcement> page,
-			@Param(Constants.WRAPPER) Wrapper<Announcement> wrapper);
+			@Param(Constants.WRAPPER) Wrapper<Announcement> wrapper, @Param("qo") AnnouncementQO qo);
 
 	/**
 	 * 更新公共（限制只能更新未发布的公共）
