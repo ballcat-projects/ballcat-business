@@ -1,8 +1,11 @@
 package org.ballcat.business.notify.service;
 
+import java.util.List;
+
 import org.ballcat.business.notify.model.entity.UserAnnouncement;
 import org.ballcat.business.notify.model.qo.UserAnnouncementQO;
 import org.ballcat.business.notify.model.vo.UserAnnouncementPageVO;
+import org.ballcat.business.notify.model.vo.UserAnnouncementVO;
 import org.ballcat.common.model.domain.PageParam;
 import org.ballcat.common.model.domain.PageResult;
 import org.ballcat.mybatisplus.service.ExtendService;
@@ -21,6 +24,13 @@ public interface UserAnnouncementService extends ExtendService<UserAnnouncement>
 	 * @return PageResult<AnnouncementVO> 分页数据
 	 */
 	PageResult<UserAnnouncementPageVO> queryPage(PageParam pageParam, UserAnnouncementQO qo);
+
+	/**
+	 * 获取用户拉取过的发布中，且满足失效时间的公告信息
+	 * @param userId 用户id
+	 * @return List<Announcement>
+	 */
+	List<UserAnnouncementVO> listActiveAnnouncements(Long userId);
 
 	/**
 	 * 根据用户ID和公告id初始化一个新的用户公告关联对象

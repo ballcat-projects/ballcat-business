@@ -1,5 +1,7 @@
 package org.ballcat.business.notify.service;
 
+import java.util.List;
+
 import org.ballcat.business.notify.model.dto.AnnouncementDTO;
 import org.ballcat.business.notify.model.entity.Announcement;
 import org.ballcat.business.notify.model.qo.AnnouncementQO;
@@ -8,8 +10,6 @@ import org.ballcat.common.model.domain.PageParam;
 import org.ballcat.common.model.domain.PageResult;
 import org.ballcat.mybatisplus.service.ExtendService;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 /**
  * 公告信息
@@ -67,12 +67,5 @@ public interface AnnouncementService extends ExtendService<Announcement> {
 	 * @return List<Announcement>
 	 */
 	List<Announcement> listUnPulled(Long userId);
-
-	/**
-	 * 获取用户拉取过的发布中，且满足失效时间的公告信息
-	 * @param userId 用户id
-	 * @return List<Announcement>
-	 */
-	List<Announcement> listActiveAnnouncements(Long userId);
 
 }

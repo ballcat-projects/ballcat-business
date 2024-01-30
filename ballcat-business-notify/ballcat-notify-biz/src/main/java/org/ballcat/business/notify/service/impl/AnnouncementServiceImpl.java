@@ -1,5 +1,12 @@
 package org.ballcat.business.notify.service.impl;
 
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,13 +37,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 公告信息
@@ -188,17 +188,7 @@ public class AnnouncementServiceImpl extends ExtendServiceImpl<AnnouncementMappe
 	 */
 	@Override
 	public List<Announcement> listUnPulled(Long userId) {
-		return baseMapper.listUserAnnouncements(userId, false);
-	}
-
-	/**
-	 * 获取用户拉取过的发布中，且满足失效时间的公告信息
-	 * @param userId 用户id
-	 * @return List<Announcement>
-	 */
-	@Override
-	public List<Announcement> listActiveAnnouncements(Long userId) {
-		return baseMapper.listUserAnnouncements(userId, true);
+		return baseMapper.listUnPulledUserAnnouncements(userId);
 	}
 
 	/**

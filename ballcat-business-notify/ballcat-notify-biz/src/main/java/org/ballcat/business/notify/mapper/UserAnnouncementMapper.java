@@ -1,20 +1,23 @@
 package org.ballcat.business.notify.mapper;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import org.ballcat.business.notify.enums.UserAnnouncementStateEnum;
+import org.apache.ibatis.annotations.Param;
 import org.ballcat.business.notify.converter.UserAnnouncementConverter;
+import org.ballcat.business.notify.enums.UserAnnouncementStateEnum;
 import org.ballcat.business.notify.model.entity.UserAnnouncement;
 import org.ballcat.business.notify.model.qo.UserAnnouncementQO;
 import org.ballcat.business.notify.model.vo.UserAnnouncementPageVO;
+import org.ballcat.business.notify.model.vo.UserAnnouncementVO;
 import org.ballcat.common.model.domain.PageParam;
 import org.ballcat.common.model.domain.PageResult;
 import org.ballcat.mybatisplus.conditions.query.LambdaQueryWrapperX;
 import org.ballcat.mybatisplus.mapper.ExtendMapper;
 import org.ballcat.mybatisplus.toolkit.WrappersX;
-
-import java.time.LocalDateTime;
 
 /**
  * 用户公告表
@@ -51,5 +54,12 @@ public interface UserAnnouncementMapper extends ExtendMapper<UserAnnouncement> {
 			.eq(UserAnnouncement::getUserId, userId);
 		this.update(null, wrapper);
 	}
+
+	/**
+	 * 根据参数获取当前用户拉取过的有效的公告信息
+	 * @param userId 用户ID
+	 * @return 公告信息列表
+	 */
+	List<UserAnnouncementVO> listUserAnnouncements(@Param("userId") Long userId);
 
 }
