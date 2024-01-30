@@ -1,5 +1,7 @@
 package org.ballcat.business.notify.mapper;
 
+import java.util.List;
+
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
@@ -16,8 +18,6 @@ import org.ballcat.common.model.domain.PageResult;
 import org.ballcat.mybatisplus.conditions.query.LambdaQueryWrapperX;
 import org.ballcat.mybatisplus.mapper.ExtendMapper;
 import org.ballcat.mybatisplus.toolkit.WrappersX;
-
-import java.util.List;
 
 /**
  * 公告信息
@@ -67,11 +67,10 @@ public interface AnnouncementMapper extends ExtendMapper<Announcement> {
 	}
 
 	/**
-	 * 根据参数获取当前用户拉取过，或者未拉取过的有效的公告信息
+	 * 根据参数获取当前用户未拉取过的有效的公告信息
 	 * @param userId 用户ID
-	 * @param pulled 当前用户是否拉取过
 	 * @return 公告信息列表
 	 */
-	List<Announcement> listUserAnnouncements(@Param("userId") Long userId, @Param("pulled") boolean pulled);
+	List<Announcement> listUnPulledUserAnnouncements(@Param("userId") Long userId);
 
 }

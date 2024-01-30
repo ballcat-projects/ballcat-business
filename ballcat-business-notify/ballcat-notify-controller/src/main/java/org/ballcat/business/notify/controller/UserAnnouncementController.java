@@ -1,16 +1,18 @@
 package org.ballcat.business.notify.controller;
 
-import org.ballcat.common.model.domain.PageParam;
-import org.ballcat.common.model.domain.PageResult;
-import org.ballcat.common.model.result.R;
-import org.ballcat.security.annotation.Authorize;
-import org.ballcat.security.core.PrincipalAttributeAccessor;
-import org.ballcat.business.notify.model.qo.UserAnnouncementQO;
-import org.ballcat.business.notify.model.vo.UserAnnouncementPageVO;
-import org.ballcat.business.notify.service.UserAnnouncementService;
+import java.util.List;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.ballcat.business.notify.model.qo.UserAnnouncementQO;
+import org.ballcat.business.notify.model.vo.UserAnnouncementPageVO;
+import org.ballcat.business.notify.model.vo.UserAnnouncementVO;
+import org.ballcat.business.notify.service.UserAnnouncementService;
+import org.ballcat.common.model.domain.PageParam;
+import org.ballcat.common.model.domain.PageResult;
+import org.ballcat.common.model.result.R;
+import org.ballcat.security.core.PrincipalAttributeAccessor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -40,15 +42,20 @@ public class UserAnnouncementController {
 	 * @return R 通用返回体
 	 */
 	@GetMapping("/page")
-	@Authorize("hasPermission('notify:userannouncement:read')")
 	@Operation(summary = "分页查询", description = "分页查询")
 	public R<PageResult<UserAnnouncementPageVO>> getUserAnnouncementPage(@Validated PageParam pageParam,
 			UserAnnouncementQO userAnnouncementQO) {
 		return R.ok(userAnnouncementService.queryPage(pageParam, userAnnouncementQO));
 	}
 
+	@GetMapping("/list")
+	@Operation(summary = "用户公告信息", description = "用户公告信息")
+	public R<List<UserAnnouncementVO>> getUserAnnouncements() {
+		Long userId = principalAttributeAccessor.getUserId();
+		return R.ok(userAnnouncementService.listActiveAnnouncements(userId));
+	}
+
 	@PatchMapping("/read/{announcementId}")
-	@Authorize("hasPermission('notify:userannouncement:read')")
 	@Operation(summary = "用户公告已读上报", description = "用户公告已读上报")
 	public R<Void> readAnnouncement(@PathVariable("announcementId") Long announcementId) {
 		Long userId = principalAttributeAccessor.getUserId();

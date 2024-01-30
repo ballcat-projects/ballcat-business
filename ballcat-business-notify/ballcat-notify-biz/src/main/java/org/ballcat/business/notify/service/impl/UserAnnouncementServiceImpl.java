@@ -1,17 +1,19 @@
 package org.ballcat.business.notify.service.impl;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.ballcat.business.notify.enums.UserAnnouncementStateEnum;
 import org.ballcat.business.notify.mapper.UserAnnouncementMapper;
 import org.ballcat.business.notify.model.entity.UserAnnouncement;
 import org.ballcat.business.notify.model.qo.UserAnnouncementQO;
 import org.ballcat.business.notify.model.vo.UserAnnouncementPageVO;
+import org.ballcat.business.notify.model.vo.UserAnnouncementVO;
 import org.ballcat.business.notify.service.UserAnnouncementService;
 import org.ballcat.common.model.domain.PageParam;
 import org.ballcat.common.model.domain.PageResult;
 import org.ballcat.mybatisplus.service.impl.ExtendServiceImpl;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 
 /**
  * 用户公告表
@@ -31,6 +33,16 @@ public class UserAnnouncementServiceImpl extends ExtendServiceImpl<UserAnnouncem
 	@Override
 	public PageResult<UserAnnouncementPageVO> queryPage(PageParam pageParam, UserAnnouncementQO qo) {
 		return baseMapper.queryPage(pageParam, qo);
+	}
+
+	/**
+	 * 获取用户拉取过的发布中，且满足失效时间的公告信息
+	 * @param userId 用户id
+	 * @return List<Announcement>
+	 */
+	@Override
+	public List<UserAnnouncementVO> listActiveAnnouncements(Long userId) {
+		return baseMapper.listUserAnnouncements(userId);
 	}
 
 	/**

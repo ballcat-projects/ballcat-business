@@ -40,23 +40,15 @@
     </select>
 
 	<!-- com.baomidou.mybatisplus.core.metadata.TableInfo.initResultMapIfNeed -->
-	<select id="listUserAnnouncements" resultMap="mybatis-plus_Announcement">
+	<select id="listUnPulledUserAnnouncements" resultMap="mybatis-plus_Announcement">
 		SELECT
 		<include refid="Base_Alias_Column_List"/>
-		FROM
-		notify_announcement a
-		LEFT JOIN notify_user_announcement ua
-		ON ua.user_id = #{userId} AND ua.announcement_id = a.id
-		WHERE
-		a.STATUS = 1
-		AND ( a.immortal = 1 OR a.deadline > now() )
-		<choose>
-			<when test="pulled">
-				AND ua.id IS NOT NULL
-			</when>
-			<otherwise>
-				AND ua.id IS NULL
-			</otherwise>
-		</choose>
+		FROM notify_announcement a
+		WHERE a.STATUS = 1
+		  AND ( a.immortal = 1 OR a.deadline > now() )
+		  AND NOT EXISTS(
+		     SELECT 1 FROM notify_user_announcement
+		    WHERE user_id = #{userId} AND announcement_id = a.id
+		  )
 	</select>
 </mapper>
