@@ -30,20 +30,14 @@
 	</sql>
 
 	<select id="selectByPage" resultMap="announcementVoMap">
-		SELECT
-		<include refid="Base_Alias_Column_List"/>
-		, su.username as create_username
-		FROM
-			notify_announcement a
-		LEFT JOIN sys_user su ON a.create_by = su.user_id
-		${ew.customSqlSegment}
-		<if test="qo.receiveMode != null and qo.receiveMode.length > 0">
-			AND JSON_CONTAINS(a.receive_mode,
-			<foreach collection="qo.receiveMode" item="receiveMode" separator="," open="JSON_ARRAY(" close=")">
-				#{receiveMode}
-			</foreach>)
-		</if>
-	</select>
+        SELECT
+        <include refid="Base_Alias_Column_List"/>
+        , su.username as create_username
+        FROM
+        notify_announcement a
+        LEFT JOIN sys_user su ON a.create_by = su.user_id
+        ${ew.customSqlSegment}
+    </select>
 
 	<!-- com.baomidou.mybatisplus.core.metadata.TableInfo.initResultMapIfNeed -->
 	<select id="listUserAnnouncements" resultMap="mybatis-plus_Announcement">

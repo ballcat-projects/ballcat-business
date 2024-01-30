@@ -5,17 +5,17 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import org.ballcat.common.core.constant.GlobalConstants;
+import org.apache.ibatis.annotations.Param;
 import org.ballcat.business.notify.enums.AnnouncementStatusEnum;
 import org.ballcat.business.notify.model.entity.Announcement;
 import org.ballcat.business.notify.model.qo.AnnouncementQO;
 import org.ballcat.business.notify.model.vo.AnnouncementPageVO;
+import org.ballcat.common.core.constant.GlobalConstants;
 import org.ballcat.common.model.domain.PageParam;
 import org.ballcat.common.model.domain.PageResult;
 import org.ballcat.mybatisplus.conditions.query.LambdaQueryWrapperX;
 import org.ballcat.mybatisplus.mapper.ExtendMapper;
 import org.ballcat.mybatisplus.toolkit.WrappersX;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -38,8 +38,9 @@ public interface AnnouncementMapper extends ExtendMapper<Announcement> {
 			.likeIfPresent(Announcement::getTitle, qo.getTitle())
 			.inIfPresent(Announcement::getStatus, (Object[]) qo.getStatus())
 			.eqIfPresent(Announcement::getRecipientFilterType, qo.getRecipientFilterType())
-			.eq(Announcement::getDeleted, GlobalConstants.NOT_DELETED_FLAG);
-		IPage<AnnouncementPageVO> voPage = this.selectByPage(page, wrapperX, qo);
+			.eq(Announcement::getDeleted, GlobalConstants.NOT_DELETED_FLAG)
+			.jsonContainsIfPresent(Announcement::getReceiveMode, (Object[]) qo.getReceiveMode());
+		IPage<AnnouncementPageVO> voPage = this.selectByPage(page, wrapperX);
 		return new PageResult<>(voPage.getRecords(), voPage.getTotal());
 	}
 
@@ -50,7 +51,7 @@ public interface AnnouncementMapper extends ExtendMapper<Announcement> {
 	 * @return 分页封装对象
 	 */
 	IPage<AnnouncementPageVO> selectByPage(IPage<Announcement> page,
-			@Param(Constants.WRAPPER) Wrapper<Announcement> wrapper, @Param("qo") AnnouncementQO qo);
+			@Param(Constants.WRAPPER) Wrapper<Announcement> wrapper);
 
 	/**
 	 * 更新公共（限制只能更新未发布的公共）
