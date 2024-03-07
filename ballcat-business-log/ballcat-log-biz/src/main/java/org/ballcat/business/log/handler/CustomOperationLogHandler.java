@@ -1,11 +1,16 @@
 package org.ballcat.business.log.handler;
 
+import java.time.LocalDateTime;
+import java.util.Objects;
+import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
+
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.ballcat.business.log.model.entity.OperationLog;
 import org.ballcat.business.log.service.OperationLogService;
 import org.ballcat.common.core.constant.MDCConstants;
-import org.ballcat.common.core.util.WebUtils;
 import org.ballcat.common.util.IpUtils;
 import org.ballcat.common.util.JsonUtils;
 import org.ballcat.log.operation.annotation.OperationLogging;
@@ -14,10 +19,8 @@ import org.ballcat.log.operation.handler.AbstractOperationLogHandler;
 import org.ballcat.security.core.PrincipalAttributeAccessor;
 import org.slf4j.MDC;
 import org.springframework.http.HttpHeaders;
-
-import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
-import java.util.Optional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
  * @author Hccake 2020/5/25 20:38
@@ -32,8 +35,8 @@ public class CustomOperationLogHandler extends AbstractOperationLogHandler<Opera
 	@Override
 	public OperationLog buildLog(OperationLogging operationLogging, ProceedingJoinPoint joinPoint) {
 		// 获取 Request
-		HttpServletRequest request = WebUtils.getRequest();
-
+		HttpServletRequest request = ((ServletRequestAttributes) Objects
+			.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
 		// @formatter:off
 		OperationLog operationLog = new OperationLog()
 				.setCreateTime(LocalDateTime.now())

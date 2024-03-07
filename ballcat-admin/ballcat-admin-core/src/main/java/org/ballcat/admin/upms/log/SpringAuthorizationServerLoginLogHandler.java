@@ -1,11 +1,10 @@
 package org.ballcat.admin.upms.log;
 
-import org.ballcat.common.core.util.WebUtils;
-import org.ballcat.log.operation.enums.LogStatusEnum;
+import lombok.RequiredArgsConstructor;
 import org.ballcat.business.log.enums.LoginEventTypeEnum;
 import org.ballcat.business.log.model.entity.LoginLog;
 import org.ballcat.business.log.service.LoginLogService;
-import lombok.RequiredArgsConstructor;
+import org.ballcat.log.operation.enums.LogStatusEnum;
 import org.ballcat.springsecurity.oauth2.server.authorization.authentication.OAuth2TokenRevocationAuthenticationToken;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.authentication.ProviderNotFoundException;
@@ -18,8 +17,9 @@ import org.springframework.security.oauth2.server.authorization.OAuth2Authorizat
 import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AccessTokenAuthenticationToken;
 import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AuthorizationGrantAuthenticationToken;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
-
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import static org.ballcat.business.log.handler.LoginLogUtils.prodLoginLog;
 
@@ -45,8 +45,7 @@ public class SpringAuthorizationServerLoginLogHandler implements LoginLogHandler
 		String username = null;
 
 		String tokenEndpoint = authorizationServerSettings.getTokenEndpoint();
-		HttpServletRequest request = WebUtils.getRequest();
-		boolean isOauth2LoginRequest = request.getRequestURI().equals(tokenEndpoint);
+		boolean isOauth2LoginRequest = isOauth2LoginRequest(tokenEndpoint);
 
 		// Oauth2登录 和表单登录 处理分开
 		if (isOauth2LoginRequest && source instanceof OAuth2AccessTokenAuthenticationToken) {
@@ -78,8 +77,7 @@ public class SpringAuthorizationServerLoginLogHandler implements LoginLogHandler
 		String username = null;
 
 		String tokenEndpoint = authorizationServerSettings.getTokenEndpoint();
-		HttpServletRequest request = WebUtils.getRequest();
-		boolean isOauth2LoginRequest = request.getRequestURI().equals(tokenEndpoint);
+		boolean isOauth2LoginRequest = isOauth2LoginRequest(tokenEndpoint);
 
 		// Oauth2登录 和表单登录 处理分开
 		if (isOauth2LoginRequest && source instanceof OAuth2AuthorizationGrantAuthenticationToken) {
@@ -107,8 +105,7 @@ public class SpringAuthorizationServerLoginLogHandler implements LoginLogHandler
 		String username = null;
 
 		String tokenRevocationEndpoint = authorizationServerSettings.getTokenRevocationEndpoint();
-		HttpServletRequest request = WebUtils.getRequest();
-		boolean isOauth2Login = request.getRequestURI().equals(tokenRevocationEndpoint);
+		boolean isOauth2Login = isOauth2LoginRequest(tokenRevocationEndpoint);
 
 		// Oauth2撤销令牌 和表单登出 处理分开
 		if (isOauth2Login && source instanceof OAuth2TokenRevocationAuthenticationToken) {
@@ -124,6 +121,16 @@ public class SpringAuthorizationServerLoginLogHandler implements LoginLogHandler
 				.setEventType(LoginEventTypeEnum.LOGOUT.getValue());
 			loginLogService.save(loginLog);
 		}
+	}
+
+	private boolean isOauth2LoginRequest(String endpoint) {
+		boolean isOauth2LoginRequest = false;
+		RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+		if (requestAttributes instanceof ServletRequestAttributes) {
+			ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) requestAttributes;
+			isOauth2LoginRequest = servletRequestAttributes.getRequest().getRequestURI().equals(endpoint);
+		}
+		return isOauth2LoginRequest;
 	}
 
 }

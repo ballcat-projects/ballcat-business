@@ -1,15 +1,18 @@
 package org.ballcat.business.log.handler;
 
+import java.time.LocalDateTime;
+import java.util.Objects;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.ballcat.business.log.model.entity.LoginLog;
 import org.ballcat.common.core.constant.MDCConstants;
-import org.ballcat.common.core.util.WebUtils;
 import org.ballcat.common.util.IpUtils;
 import org.ballcat.common.util.UserAgentUtils;
 import org.ballcat.log.operation.enums.LogStatusEnum;
 import org.slf4j.MDC;
-
-import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
  * @author hccake
@@ -26,7 +29,8 @@ public final class LoginLogUtils {
 	 */
 	public static LoginLog prodLoginLog(String username) {
 		// 获取 Request
-		HttpServletRequest request = WebUtils.getRequest();
+		HttpServletRequest request = ((ServletRequestAttributes) Objects
+			.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
 		return new LoginLog().setLoginTime(LocalDateTime.now())
 			.setIp(IpUtils.getIpAddr(request))
 			.setOs(detectOS(request))
