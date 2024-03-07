@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023-2024 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.ballcat.business.notify.service.impl;
 
 import java.io.IOException;
@@ -154,7 +170,7 @@ public class AnnouncementServiceImpl extends ExtendServiceImpl<AnnouncementMappe
 		int flag = baseMapper.updateById(announcement);
 		boolean isUpdated = SqlHelper.retBool(flag);
 		if (isUpdated) {
-			publisher.publishEvent(new AnnouncementCloseEvent(announcementId));
+			this.publisher.publishEvent(new AnnouncementCloseEvent(announcementId));
 		}
 		return isUpdated;
 	}
@@ -171,7 +187,7 @@ public class AnnouncementServiceImpl extends ExtendServiceImpl<AnnouncementMappe
 			String objectName = "announcement/" + LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE)
 					+ Symbol.SLASH + ObjectId.get() + Symbol.DOT + FileUtils.getExtension(file.getOriginalFilename());
 			try {
-				objectName = fileService.upload(file.getInputStream(), objectName, file.getSize());
+				objectName = this.fileService.upload(file.getInputStream(), objectName, file.getSize());
 				objectNames.add(objectName);
 			}
 			catch (IOException e) {
@@ -197,7 +213,7 @@ public class AnnouncementServiceImpl extends ExtendServiceImpl<AnnouncementMappe
 	 */
 	private void onAnnouncementPublish(Announcement announcement) {
 		NotifyInfo notifyInfo = NotifyInfoConverter.INSTANCE.fromAnnouncement(announcement);
-		publisher.publishEvent(new NotifyPublishEvent(notifyInfo));
+		this.publisher.publishEvent(new NotifyPublishEvent(notifyInfo));
 	}
 
 }

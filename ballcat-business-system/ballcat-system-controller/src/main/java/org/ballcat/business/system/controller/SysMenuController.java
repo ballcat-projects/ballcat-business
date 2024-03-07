@@ -1,4 +1,29 @@
+/*
+ * Copyright 2023-2024 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.ballcat.business.system.controller;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,11 +49,14 @@ import org.ballcat.log.operation.annotation.UpdateOperationLogging;
 import org.ballcat.security.annotation.Authorize;
 import org.ballcat.security.core.PrincipalAttributeAccessor;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.*;
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 菜单权限
@@ -56,18 +84,18 @@ public class SysMenuController {
 	@Operation(summary = "动态路由", description = "动态路由")
 	public R<List<SysMenuRouterVO>> getUserPermission() {
 		// 获取角色Code
-		Long userId = principalAttributeAccessor.getUserId();
+		Long userId = this.principalAttributeAccessor.getUserId();
 		Assert.notNull(userId, () -> new SecurityException("获取登录用户信息失败！"));
 
 		// 获取用户角色
-		List<String> roleCodes = userRoleService.listRoleCodes(userId);
+		List<String> roleCodes = this.userRoleService.listRoleCodes(userId);
 		if (CollectionUtils.isEmpty(roleCodes)) {
 			return R.ok(new ArrayList<>());
 		}
 
 		// 获取符合条件的权限
 		Set<SysMenu> all = new HashSet<>();
-		roleCodes.forEach(roleCode -> all.addAll(sysMenuService.listByRoleCode(roleCode)));
+		roleCodes.forEach(roleCode -> all.addAll(this.sysMenuService.listByRoleCode(roleCode)));
 
 		// 筛选出菜单
 		List<SysMenuRouterVO> menuVOList = all.stream()
@@ -88,7 +116,7 @@ public class SysMenuController {
 	@Authorize("hasPermission('system:menu:read')")
 	@Operation(summary = "查询菜单列表", description = "查询菜单列表")
 	public R<List<SysMenuPageVO>> getSysMenuPage(SysMenuQO sysMenuQO) {
-		List<SysMenu> sysMenus = sysMenuService.listOrderBySort(sysMenuQO);
+		List<SysMenu> sysMenus = this.sysMenuService.listOrderBySort(sysMenuQO);
 		if (CollectionUtils.isEmpty(sysMenus)) {
 			R.ok(new ArrayList<>());
 		}
@@ -106,7 +134,7 @@ public class SysMenuController {
 	@Authorize("hasPermission('system:menu:read')")
 	@Operation(summary = "查询授权菜单列表", description = "查询授权菜单列表")
 	public R<List<SysMenuGrantVO>> getSysMenuGrantList() {
-		List<SysMenu> sysMenus = sysMenuService.list();
+		List<SysMenu> sysMenus = this.sysMenuService.list();
 		if (CollectionUtils.isEmpty(sysMenus)) {
 			R.ok(new ArrayList<>());
 		}
@@ -126,7 +154,7 @@ public class SysMenuController {
 	@Authorize("hasPermission('system:menu:add')")
 	@Operation(summary = "新增菜单权限", description = "新增菜单权限")
 	public R<Void> save(@Valid @RequestBody SysMenuCreateDTO sysMenuCreateDTO) {
-		return sysMenuService.create(sysMenuCreateDTO) ? R.ok()
+		return this.sysMenuService.create(sysMenuCreateDTO) ? R.ok()
 				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "新增菜单权限失败");
 	}
 
@@ -140,7 +168,7 @@ public class SysMenuController {
 	@Authorize("hasPermission('system:menu:edit')")
 	@Operation(summary = "修改菜单权限", description = "修改菜单权限")
 	public R<Void> updateById(@RequestBody SysMenuUpdateDTO sysMenuUpdateDTO) {
-		sysMenuService.update(sysMenuUpdateDTO);
+		this.sysMenuService.update(sysMenuUpdateDTO);
 		return R.ok();
 	}
 
@@ -154,7 +182,8 @@ public class SysMenuController {
 	@Authorize("hasPermission('system:menu:del')")
 	@Operation(summary = "通过id删除菜单权限", description = "通过id删除菜单权限")
 	public R<Void> removeById(@PathVariable("id") Long id) {
-		return sysMenuService.removeById(id) ? R.ok() : R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "通过id删除菜单权限失败");
+		return this.sysMenuService.removeById(id) ? R.ok()
+				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "通过id删除菜单权限失败");
 	}
 
 }

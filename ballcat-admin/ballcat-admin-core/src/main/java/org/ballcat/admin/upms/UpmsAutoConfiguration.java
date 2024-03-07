@@ -1,6 +1,27 @@
+/*
+ * Copyright 2023-2024 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.ballcat.admin.upms;
 
-import org.ballcat.admin.springsecurity.*;
+import org.ballcat.admin.springsecurity.DefaultUserInfoCoordinatorImpl;
+import org.ballcat.admin.springsecurity.SpringSecurityPasswordHelper;
+import org.ballcat.admin.springsecurity.SpringSecurityPrincipalAttributeAccessor;
+import org.ballcat.admin.springsecurity.SpringSecuritySeparationFormLoginSuccessHandler;
+import org.ballcat.admin.springsecurity.SysUserDetailsServiceImpl;
+import org.ballcat.admin.springsecurity.UserInfoCoordinator;
 import org.ballcat.admin.springsecurity.oauth2.BallcatOAuth2TokenResponseEnhancer;
 import org.ballcat.admin.springsecurity.oauth2.OAuth2SpringSecurityPrincipalAttributeAccessor;
 import org.ballcat.admin.springsecurity.oauth2.OAuth2SysUserDetailsServiceImpl;
@@ -12,7 +33,6 @@ import org.ballcat.security.core.PrincipalAttributeAccessor;
 import org.ballcat.security.properties.SecurityProperties;
 import org.ballcat.springsecurity.configuer.SpringSecurityConfigurerCustomizer;
 import org.ballcat.springsecurity.oauth2.server.authorization.web.authentication.OAuth2TokenResponseEnhancer;
-import org.ballcat.springsecurity.oauth2.server.resource.introspection.SpringAuthorizationServerSharedStoredOpaqueTokenIntrospector;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -27,8 +47,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
-import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
-import org.springframework.security.oauth2.server.resource.introspection.OpaqueTokenIntrospector;
 
 /**
  * @author Hccake 2020/5/25 21:01

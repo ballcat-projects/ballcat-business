@@ -1,4 +1,26 @@
+/*
+ * Copyright 2023-2024 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.ballcat.business.i18n.controller;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,12 +46,14 @@ import org.ballcat.log.operation.annotation.UpdateOperationLogging;
 import org.ballcat.security.annotation.Authorize;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 国际化信息
@@ -55,7 +79,7 @@ public class I18nDataController {
 	@Authorize("hasPermission('i18n:i18n-data:read')")
 	@Operation(summary = "分页查询", description = "分页查询")
 	public R<PageResult<I18nDataPageVO>> getI18nDataPage(@Validated PageParam pageParam, I18nDataQO i18nDataQO) {
-		return R.ok(i18nDataService.queryPage(pageParam, i18nDataQO));
+		return R.ok(this.i18nDataService.queryPage(pageParam, i18nDataQO));
 	}
 
 	/**
@@ -67,7 +91,7 @@ public class I18nDataController {
 	@Authorize("hasPermission('i18n:i18n-data:read')")
 	@Operation(summary = "查询指定国际化标识的所有数据", description = "查询指定国际化标识的所有数据")
 	public R<List<I18nData>> listByCode(@RequestParam("code") String code) {
-		return R.ok(i18nDataService.listByCode(code));
+		return R.ok(this.i18nDataService.listByCode(code));
 	}
 
 	/**
@@ -91,7 +115,8 @@ public class I18nDataController {
 			i18nData.setMessage(languageText.getMessage());
 			list.add(i18nData);
 		}
-		return i18nDataService.saveBatch(list) ? R.ok() : R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "新增国际化信息失败");
+		return this.i18nDataService.saveBatch(list) ? R.ok()
+				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "新增国际化信息失败");
 	}
 
 	/**
@@ -104,7 +129,7 @@ public class I18nDataController {
 	@Authorize("hasPermission('i18n:i18n-data:edit')")
 	@Operation(summary = "修改国际化信息", description = "修改国际化信息")
 	public R<Void> updateById(@RequestBody I18nDataDTO i18nDataDTO) {
-		return i18nDataService.updateByCodeAndLanguageTag(i18nDataDTO) ? R.ok()
+		return this.i18nDataService.updateByCodeAndLanguageTag(i18nDataDTO) ? R.ok()
 				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "修改国际化信息失败");
 	}
 
@@ -119,7 +144,7 @@ public class I18nDataController {
 	@Authorize("hasPermission('i18n:i18n-data:del')")
 	@Operation(summary = "通过id删除国际化信息", description = "通过id删除国际化信息")
 	public R<Void> removeById(@RequestParam("code") String code, @RequestParam("languageTag") String languageTag) {
-		return i18nDataService.removeByCodeAndLanguageTag(code, languageTag) ? R.ok()
+		return this.i18nDataService.removeByCodeAndLanguageTag(code, languageTag) ? R.ok()
 				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "通过id删除国际化信息失败");
 	}
 
@@ -144,13 +169,13 @@ public class I18nDataController {
 
 		// 跳过已有数据，返回已有数据列表
 		if (importModeEnum == ImportModeEnum.SKIP_EXISTING) {
-			List<I18nData> existsList = i18nDataService.saveWhenNotExist(list);
+			List<I18nData> existsList = this.i18nDataService.saveWhenNotExist(list);
 			return R.ok(existsList);
 		}
 
 		// 覆盖已有数据
 		if (importModeEnum == ImportModeEnum.OVERWRITE_EXISTING) {
-			i18nDataService.saveOrUpdate(list);
+			this.i18nDataService.saveOrUpdate(list);
 		}
 
 		return R.ok();
@@ -166,7 +191,7 @@ public class I18nDataController {
 	@Authorize("hasPermission('i18n:i18n-data:export')")
 	@Operation(summary = "导出国际化信息", description = "导出国际化信息")
 	public List<I18nDataExcelVO> exportI18nData(I18nDataQO i18nDataQO) {
-		List<I18nData> list = i18nDataService.queryList(i18nDataQO);
+		List<I18nData> list = this.i18nDataService.queryList(i18nDataQO);
 		if (CollectionUtils.isEmpty(list)) {
 			return new ArrayList<>();
 		}

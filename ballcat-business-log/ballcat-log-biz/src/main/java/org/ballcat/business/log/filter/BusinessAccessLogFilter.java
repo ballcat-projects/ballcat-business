@@ -1,4 +1,27 @@
+/*
+ * Copyright 2023-2024 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.ballcat.business.log.filter;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ballcat.business.log.model.entity.AccessLog;
@@ -12,12 +35,6 @@ import org.ballcat.web.accesslog.DefaultAccessLogFilter;
 import org.slf4j.MDC;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.HandlerMapping;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * 业务访问日志，落库存储
@@ -87,10 +104,10 @@ public class BusinessAccessLogFilter extends DefaultAccessLogFilter {
 		}
 
 		// 如果登录用户 则记录用户名和用户id
-		accessLog.setUserId(principalAttributeAccessor.getUserId());
-		accessLog.setUsername(principalAttributeAccessor.getUsername());
+		accessLog.setUserId(this.principalAttributeAccessor.getUserId());
+		accessLog.setUsername(this.principalAttributeAccessor.getUsername());
 
-		accessLogSaveThread.put(accessLog);
+		this.accessLogSaveThread.put(accessLog);
 	}
 
 }
