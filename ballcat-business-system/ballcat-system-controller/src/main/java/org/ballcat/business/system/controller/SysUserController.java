@@ -1,16 +1,34 @@
+/*
+ * Copyright 2023-2024 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.ballcat.business.system.controller;
 
-import org.ballcat.common.core.validation.group.CreateGroup;
-import org.ballcat.common.core.validation.group.UpdateGroup;
-import org.ballcat.log.operation.annotation.CreateOperationLogging;
-import org.ballcat.log.operation.annotation.DeleteOperationLogging;
-import org.ballcat.log.operation.annotation.UpdateOperationLogging;
-import org.ballcat.common.model.domain.PageParam;
-import org.ballcat.common.model.domain.PageResult;
-import org.ballcat.common.model.domain.SelectData;
-import org.ballcat.common.model.result.BaseResultCode;
-import org.ballcat.common.model.result.R;
-import org.ballcat.common.model.result.SystemResultCode;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.validation.ValidationException;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.groups.Default;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.ballcat.business.system.component.PasswordHelper;
 import org.ballcat.business.system.constant.SysUserConst;
 import org.ballcat.business.system.converter.SysUserConverter;
@@ -24,10 +42,17 @@ import org.ballcat.business.system.model.vo.SysUserInfo;
 import org.ballcat.business.system.model.vo.SysUserPageVO;
 import org.ballcat.business.system.service.SysUserRoleService;
 import org.ballcat.business.system.service.SysUserService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.ballcat.common.core.validation.group.CreateGroup;
+import org.ballcat.common.core.validation.group.UpdateGroup;
+import org.ballcat.common.model.domain.PageParam;
+import org.ballcat.common.model.domain.PageResult;
+import org.ballcat.common.model.domain.SelectData;
+import org.ballcat.common.model.result.BaseResultCode;
+import org.ballcat.common.model.result.R;
+import org.ballcat.common.model.result.SystemResultCode;
+import org.ballcat.log.operation.annotation.CreateOperationLogging;
+import org.ballcat.log.operation.annotation.DeleteOperationLogging;
+import org.ballcat.log.operation.annotation.UpdateOperationLogging;
 import org.ballcat.security.annotation.Authorize;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
@@ -41,14 +66,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.validation.ValidationException;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.groups.Default;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 组织架构
@@ -78,7 +95,7 @@ public class SysUserController {
 	@Authorize("hasPermission('system:user:read')")
 	@Operation(summary = "分页查询系统用户")
 	public R<PageResult<SysUserPageVO>> getUserPage(@Validated PageParam pageParam, SysUserQO qo) {
-		return R.ok(sysUserService.queryPage(pageParam, qo));
+		return R.ok(this.sysUserService.queryPage(pageParam, qo));
 	}
 
 	/**
@@ -90,7 +107,7 @@ public class SysUserController {
 	@Operation(summary = "获取用户下拉列表数据")
 	public R<List<SelectData<Void>>> listSelectData(
 			@RequestParam(value = "userTypes", required = false) List<Integer> userTypes) {
-		return R.ok(sysUserService.listSelectData(userTypes));
+		return R.ok(this.sysUserService.listSelectData(userTypes));
 	}
 
 	/**
@@ -102,7 +119,7 @@ public class SysUserController {
 	@Authorize("hasPermission('system:user:read')")
 	@Operation(summary = "获取指定用户的基本信息")
 	public R<SysUserInfo> getSysUserInfo(@PathVariable("userId") Long userId) {
-		SysUser sysUser = sysUserService.getById(userId);
+		SysUser sysUser = this.sysUserService.getById(userId);
 		if (sysUser == null) {
 			return R.ok();
 		}
@@ -120,18 +137,18 @@ public class SysUserController {
 	@Authorize("hasPermission('system:user:add')")
 	@Operation(summary = "新增系统用户", description = "新增系统用户")
 	public R<Void> addSysUser(@Validated({ Default.class, CreateGroup.class }) @RequestBody SysUserDTO sysUserDTO) {
-		SysUser user = sysUserService.getByUsername(sysUserDTO.getUsername());
+		SysUser user = this.sysUserService.getByUsername(sysUserDTO.getUsername());
 		if (user != null) {
 			return R.failed(BaseResultCode.LOGIC_CHECK_ERROR, "用户名已存在");
 		}
 
 		// 明文密码
-		String rawPassword = passwordHelper.decodeAes(sysUserDTO.getPass());
+		String rawPassword = this.passwordHelper.decodeAes(sysUserDTO.getPass());
 		sysUserDTO.setPassword(rawPassword);
 
 		// 密码规则校验
-		if (passwordHelper.validateRule(rawPassword)) {
-			return sysUserService.addSysUser(sysUserDTO) ? R.ok()
+		if (this.passwordHelper.validateRule(rawPassword)) {
+			return this.sysUserService.addSysUser(sysUserDTO) ? R.ok()
 					: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "新增系统用户失败");
 		}
 		else {
@@ -149,7 +166,7 @@ public class SysUserController {
 	@Authorize("hasPermission('system:user:edit')")
 	@Operation(summary = "修改系统用户", description = "修改系统用户")
 	public R<Void> updateUserInfo(@Validated({ Default.class, UpdateGroup.class }) @RequestBody SysUserDTO sysUserDto) {
-		return sysUserService.updateSysUser(sysUserDto) ? R.ok()
+		return this.sysUserService.updateSysUser(sysUserDto) ? R.ok()
 				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "修改系统用户失败");
 	}
 
@@ -161,7 +178,7 @@ public class SysUserController {
 	@Authorize("hasPermission('system:user:del')")
 	@Operation(summary = "通过id删除系统用户", description = "通过id删除系统用户")
 	public R<Void> deleteByUserId(@PathVariable("userId") Long userId) {
-		return sysUserService.deleteByUserId(userId) ? R.ok()
+		return this.sysUserService.deleteByUserId(userId) ? R.ok()
 				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "删除系统用户失败");
 	}
 
@@ -173,7 +190,7 @@ public class SysUserController {
 	@Authorize("hasPermission('system:user:grant')")
 	public R<SysUserScope> getUserRoleIds(@PathVariable("userId") Long userId) {
 
-		List<SysRole> roleList = sysUserRoleService.listRoles(userId);
+		List<SysRole> roleList = this.sysUserRoleService.listRoles(userId);
 
 		List<String> roleCodes = new ArrayList<>();
 		if (!CollectionUtils.isEmpty(roleList)) {
@@ -196,7 +213,7 @@ public class SysUserController {
 	@Authorize("hasPermission('system:user:grant')")
 	@Operation(summary = "系统用户授权", description = "系统用户授权")
 	public R<Void> updateUserScope(@PathVariable("userId") Long userId, @RequestBody SysUserScope sysUserScope) {
-		return sysUserService.updateUserScope(userId, sysUserScope) ? R.ok()
+		return this.sysUserService.updateUserScope(userId, sysUserScope) ? R.ok()
 				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "系统用户授权失败");
 	}
 
@@ -214,10 +231,10 @@ public class SysUserController {
 		}
 
 		// 解密明文密码
-		String rawPassword = passwordHelper.decodeAes(pass);
+		String rawPassword = this.passwordHelper.decodeAes(pass);
 		// 密码规则校验
-		if (passwordHelper.validateRule(rawPassword)) {
-			return sysUserService.updatePassword(userId, rawPassword) ? R.ok()
+		if (this.passwordHelper.validateRule(rawPassword)) {
+			return this.sysUserService.updatePassword(userId, rawPassword) ? R.ok()
 					: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "修改用户密码失败！");
 		}
 		else {
@@ -239,7 +256,7 @@ public class SysUserController {
 				&& !SysUserConst.Status.LOCKED.getValue().equals(status)) {
 			throw new ValidationException("不支持的用户状态！");
 		}
-		return sysUserService.updateUserStatusBatch(userIds, status) ? R.ok()
+		return this.sysUserService.updateUserStatusBatch(userIds, status) ? R.ok()
 				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "批量修改用户状态！");
 	}
 
@@ -250,7 +267,7 @@ public class SysUserController {
 	public R<String> updateAvatar(@RequestParam("file") MultipartFile file, @RequestParam("userId") Long userId) {
 		String objectName;
 		try {
-			objectName = sysUserService.updateAvatar(file, userId);
+			objectName = this.sysUserService.updateAvatar(file, userId);
 		}
 		catch (IOException e) {
 			log.error("修改系统用户头像异常", e);

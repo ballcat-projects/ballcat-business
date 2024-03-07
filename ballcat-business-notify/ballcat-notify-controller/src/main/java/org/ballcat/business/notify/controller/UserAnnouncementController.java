@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023-2024 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.ballcat.business.notify.controller;
 
 import java.util.List;
@@ -45,21 +61,21 @@ public class UserAnnouncementController {
 	@Operation(summary = "分页查询", description = "分页查询")
 	public R<PageResult<UserAnnouncementPageVO>> getUserAnnouncementPage(@Validated PageParam pageParam,
 			UserAnnouncementQO userAnnouncementQO) {
-		return R.ok(userAnnouncementService.queryPage(pageParam, userAnnouncementQO));
+		return R.ok(this.userAnnouncementService.queryPage(pageParam, userAnnouncementQO));
 	}
 
 	@GetMapping("/list")
 	@Operation(summary = "用户公告信息", description = "用户公告信息")
 	public R<List<UserAnnouncementVO>> getUserAnnouncements() {
-		Long userId = principalAttributeAccessor.getUserId();
-		return R.ok(userAnnouncementService.listActiveAnnouncements(userId));
+		Long userId = this.principalAttributeAccessor.getUserId();
+		return R.ok(this.userAnnouncementService.listActiveAnnouncements(userId));
 	}
 
 	@PatchMapping("/read/{announcementId}")
 	@Operation(summary = "用户公告已读上报", description = "用户公告已读上报")
 	public R<Void> readAnnouncement(@PathVariable("announcementId") Long announcementId) {
-		Long userId = principalAttributeAccessor.getUserId();
-		userAnnouncementService.readAnnouncement(userId, announcementId);
+		Long userId = this.principalAttributeAccessor.getUserId();
+		this.userAnnouncementService.readAnnouncement(userId, announcementId);
 		return R.ok();
 	}
 

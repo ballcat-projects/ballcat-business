@@ -1,16 +1,31 @@
+/*
+ * Copyright 2023-2024 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.ballcat.business.log.model.entity;
+
+import java.time.LocalDateTime;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import org.ballcat.business.log.enums.LoginEventTypeEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import lombok.Data;
 import lombok.experimental.Accessors;
-
-import java.time.LocalDateTime;
+import org.ballcat.business.log.enums.LoginEventTypeEnum;
 
 /**
  * 登录日志
@@ -76,6 +91,7 @@ public class LoginLog {
 
 	/**
 	 * 事件类型 登录/登出
+	 *
 	 * @see LoginEventTypeEnum
 	 */
 	@Schema(title = "事件类型")

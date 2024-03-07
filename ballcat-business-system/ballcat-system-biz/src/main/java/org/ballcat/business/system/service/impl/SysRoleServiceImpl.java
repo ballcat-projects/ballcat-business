@@ -1,24 +1,40 @@
+/*
+ * Copyright 2023-2024 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.ballcat.business.system.service.impl;
 
+import java.io.Serializable;
+import java.util.List;
+
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import org.ballcat.common.core.exception.BusinessException;
-import org.ballcat.common.model.result.BaseResultCode;
+import lombok.RequiredArgsConstructor;
 import org.ballcat.business.system.mapper.SysRoleMapper;
 import org.ballcat.business.system.model.entity.SysRole;
 import org.ballcat.business.system.model.qo.SysRoleQO;
 import org.ballcat.business.system.model.vo.SysRolePageVO;
 import org.ballcat.business.system.service.SysRoleMenuService;
 import org.ballcat.business.system.service.SysRoleService;
+import org.ballcat.common.core.exception.BusinessException;
 import org.ballcat.common.model.domain.PageParam;
 import org.ballcat.common.model.domain.PageResult;
 import org.ballcat.common.model.domain.SelectData;
+import org.ballcat.common.model.result.BaseResultCode;
 import org.ballcat.mybatisplus.service.impl.ExtendServiceImpl;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.io.Serializable;
-import java.util.List;
 
 /**
  * <p>
@@ -54,13 +70,13 @@ public class SysRoleServiceImpl extends ExtendServiceImpl<SysRoleMapper, SysRole
 	@Transactional(rollbackFor = Exception.class)
 	public boolean removeById(Serializable id) {
 		SysRole role = getById(id);
-		sysRoleMenuService.deleteByRoleCode(role.getCode());
+		this.sysRoleMenuService.deleteByRoleCode(role.getCode());
 		return SqlHelper.retBool(baseMapper.deleteById(id));
 	}
 
 	/**
 	 * 角色的选择数据
-	 * @return List<SelectData<?>>
+	 * @return List<SelectData < ?>>
 	 */
 	@Override
 	public List<SelectData<Void>> listSelectData() {

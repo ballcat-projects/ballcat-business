@@ -1,7 +1,24 @@
+/*
+ * Copyright 2023-2024 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.ballcat.admin.upms.log;
 
 import lombok.RequiredArgsConstructor;
 import org.ballcat.business.log.enums.LoginEventTypeEnum;
+import org.ballcat.business.log.handler.LoginLogUtils;
 import org.ballcat.business.log.model.entity.LoginLog;
 import org.ballcat.business.log.service.LoginLogService;
 import org.ballcat.log.operation.enums.LogStatusEnum;
@@ -20,8 +37,6 @@ import org.springframework.security.oauth2.server.authorization.settings.Authori
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
-import static org.ballcat.business.log.handler.LoginLogUtils.prodLoginLog;
 
 /**
  * spring 授权服务器的登录日志处理器
@@ -44,7 +59,7 @@ public class SpringAuthorizationServerLoginLogHandler implements LoginLogHandler
 		Object source = event.getSource();
 		String username = null;
 
-		String tokenEndpoint = authorizationServerSettings.getTokenEndpoint();
+		String tokenEndpoint = this.authorizationServerSettings.getTokenEndpoint();
 		boolean isOauth2LoginRequest = isOauth2LoginRequest(tokenEndpoint);
 
 		// Oauth2登录 和表单登录 处理分开
@@ -56,10 +71,11 @@ public class SpringAuthorizationServerLoginLogHandler implements LoginLogHandler
 		}
 
 		if (username != null) {
-			LoginLog loginLog = prodLoginLog(username).setMsg("登录成功")
+			LoginLog loginLog = LoginLogUtils.prodLoginLog(username)
+				.setMsg("登录成功")
 				.setStatus(LogStatusEnum.SUCCESS.getValue())
 				.setEventType(LoginEventTypeEnum.LOGIN.getValue());
-			loginLogService.save(loginLog);
+			this.loginLogService.save(loginLog);
 		}
 	}
 
@@ -76,7 +92,7 @@ public class SpringAuthorizationServerLoginLogHandler implements LoginLogHandler
 		Object source = event.getSource();
 		String username = null;
 
-		String tokenEndpoint = authorizationServerSettings.getTokenEndpoint();
+		String tokenEndpoint = this.authorizationServerSettings.getTokenEndpoint();
 		boolean isOauth2LoginRequest = isOauth2LoginRequest(tokenEndpoint);
 
 		// Oauth2登录 和表单登录 处理分开
@@ -88,10 +104,11 @@ public class SpringAuthorizationServerLoginLogHandler implements LoginLogHandler
 		}
 
 		if (username != null) {
-			LoginLog loginLog = prodLoginLog(username).setMsg(event.getException().getMessage())
+			LoginLog loginLog = LoginLogUtils.prodLoginLog(username)
+				.setMsg(event.getException().getMessage())
 				.setEventType(LoginEventTypeEnum.LOGIN.getValue())
 				.setStatus(LogStatusEnum.FAIL.getValue());
-			loginLogService.save(loginLog);
+			this.loginLogService.save(loginLog);
 		}
 	}
 
@@ -104,7 +121,7 @@ public class SpringAuthorizationServerLoginLogHandler implements LoginLogHandler
 		Object source = event.getSource();
 		String username = null;
 
-		String tokenRevocationEndpoint = authorizationServerSettings.getTokenRevocationEndpoint();
+		String tokenRevocationEndpoint = this.authorizationServerSettings.getTokenRevocationEndpoint();
 		boolean isOauth2Login = isOauth2LoginRequest(tokenRevocationEndpoint);
 
 		// Oauth2撤销令牌 和表单登出 处理分开
@@ -117,9 +134,10 @@ public class SpringAuthorizationServerLoginLogHandler implements LoginLogHandler
 		}
 
 		if (username != null) {
-			LoginLog loginLog = prodLoginLog(username).setMsg("登出成功")
+			LoginLog loginLog = LoginLogUtils.prodLoginLog(username)
+				.setMsg("登出成功")
 				.setEventType(LoginEventTypeEnum.LOGOUT.getValue());
-			loginLogService.save(loginLog);
+			this.loginLogService.save(loginLog);
 		}
 	}
 

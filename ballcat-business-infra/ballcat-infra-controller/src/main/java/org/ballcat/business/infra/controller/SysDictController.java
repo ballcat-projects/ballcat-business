@@ -1,14 +1,29 @@
+/*
+ * Copyright 2023-2024 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.ballcat.business.infra.controller;
 
-import org.ballcat.common.core.validation.group.CreateGroup;
-import org.ballcat.common.core.validation.group.UpdateGroup;
-import org.ballcat.log.operation.annotation.CreateOperationLogging;
-import org.ballcat.log.operation.annotation.DeleteOperationLogging;
-import org.ballcat.log.operation.annotation.UpdateOperationLogging;
-import org.ballcat.common.model.domain.PageParam;
-import org.ballcat.common.model.domain.PageResult;
-import org.ballcat.common.model.result.BaseResultCode;
-import org.ballcat.common.model.result.R;
+import java.util.List;
+import java.util.Map;
+
+import javax.validation.groups.Default;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.ballcat.business.infra.manager.SysDictManager;
 import org.ballcat.business.infra.model.dto.SysDictItemDTO;
 import org.ballcat.business.infra.model.entity.SysDict;
@@ -16,9 +31,15 @@ import org.ballcat.business.infra.model.qo.SysDictQO;
 import org.ballcat.business.infra.model.vo.DictDataVO;
 import org.ballcat.business.infra.model.vo.SysDictItemPageVO;
 import org.ballcat.business.infra.model.vo.SysDictPageVO;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
+import org.ballcat.common.core.validation.group.CreateGroup;
+import org.ballcat.common.core.validation.group.UpdateGroup;
+import org.ballcat.common.model.domain.PageParam;
+import org.ballcat.common.model.domain.PageResult;
+import org.ballcat.common.model.result.BaseResultCode;
+import org.ballcat.common.model.result.R;
+import org.ballcat.log.operation.annotation.CreateOperationLogging;
+import org.ballcat.log.operation.annotation.DeleteOperationLogging;
+import org.ballcat.log.operation.annotation.UpdateOperationLogging;
 import org.ballcat.security.annotation.Authorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,10 +52,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.groups.Default;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 字典表
@@ -57,7 +74,7 @@ public class SysDictController {
 	 */
 	@GetMapping("/data")
 	public R<List<DictDataVO>> getDictData(@RequestParam("dictCodes") String[] dictCodes) {
-		return R.ok(sysDictManager.queryDictDataAndHashVO(dictCodes));
+		return R.ok(this.sysDictManager.queryDictDataAndHashVO(dictCodes));
 	}
 
 	/**
@@ -67,20 +84,20 @@ public class SysDictController {
 	 */
 	@PostMapping("/invalid-hash")
 	public R<List<String>> invalidDictHash(@RequestBody Map<String, String> dictHashCode) {
-		return R.ok(sysDictManager.invalidDictHash(dictHashCode));
+		return R.ok(this.sysDictManager.invalidDictHash(dictHashCode));
 	}
 
 	/**
 	 * 分页查询
 	 * @param pageParam 分页参数
 	 * @param sysDictQO 字典查询参数
-	 * @return R<PageResult<SysDictVO>>
+	 * @return R<PageResult < SysDictVO>>
 	 */
 	@GetMapping("/page")
 	@Authorize("hasPermission('system:dict:read')")
 	@Operation(summary = "分页查询", description = "分页查询")
 	public R<PageResult<SysDictPageVO>> getSysDictPage(@Validated PageParam pageParam, SysDictQO sysDictQO) {
-		return R.ok(sysDictManager.dictPage(pageParam, sysDictQO));
+		return R.ok(this.sysDictManager.dictPage(pageParam, sysDictQO));
 	}
 
 	/**
@@ -93,7 +110,8 @@ public class SysDictController {
 	@Authorize("hasPermission('system:dict:add')")
 	@Operation(summary = "新增字典表", description = "新增字典表")
 	public R<Void> save(@RequestBody SysDict sysDict) {
-		return sysDictManager.dictSave(sysDict) ? R.ok() : R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "新增字典表失败");
+		return this.sysDictManager.dictSave(sysDict) ? R.ok()
+				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "新增字典表失败");
 	}
 
 	/**
@@ -106,7 +124,7 @@ public class SysDictController {
 	@Authorize("hasPermission('system:dict:edit')")
 	@Operation(summary = "修改字典表", description = "修改字典表")
 	public R<Void> updateById(@RequestBody SysDict sysDict) {
-		return sysDictManager.updateDictById(sysDict) ? R.ok()
+		return this.sysDictManager.updateDictById(sysDict) ? R.ok()
 				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "修改字典表失败");
 	}
 
@@ -120,7 +138,7 @@ public class SysDictController {
 	@Authorize("hasPermission('system:dict:del')")
 	@Operation(summary = "通过id删除字典表", description = "通过id删除字典表")
 	public R<Void> removeById(@PathVariable("id") Long id) {
-		sysDictManager.removeDictById(id);
+		this.sysDictManager.removeDictById(id);
 		return R.ok();
 	}
 
@@ -135,7 +153,7 @@ public class SysDictController {
 	@Operation(summary = "分页查询", description = "分页查询")
 	public R<PageResult<SysDictItemPageVO>> getSysDictItemPage(PageParam pageParam,
 			@RequestParam("dictCode") String dictCode) {
-		return R.ok(sysDictManager.dictItemPage(pageParam, dictCode));
+		return R.ok(this.sysDictManager.dictItemPage(pageParam, dictCode));
 	}
 
 	/**
@@ -149,7 +167,7 @@ public class SysDictController {
 	@Operation(summary = "新增字典项", description = "新增字典项")
 	public R<Void> saveItem(
 			@Validated({ Default.class, CreateGroup.class }) @RequestBody SysDictItemDTO sysDictItemDTO) {
-		return sysDictManager.saveDictItem(sysDictItemDTO) ? R.ok()
+		return this.sysDictManager.saveDictItem(sysDictItemDTO) ? R.ok()
 				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "新增字典项失败");
 	}
 
@@ -164,7 +182,7 @@ public class SysDictController {
 	@Operation(summary = "修改字典项", description = "修改字典项")
 	public R<Void> updateItemById(
 			@Validated({ Default.class, UpdateGroup.class }) @RequestBody SysDictItemDTO sysDictItemDTO) {
-		return sysDictManager.updateDictItemById(sysDictItemDTO) ? R.ok()
+		return this.sysDictManager.updateDictItemById(sysDictItemDTO) ? R.ok()
 				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "修改字典项失败");
 	}
 
@@ -178,7 +196,7 @@ public class SysDictController {
 	@Authorize("hasPermission('system:dict:del')")
 	@Operation(summary = "通过id删除字典项", description = "通过id删除字典项")
 	public R<Void> removeItemById(@PathVariable("id") Long id) {
-		return sysDictManager.removeDictItemById(id) ? R.ok()
+		return this.sysDictManager.removeDictItemById(id) ? R.ok()
 				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "通过id删除字典项失败");
 	}
 
@@ -192,7 +210,7 @@ public class SysDictController {
 	@Authorize("hasPermission('system:dict:edit')")
 	@Operation(summary = "通过id修改字典项状态", description = "通过id修改字典项状态")
 	public R<Void> updateDictItemStatusById(@PathVariable("id") Long id, @RequestParam("status") Integer status) {
-		sysDictManager.updateDictItemStatusById(id, status);
+		this.sysDictManager.updateDictItemStatusById(id, status);
 		return R.ok();
 	}
 

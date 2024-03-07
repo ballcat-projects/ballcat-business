@@ -1,4 +1,23 @@
+/*
+ * Copyright 2023-2024 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.ballcat.business.system.service.impl;
+
+import java.io.Serializable;
+import java.util.List;
 
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +31,8 @@ import org.ballcat.business.system.model.qo.SysMenuQO;
 import org.ballcat.business.system.service.SysMenuService;
 import org.ballcat.business.system.service.SysRoleMenuService;
 import org.ballcat.common.core.exception.BusinessException;
-import org.ballcat.common.util.Assert;
 import org.ballcat.common.model.result.BaseResultCode;
+import org.ballcat.common.util.Assert;
 import org.ballcat.i18n.I18nMessage;
 import org.ballcat.i18n.I18nMessageCreateEvent;
 import org.ballcat.mybatisplus.service.impl.ExtendServiceImpl;
@@ -21,9 +40,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-
-import java.io.Serializable;
-import java.util.List;
 
 /**
  * 菜单权限
@@ -77,7 +93,7 @@ public class SysMenuServiceImpl extends ExtendServiceImpl<SysMenuMapper, SysMenu
 		// 多语言保存事件发布
 		List<I18nMessage> i18nMessages = sysMenuCreateDTO.getI18nMessages();
 		if (!CollectionUtils.isEmpty(i18nMessages)) {
-			eventPublisher.publishEvent(new I18nMessageCreateEvent(i18nMessages));
+			this.eventPublisher.publishEvent(new I18nMessageCreateEvent(i18nMessages));
 		}
 
 		return saveSuccess;
@@ -92,7 +108,7 @@ public class SysMenuServiceImpl extends ExtendServiceImpl<SysMenuMapper, SysMenu
 			throw new BusinessException(BaseResultCode.LOGIC_CHECK_ERROR.getCode(), "菜单含有下级不能删除");
 		}
 		// 删除角色权限关联数据
-		sysRoleMenuService.deleteByMenuId(id);
+		this.sysRoleMenuService.deleteByMenuId(id);
 		// 删除当前菜单及其子菜单
 		return SqlHelper.retBool(baseMapper.deleteById(id));
 	}
@@ -118,7 +134,7 @@ public class SysMenuServiceImpl extends ExtendServiceImpl<SysMenuMapper, SysMenu
 		}
 
 		// 修改过菜单id，则需要对应修改角色菜单的关联表信息，这里不需要 check，因为可能没有授权过该菜单，所以返回值为 0
-		sysRoleMenuService.updateMenuId(originalId, menuId);
+		this.sysRoleMenuService.updateMenuId(originalId, menuId);
 		// 更新子菜单的 parentId
 		baseMapper.updateParentId(originalId, menuId);
 	}

@@ -1,4 +1,32 @@
+/*
+ * Copyright 2023-2024 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.ballcat.business.system.service.impl;
+
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.RequiredArgsConstructor;
@@ -25,11 +53,11 @@ import org.ballcat.business.system.service.SysUserRoleService;
 import org.ballcat.business.system.service.SysUserService;
 import org.ballcat.common.constant.Symbol;
 import org.ballcat.common.core.exception.BusinessException;
-import org.ballcat.common.util.Assert;
 import org.ballcat.common.model.domain.PageParam;
 import org.ballcat.common.model.domain.PageResult;
 import org.ballcat.common.model.domain.SelectData;
 import org.ballcat.common.model.result.BaseResultCode;
+import org.ballcat.common.util.Assert;
 import org.ballcat.common.util.FileUtils;
 import org.ballcat.mybatisplus.service.impl.ExtendServiceImpl;
 import org.bson.types.ObjectId;
@@ -39,13 +67,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * 系统用户表
@@ -104,11 +125,11 @@ public class SysUserServiceImpl extends ExtendServiceImpl<SysUserMapper, SysUser
 
 		// 超级管理员拥有所有角色
 		List<SysRole> roleList;
-		if (adminUserChecker.isAdminUser(sysUser)) {
-			roleList = sysRoleService.list();
+		if (this.adminUserChecker.isAdminUser(sysUser)) {
+			roleList = this.sysRoleService.list();
 		}
 		else {
-			roleList = sysUserRoleService.listRoles(sysUser.getUserId());
+			roleList = this.sysUserRoleService.listRoles(sysUser.getUserId());
 		}
 
 		// 设置角色标识
@@ -123,7 +144,7 @@ public class SysUserServiceImpl extends ExtendServiceImpl<SysUserMapper, SysUser
 		Set<String> permissions = new HashSet<>();
 		Set<SysMenu> menus = new HashSet<>();
 		for (String roleCode : roleCodes) {
-			List<SysMenu> sysMenuList = sysMenuService.listByRoleCode(roleCode);
+			List<SysMenu> sysMenuList = this.sysMenuService.listByRoleCode(roleCode);
 			menus.addAll(sysMenuList);
 			List<String> permissionList = sysMenuList.stream()
 				.map(SysMenu::getPermission)
@@ -149,7 +170,7 @@ public class SysUserServiceImpl extends ExtendServiceImpl<SysUserMapper, SysUser
 		sysUser.setType(SysUserConst.Type.SYSTEM.getValue());
 		// 对密码进行加密
 		String rawPassword = sysUserDto.getPassword();
-		String encodedPassword = passwordHelper.encode(rawPassword);
+		String encodedPassword = this.passwordHelper.encode(rawPassword);
 		sysUser.setPassword(encodedPassword);
 
 		// 保存用户
@@ -162,7 +183,7 @@ public class SysUserServiceImpl extends ExtendServiceImpl<SysUserMapper, SysUser
 		// 新增用户角色关联
 		List<String> roleCodes = sysUserDto.getRoleCodes();
 		if (!CollectionUtils.isEmpty(roleCodes)) {
-			boolean addUserRoleSuccess = sysUserRoleService.addUserRoles(sysUser.getUserId(), roleCodes);
+			boolean addUserRoleSuccess = this.sysUserRoleService.addUserRoles(sysUser.getUserId(), roleCodes);
 			Assert.isTrue(addUserRoleSuccess, () -> {
 				log.error("[addSysUser] 更新用户角色信息失败，user：{}， roleCodes: {}", sysUserDto, roleCodes);
 				return new BusinessException(BaseResultCode.UPDATE_DATABASE_ERROR.getCode(), "更新用户角色信息失败");
@@ -170,7 +191,7 @@ public class SysUserServiceImpl extends ExtendServiceImpl<SysUserMapper, SysUser
 		}
 
 		// 发布用户创建事件
-		publisher.publishEvent(new UserCreatedEvent(sysUser, sysUserDto.getRoleCodes()));
+		this.publisher.publishEvent(new UserCreatedEvent(sysUser, sysUserDto.getRoleCodes()));
 
 		return true;
 	}
@@ -184,7 +205,7 @@ public class SysUserServiceImpl extends ExtendServiceImpl<SysUserMapper, SysUser
 	@Transactional(rollbackFor = Exception.class)
 	public boolean updateSysUser(SysUserDTO sysUserDTO) {
 		SysUser entity = SysUserConverter.INSTANCE.dtoToPo(sysUserDTO);
-		org.springframework.util.Assert.isTrue(adminUserChecker.hasModifyPermission(entity), "当前用户不允许修改!");
+		org.springframework.util.Assert.isTrue(this.adminUserChecker.hasModifyPermission(entity), "当前用户不允许修改!");
 
 		// 如果不更新组织，直接执行
 		Long currentOrganizationId = entity.getOrganizationId();
@@ -204,7 +225,7 @@ public class SysUserServiceImpl extends ExtendServiceImpl<SysUserMapper, SysUser
 		boolean isUpdateSuccess = SqlHelper.retBool(baseMapper.updateById(entity));
 		// 如果修改了组织且修改成功，则发送用户组织更新事件
 		if (isUpdateSuccess && organizationIdModified) {
-			publisher
+			this.publisher
 				.publishEvent(new UserOrganizationChangeEvent(userId, originOrganizationId, currentOrganizationId));
 		}
 
@@ -221,7 +242,7 @@ public class SysUserServiceImpl extends ExtendServiceImpl<SysUserMapper, SysUser
 	@Transactional(rollbackFor = Exception.class)
 	public boolean updateUserScope(Long userId, SysUserScope sysUserScope) {
 		// 更新用户角色关联关系
-		return sysUserRoleService.updateUserRoles(userId, sysUserScope.getRoleCodes());
+		return this.sysUserRoleService.updateUserRoles(userId, sysUserScope.getRoleCodes());
 	}
 
 	/**
@@ -231,7 +252,7 @@ public class SysUserServiceImpl extends ExtendServiceImpl<SysUserMapper, SysUser
 	 */
 	@Override
 	public boolean deleteByUserId(Long userId) {
-		org.springframework.util.Assert.isTrue(!adminUserChecker.isAdminUser(getById(userId)), "管理员不允许删除!");
+		org.springframework.util.Assert.isTrue(!this.adminUserChecker.isAdminUser(getById(userId)), "管理员不允许删除!");
 		return SqlHelper.retBool(baseMapper.deleteById(userId));
 	}
 
@@ -243,9 +264,10 @@ public class SysUserServiceImpl extends ExtendServiceImpl<SysUserMapper, SysUser
 	 */
 	@Override
 	public boolean updatePassword(Long userId, String rawPassword) {
-		org.springframework.util.Assert.isTrue(adminUserChecker.hasModifyPermission(getById(userId)), "当前用户不允许修改!");
+		org.springframework.util.Assert.isTrue(this.adminUserChecker.hasModifyPermission(getById(userId)),
+				"当前用户不允许修改!");
 		// 密码加密加密
-		String encodedPassword = passwordHelper.encode(rawPassword);
+		String encodedPassword = this.passwordHelper.encode(rawPassword);
 		return baseMapper.updatePassword(userId, encodedPassword);
 	}
 
@@ -263,7 +285,7 @@ public class SysUserServiceImpl extends ExtendServiceImpl<SysUserMapper, SysUser
 		// 移除无权限更改的用户id
 		Map<Long, SysUser> userMap = userList.stream()
 			.collect(Collectors.toMap(SysUser::getUserId, Function.identity()));
-		userIds.removeIf(id -> !adminUserChecker.hasModifyPermission(userMap.get(id)));
+		userIds.removeIf(id -> !this.adminUserChecker.hasModifyPermission(userMap.get(id)));
 		org.springframework.util.Assert.notEmpty(userIds, "更新用户状态失败，无权限更新用户");
 
 		return baseMapper.updateUserStatusBatch(userIds, status);
@@ -272,11 +294,12 @@ public class SysUserServiceImpl extends ExtendServiceImpl<SysUserMapper, SysUser
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public String updateAvatar(MultipartFile file, Long userId) throws IOException {
-		org.springframework.util.Assert.isTrue(adminUserChecker.hasModifyPermission(getById(userId)), "当前用户不允许修改!");
+		org.springframework.util.Assert.isTrue(this.adminUserChecker.hasModifyPermission(getById(userId)),
+				"当前用户不允许修改!");
 		// 获取系统用户头像的文件名
 		String objectName = "sysuser/" + userId + "/avatar/" + LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE)
 				+ Symbol.SLASH + ObjectId.get() + Symbol.DOT + FileUtils.getExtension(file.getOriginalFilename());
-		objectName = fileService.upload(file.getInputStream(), objectName, file.getSize());
+		objectName = this.fileService.upload(file.getInputStream(), objectName, file.getSize());
 
 		SysUser sysUser = new SysUser();
 		sysUser.setUserId(userId);
@@ -339,8 +362,8 @@ public class SysUserServiceImpl extends ExtendServiceImpl<SysUserMapper, SysUser
 
 	/**
 	 * 返回用户的select数据 name=> username value => userId
-	 * @return List<SelectData>
 	 * @param userTypes 用户类型
+	 * @return List<SelectData>
 	 */
 	@Override
 	public List<SelectData<Void>> listSelectData(Collection<Integer> userTypes) {
@@ -354,7 +377,7 @@ public class SysUserServiceImpl extends ExtendServiceImpl<SysUserMapper, SysUser
 	 */
 	@Override
 	public List<String> listRoleCodes(Long userId) {
-		return sysUserRoleService.listRoles(userId).stream().map(SysRole::getCode).collect(Collectors.toList());
+		return this.sysUserRoleService.listRoles(userId).stream().map(SysRole::getCode).collect(Collectors.toList());
 	}
 
 	/**

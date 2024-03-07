@@ -1,11 +1,31 @@
+/*
+ * Copyright 2023-2024 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.ballcat.admin.springsecurity;
 
-import org.ballcat.springsecurity.oauth2.constant.UserAttributeNameConstants;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.ballcat.business.system.model.dto.UserInfoDTO;
 import org.ballcat.business.system.model.entity.SysUser;
 import org.ballcat.business.system.service.SysUserService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.ballcat.springsecurity.oauth2.constant.UserAttributeNameConstants;
 import org.ballcat.springsecurity.userdetails.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -13,10 +33,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.util.CollectionUtils;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
 
 /**
  * @author Hccake 2019/9/25 20:44
@@ -31,12 +47,12 @@ public class SysUserDetailsServiceImpl implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		SysUser sysUser = sysUserService.getByUsername(username);
+		SysUser sysUser = this.sysUserService.getByUsername(username);
 		if (sysUser == null) {
 			log.error("登录：用户名错误，用户名：{}", username);
 			throw new UsernameNotFoundException("username error!");
 		}
-		UserInfoDTO userInfoDTO = sysUserService.findUserInfo(sysUser);
+		UserInfoDTO userInfoDTO = this.sysUserService.findUserInfo(sysUser);
 		return getUserDetailsByUserInfo(userInfoDTO);
 	}
 
@@ -68,7 +84,7 @@ public class SysUserDetailsServiceImpl implements UserDetailsService {
 		attributes.put(UserAttributeNameConstants.PERMISSIONS, permissions);
 
 		// 用户额外属性
-		userInfoCoordinator.coordinateAttribute(userInfoDTO, attributes);
+		this.userInfoCoordinator.coordinateAttribute(userInfoDTO, attributes);
 
 		return User.builder()
 			.userId(sysUser.getUserId())

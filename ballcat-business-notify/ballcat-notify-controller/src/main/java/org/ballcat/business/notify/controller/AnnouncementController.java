@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023-2024 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.ballcat.business.notify.controller;
 
 import java.util.List;
@@ -56,7 +72,7 @@ public class AnnouncementController {
 	@Operation(summary = "分页查询", description = "分页查询")
 	public R<PageResult<AnnouncementPageVO>> getAnnouncementPage(@Validated PageParam pageParam,
 			AnnouncementQO announcementQO) {
-		return R.ok(announcementService.queryPage(pageParam, announcementQO));
+		return R.ok(this.announcementService.queryPage(pageParam, announcementQO));
 	}
 
 	/**
@@ -69,7 +85,7 @@ public class AnnouncementController {
 	@Authorize("hasPermission('notify:announcement:add')")
 	@Operation(summary = "新增公告信息", description = "新增公告信息")
 	public R<Void> save(@Valid @RequestBody AnnouncementDTO announcementDTO) {
-		return announcementService.addAnnouncement(announcementDTO) ? R.ok()
+		return this.announcementService.addAnnouncement(announcementDTO) ? R.ok()
 				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "新增公告信息失败");
 	}
 
@@ -83,7 +99,7 @@ public class AnnouncementController {
 	@Authorize("hasPermission('notify:announcement:edit')")
 	@Operation(summary = "修改公告信息", description = "修改公告信息")
 	public R<Void> updateById(@Valid @RequestBody AnnouncementDTO announcementDTO) {
-		return announcementService.updateAnnouncement(announcementDTO) ? R.ok()
+		return this.announcementService.updateAnnouncement(announcementDTO) ? R.ok()
 				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "修改公告信息失败");
 	}
 
@@ -97,7 +113,7 @@ public class AnnouncementController {
 	@Authorize("hasPermission('notify:announcement:del')")
 	@Operation(summary = "通过id删除公告信息", description = "通过id删除公告信息")
 	public R<Void> removeById(@PathVariable("id") Long id) {
-		return announcementService.removeById(id) ? R.ok()
+		return this.announcementService.removeById(id) ? R.ok()
 				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "通过id删除公告信息失败");
 	}
 
@@ -110,7 +126,7 @@ public class AnnouncementController {
 	@Authorize("hasPermission('notify:announcement:edit')")
 	@Operation(summary = "发布公告信息", description = "发布公告信息")
 	public R<Void> enableAnnouncement(@PathVariable("announcementId") Long announcementId) {
-		return announcementService.publish(announcementId) ? R.ok()
+		return this.announcementService.publish(announcementId) ? R.ok()
 				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "发布公告信息失败");
 	}
 
@@ -123,7 +139,7 @@ public class AnnouncementController {
 	@Authorize("hasPermission('notify:announcement:edit')")
 	@Operation(summary = "关闭公告信息", description = "关闭公告信息")
 	public R<Void> disableAnnouncement(@PathVariable("announcementId") Long announcementId) {
-		return announcementService.close(announcementId) ? R.ok()
+		return this.announcementService.close(announcementId) ? R.ok()
 				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "关闭公告信息失败");
 	}
 
@@ -132,7 +148,7 @@ public class AnnouncementController {
 	@PostMapping("/image")
 	@Operation(summary = "公告内容图片上传", description = "公告内容图片上传")
 	public R<List<String>> uploadImages(@RequestParam("files") List<MultipartFile> files) {
-		List<String> objectNames = announcementService.uploadImages(files);
+		List<String> objectNames = this.announcementService.uploadImages(files);
 		return R.ok(objectNames);
 	}
 
