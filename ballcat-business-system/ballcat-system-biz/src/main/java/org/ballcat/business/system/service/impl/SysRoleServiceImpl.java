@@ -103,7 +103,7 @@ public class SysRoleServiceImpl extends ExtendServiceImpl<SysRoleMapper, SysRole
 		if (existsRoleCode(sysRole.getCode())) {
 			throw new BusinessException(BaseResultCode.LOGIC_CHECK_ERROR, "角色标识已存在！");
 		}
-		return SqlHelper.retBool(getBaseMapper().insert(sysRole));
+		return SqlHelper.retBool(this.baseMapper.insert(sysRole));
 	}
 
 }

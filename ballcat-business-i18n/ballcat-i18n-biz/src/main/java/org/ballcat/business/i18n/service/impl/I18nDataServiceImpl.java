@@ -104,7 +104,7 @@ public class I18nDataServiceImpl extends ExtendServiceImpl<I18nDataMapper, I18nD
 	@CacheDel(key = I18nRedisKeyConstants.I18N_DATA_PREFIX, keyJoint = "#p0.code + ':' + #p0.languageTag")
 	@Override
 	public boolean save(I18nData entity) {
-		return SqlHelper.retBool(getBaseMapper().insert(entity));
+		return SqlHelper.retBool(this.baseMapper.insert(entity));
 	}
 
 	/**

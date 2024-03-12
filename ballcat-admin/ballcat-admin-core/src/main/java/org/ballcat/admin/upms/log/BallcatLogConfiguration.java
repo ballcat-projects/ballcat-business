@@ -36,6 +36,7 @@ import org.ballcat.web.accesslog.AbstractAccessLogFilter;
 import org.ballcat.web.accesslog.AccessLogRecordOptions;
 import org.ballcat.web.accesslog.AccessLogRule;
 import org.ballcat.web.accesslog.annotation.AccessLogRuleFinder;
+import org.slf4j.event.Level;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -77,9 +78,11 @@ public class BallcatLogConfiguration {
 			List<AccessLogRule> accessLogRules = AccessLogRuleFinder.mergeRules(annotationRules, propertiesRules);
 
 			AccessLogRecordOptions defaultRecordOptions = accessLogProperties.getDefaultAccessLogRecordOptions();
+			Level defaultFilterLogLevel = accessLogProperties.getDefaultFilterLogLevel();
 
 			BusinessAccessLogFilter businessAccessLogFilter = new BusinessAccessLogFilter(defaultRecordOptions,
-					accessLogRules, new AccessLogSaveThread(accessLogService), principalAttributeAccessor);
+					accessLogRules, new AccessLogSaveThread(accessLogService), principalAttributeAccessor,
+					defaultFilterLogLevel);
 			businessAccessLogFilter.setMaxBodyLength(accessLogProperties.getMaxBodyLength());
 			businessAccessLogFilter.setOrder(accessLogProperties.getFilterOrder());
 			return businessAccessLogFilter;
