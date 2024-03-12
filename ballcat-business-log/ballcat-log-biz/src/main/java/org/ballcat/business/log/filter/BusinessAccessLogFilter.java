@@ -33,6 +33,7 @@ import org.ballcat.web.accesslog.AccessLogRecordOptions;
 import org.ballcat.web.accesslog.AccessLogRule;
 import org.ballcat.web.accesslog.DefaultAccessLogFilter;
 import org.slf4j.MDC;
+import org.slf4j.event.Level;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.HandlerMapping;
 
@@ -49,8 +50,9 @@ public class BusinessAccessLogFilter extends DefaultAccessLogFilter {
 	private final PrincipalAttributeAccessor principalAttributeAccessor;
 
 	public BusinessAccessLogFilter(AccessLogRecordOptions defaultRecordOptions, List<AccessLogRule> logRules,
-			AccessLogSaveThread accessLogSaveThread, PrincipalAttributeAccessor principalAttributeAccessor) {
-		super(defaultRecordOptions, logRules);
+			AccessLogSaveThread accessLogSaveThread, PrincipalAttributeAccessor principalAttributeAccessor,
+			Level logLevel) {
+		super(defaultRecordOptions, logRules, logLevel);
 		if (!accessLogSaveThread.isAlive()) {
 			accessLogSaveThread.start();
 		}
