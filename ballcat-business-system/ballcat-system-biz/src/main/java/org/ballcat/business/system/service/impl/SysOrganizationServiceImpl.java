@@ -38,7 +38,7 @@ import org.ballcat.business.system.service.SysUserService;
 import org.ballcat.common.core.constant.GlobalConstants;
 import org.ballcat.common.core.exception.BusinessException;
 import org.ballcat.common.model.result.BaseResultCode;
-import org.ballcat.common.util.tree.TreeUtils;
+import org.ballcat.common.util.TreeUtils;
 import org.ballcat.mybatisplus.service.impl.ExtendServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
