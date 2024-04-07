@@ -27,7 +27,7 @@ import org.ballcat.business.notify.model.vo.UserAnnouncementVO;
 import org.ballcat.business.notify.service.UserAnnouncementService;
 import org.ballcat.common.model.domain.PageParam;
 import org.ballcat.common.model.domain.PageResult;
-import org.ballcat.common.model.result.R;
+import org.ballcat.common.model.result.ApiResult;
 import org.ballcat.security.core.PrincipalAttributeAccessor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,28 +55,28 @@ public class UserAnnouncementController {
 	 * 分页查询
 	 * @param pageParam 分页参数
 	 * @param userAnnouncementQO 用户公告表查询对象
-	 * @return R 通用返回体
+	 * @return ApiResult 通用返回体
 	 */
 	@GetMapping("/page")
 	@Operation(summary = "分页查询", description = "分页查询")
-	public R<PageResult<UserAnnouncementPageVO>> getUserAnnouncementPage(@Validated PageParam pageParam,
+	public ApiResult<PageResult<UserAnnouncementPageVO>> getUserAnnouncementPage(@Validated PageParam pageParam,
 			UserAnnouncementQO userAnnouncementQO) {
-		return R.ok(this.userAnnouncementService.queryPage(pageParam, userAnnouncementQO));
+		return ApiResult.ok(this.userAnnouncementService.queryPage(pageParam, userAnnouncementQO));
 	}
 
 	@GetMapping("/list")
 	@Operation(summary = "用户公告信息", description = "用户公告信息")
-	public R<List<UserAnnouncementVO>> getUserAnnouncements() {
+	public ApiResult<List<UserAnnouncementVO>> getUserAnnouncements() {
 		Long userId = this.principalAttributeAccessor.getUserId();
-		return R.ok(this.userAnnouncementService.listActiveAnnouncements(userId));
+		return ApiResult.ok(this.userAnnouncementService.listActiveAnnouncements(userId));
 	}
 
 	@PatchMapping("/read/{announcementId}")
 	@Operation(summary = "用户公告已读上报", description = "用户公告已读上报")
-	public R<Void> readAnnouncement(@PathVariable("announcementId") Long announcementId) {
+	public ApiResult<Void> readAnnouncement(@PathVariable("announcementId") Long announcementId) {
 		Long userId = this.principalAttributeAccessor.getUserId();
 		this.userAnnouncementService.readAnnouncement(userId, announcementId);
-		return R.ok();
+		return ApiResult.ok();
 	}
 
 }

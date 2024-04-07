@@ -35,8 +35,8 @@ import org.ballcat.common.core.validation.group.CreateGroup;
 import org.ballcat.common.core.validation.group.UpdateGroup;
 import org.ballcat.common.model.domain.PageParam;
 import org.ballcat.common.model.domain.PageResult;
+import org.ballcat.common.model.result.ApiResult;
 import org.ballcat.common.model.result.BaseResultCode;
-import org.ballcat.common.model.result.R;
 import org.ballcat.log.operation.annotation.CreateOperationLogging;
 import org.ballcat.log.operation.annotation.DeleteOperationLogging;
 import org.ballcat.log.operation.annotation.UpdateOperationLogging;
@@ -73,8 +73,8 @@ public class SysDictController {
 	 * @return 同类型字典
 	 */
 	@GetMapping("/data")
-	public R<List<DictDataVO>> getDictData(@RequestParam("dictCodes") String[] dictCodes) {
-		return R.ok(this.sysDictManager.queryDictDataAndHashVO(dictCodes));
+	public ApiResult<List<DictDataVO>> getDictData(@RequestParam("dictCodes") String[] dictCodes) {
+		return ApiResult.ok(this.sysDictManager.queryDictDataAndHashVO(dictCodes));
 	}
 
 	/**
@@ -83,135 +83,136 @@ public class SysDictController {
 	 * @return 同类型字典
 	 */
 	@PostMapping("/invalid-hash")
-	public R<List<String>> invalidDictHash(@RequestBody Map<String, String> dictHashCode) {
-		return R.ok(this.sysDictManager.invalidDictHash(dictHashCode));
+	public ApiResult<List<String>> invalidDictHash(@RequestBody Map<String, String> dictHashCode) {
+		return ApiResult.ok(this.sysDictManager.invalidDictHash(dictHashCode));
 	}
 
 	/**
 	 * 分页查询
 	 * @param pageParam 分页参数
 	 * @param sysDictQO 字典查询参数
-	 * @return R<PageResult < SysDictVO>>
+	 * @return ApiResult<PageResult < SysDictVO>>
 	 */
 	@GetMapping("/page")
 	@Authorize("hasPermission('system:dict:read')")
 	@Operation(summary = "分页查询", description = "分页查询")
-	public R<PageResult<SysDictPageVO>> getSysDictPage(@Validated PageParam pageParam, SysDictQO sysDictQO) {
-		return R.ok(this.sysDictManager.dictPage(pageParam, sysDictQO));
+	public ApiResult<PageResult<SysDictPageVO>> getSysDictPage(@Validated PageParam pageParam, SysDictQO sysDictQO) {
+		return ApiResult.ok(this.sysDictManager.dictPage(pageParam, sysDictQO));
 	}
 
 	/**
 	 * 新增字典表
 	 * @param sysDict 字典表
-	 * @return R
+	 * @return ApiResult
 	 */
 	@CreateOperationLogging(msg = "新增字典表")
 	@PostMapping
 	@Authorize("hasPermission('system:dict:add')")
 	@Operation(summary = "新增字典表", description = "新增字典表")
-	public R<Void> save(@RequestBody SysDict sysDict) {
-		return this.sysDictManager.dictSave(sysDict) ? R.ok()
-				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "新增字典表失败");
+	public ApiResult<Void> save(@RequestBody SysDict sysDict) {
+		return this.sysDictManager.dictSave(sysDict) ? ApiResult.ok()
+				: ApiResult.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "新增字典表失败");
 	}
 
 	/**
 	 * 修改字典表
 	 * @param sysDict 字典表
-	 * @return R
+	 * @return ApiResult
 	 */
 	@UpdateOperationLogging(msg = "修改字典表")
 	@PutMapping
 	@Authorize("hasPermission('system:dict:edit')")
 	@Operation(summary = "修改字典表", description = "修改字典表")
-	public R<Void> updateById(@RequestBody SysDict sysDict) {
-		return this.sysDictManager.updateDictById(sysDict) ? R.ok()
-				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "修改字典表失败");
+	public ApiResult<Void> updateById(@RequestBody SysDict sysDict) {
+		return this.sysDictManager.updateDictById(sysDict) ? ApiResult.ok()
+				: ApiResult.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "修改字典表失败");
 	}
 
 	/**
 	 * 通过id删除字典表
 	 * @param id id
-	 * @return R
+	 * @return ApiResult
 	 */
 	@DeleteOperationLogging(msg = "通过id删除字典表")
 	@DeleteMapping("/{id}")
 	@Authorize("hasPermission('system:dict:del')")
 	@Operation(summary = "通过id删除字典表", description = "通过id删除字典表")
-	public R<Void> removeById(@PathVariable("id") Long id) {
+	public ApiResult<Void> removeById(@PathVariable("id") Long id) {
 		this.sysDictManager.removeDictById(id);
-		return R.ok();
+		return ApiResult.ok();
 	}
 
 	/**
 	 * 分页查询
 	 * @param pageParam 分页参数
 	 * @param dictCode 字典标识
-	 * @return R
+	 * @return ApiResult
 	 */
 	@GetMapping("/item/page")
 	@Authorize("hasPermission('system:dict:read')")
 	@Operation(summary = "分页查询", description = "分页查询")
-	public R<PageResult<SysDictItemPageVO>> getSysDictItemPage(PageParam pageParam,
+	public ApiResult<PageResult<SysDictItemPageVO>> getSysDictItemPage(PageParam pageParam,
 			@RequestParam("dictCode") String dictCode) {
-		return R.ok(this.sysDictManager.dictItemPage(pageParam, dictCode));
+		return ApiResult.ok(this.sysDictManager.dictItemPage(pageParam, dictCode));
 	}
 
 	/**
 	 * 新增字典项
 	 * @param sysDictItemDTO 字典项
-	 * @return R
+	 * @return ApiResult
 	 */
 	@CreateOperationLogging(msg = "新增字典项")
 	@PostMapping("item")
 	@Authorize("hasPermission('system:dict:add')")
 	@Operation(summary = "新增字典项", description = "新增字典项")
-	public R<Void> saveItem(
+	public ApiResult<Void> saveItem(
 			@Validated({ Default.class, CreateGroup.class }) @RequestBody SysDictItemDTO sysDictItemDTO) {
-		return this.sysDictManager.saveDictItem(sysDictItemDTO) ? R.ok()
-				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "新增字典项失败");
+		return this.sysDictManager.saveDictItem(sysDictItemDTO) ? ApiResult.ok()
+				: ApiResult.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "新增字典项失败");
 	}
 
 	/**
 	 * 修改字典项
 	 * @param sysDictItemDTO 字典项
-	 * @return R
+	 * @return ApiResult
 	 */
 	@UpdateOperationLogging(msg = "修改字典项")
 	@PutMapping("item")
 	@Authorize("hasPermission('system:dict:edit')")
 	@Operation(summary = "修改字典项", description = "修改字典项")
-	public R<Void> updateItemById(
+	public ApiResult<Void> updateItemById(
 			@Validated({ Default.class, UpdateGroup.class }) @RequestBody SysDictItemDTO sysDictItemDTO) {
-		return this.sysDictManager.updateDictItemById(sysDictItemDTO) ? R.ok()
-				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "修改字典项失败");
+		return this.sysDictManager.updateDictItemById(sysDictItemDTO) ? ApiResult.ok()
+				: ApiResult.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "修改字典项失败");
 	}
 
 	/**
 	 * 通过id删除字典项
 	 * @param id id
-	 * @return R
+	 * @return ApiResult
 	 */
 	@DeleteOperationLogging(msg = "通过id删除字典项")
 	@DeleteMapping("/item/{id}")
 	@Authorize("hasPermission('system:dict:del')")
 	@Operation(summary = "通过id删除字典项", description = "通过id删除字典项")
-	public R<Void> removeItemById(@PathVariable("id") Long id) {
-		return this.sysDictManager.removeDictItemById(id) ? R.ok()
-				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "通过id删除字典项失败");
+	public ApiResult<Void> removeItemById(@PathVariable("id") Long id) {
+		return this.sysDictManager.removeDictItemById(id) ? ApiResult.ok()
+				: ApiResult.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "通过id删除字典项失败");
 	}
 
 	/**
 	 * 通过id修改字典项状态
 	 * @param id id
-	 * @return R
+	 * @return ApiResult
 	 */
 	@UpdateOperationLogging(msg = "通过id修改字典项状态")
 	@PatchMapping("/item/{id}")
 	@Authorize("hasPermission('system:dict:edit')")
 	@Operation(summary = "通过id修改字典项状态", description = "通过id修改字典项状态")
-	public R<Void> updateDictItemStatusById(@PathVariable("id") Long id, @RequestParam("status") Integer status) {
+	public ApiResult<Void> updateDictItemStatusById(@PathVariable("id") Long id,
+			@RequestParam("status") Integer status) {
 		this.sysDictManager.updateDictItemStatusById(id, status);
-		return R.ok();
+		return ApiResult.ok();
 	}
 
 }

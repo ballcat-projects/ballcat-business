@@ -47,8 +47,8 @@ import org.ballcat.common.core.validation.group.UpdateGroup;
 import org.ballcat.common.model.domain.PageParam;
 import org.ballcat.common.model.domain.PageResult;
 import org.ballcat.common.model.domain.SelectData;
+import org.ballcat.common.model.result.ApiResult;
 import org.ballcat.common.model.result.BaseResultCode;
-import org.ballcat.common.model.result.R;
 import org.ballcat.common.model.result.SystemResultCode;
 import org.ballcat.log.operation.annotation.CreateOperationLogging;
 import org.ballcat.log.operation.annotation.DeleteOperationLogging;
@@ -94,8 +94,8 @@ public class SysUserController {
 	@GetMapping("/page")
 	@Authorize("hasPermission('system:user:read')")
 	@Operation(summary = "分页查询系统用户")
-	public R<PageResult<SysUserPageVO>> getUserPage(@Validated PageParam pageParam, SysUserQO qo) {
-		return R.ok(this.sysUserService.queryPage(pageParam, qo));
+	public ApiResult<PageResult<SysUserPageVO>> getUserPage(@Validated PageParam pageParam, SysUserQO qo) {
+		return ApiResult.ok(this.sysUserService.queryPage(pageParam, qo));
 	}
 
 	/**
@@ -105,9 +105,9 @@ public class SysUserController {
 	@GetMapping("/select")
 	@Authorize("hasPermission('system:user:read')")
 	@Operation(summary = "获取用户下拉列表数据")
-	public R<List<SelectData<Void>>> listSelectData(
+	public ApiResult<List<SelectData<Void>>> listSelectData(
 			@RequestParam(value = "userTypes", required = false) List<Integer> userTypes) {
-		return R.ok(this.sysUserService.listSelectData(userTypes));
+		return ApiResult.ok(this.sysUserService.listSelectData(userTypes));
 	}
 
 	/**
@@ -118,13 +118,13 @@ public class SysUserController {
 	@GetMapping("/{userId}")
 	@Authorize("hasPermission('system:user:read')")
 	@Operation(summary = "获取指定用户的基本信息")
-	public R<SysUserInfo> getSysUserInfo(@PathVariable("userId") Long userId) {
+	public ApiResult<SysUserInfo> getSysUserInfo(@PathVariable("userId") Long userId) {
 		SysUser sysUser = this.sysUserService.getById(userId);
 		if (sysUser == null) {
-			return R.ok();
+			return ApiResult.ok();
 		}
 		SysUserInfo sysUserInfo = SysUserConverter.INSTANCE.poToInfo(sysUser);
-		return R.ok(sysUserInfo);
+		return ApiResult.ok(sysUserInfo);
 	}
 
 	/**
@@ -136,10 +136,11 @@ public class SysUserController {
 	@CreateOperationLogging(msg = "新增系统用户")
 	@Authorize("hasPermission('system:user:add')")
 	@Operation(summary = "新增系统用户", description = "新增系统用户")
-	public R<Void> addSysUser(@Validated({ Default.class, CreateGroup.class }) @RequestBody SysUserDTO sysUserDTO) {
+	public ApiResult<Void> addSysUser(
+			@Validated({ Default.class, CreateGroup.class }) @RequestBody SysUserDTO sysUserDTO) {
 		SysUser user = this.sysUserService.getByUsername(sysUserDTO.getUsername());
 		if (user != null) {
-			return R.failed(BaseResultCode.LOGIC_CHECK_ERROR, "用户名已存在");
+			return ApiResult.failed(BaseResultCode.LOGIC_CHECK_ERROR, "用户名已存在");
 		}
 
 		// 明文密码
@@ -148,11 +149,11 @@ public class SysUserController {
 
 		// 密码规则校验
 		if (this.passwordHelper.validateRule(rawPassword)) {
-			return this.sysUserService.addSysUser(sysUserDTO) ? R.ok()
-					: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "新增系统用户失败");
+			return this.sysUserService.addSysUser(sysUserDTO) ? ApiResult.ok()
+					: ApiResult.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "新增系统用户失败");
 		}
 		else {
-			return R.failed(SystemResultCode.BAD_REQUEST, "密码格式不符合规则!");
+			return ApiResult.failed(SystemResultCode.BAD_REQUEST, "密码格式不符合规则!");
 		}
 	}
 
@@ -165,9 +166,10 @@ public class SysUserController {
 	@UpdateOperationLogging(msg = "修改系统用户")
 	@Authorize("hasPermission('system:user:edit')")
 	@Operation(summary = "修改系统用户", description = "修改系统用户")
-	public R<Void> updateUserInfo(@Validated({ Default.class, UpdateGroup.class }) @RequestBody SysUserDTO sysUserDto) {
-		return this.sysUserService.updateSysUser(sysUserDto) ? R.ok()
-				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "修改系统用户失败");
+	public ApiResult<Void> updateUserInfo(
+			@Validated({ Default.class, UpdateGroup.class }) @RequestBody SysUserDTO sysUserDto) {
+		return this.sysUserService.updateSysUser(sysUserDto) ? ApiResult.ok()
+				: ApiResult.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "修改系统用户失败");
 	}
 
 	/**
@@ -177,9 +179,9 @@ public class SysUserController {
 	@DeleteOperationLogging(msg = "通过id删除系统用户")
 	@Authorize("hasPermission('system:user:del')")
 	@Operation(summary = "通过id删除系统用户", description = "通过id删除系统用户")
-	public R<Void> deleteByUserId(@PathVariable("userId") Long userId) {
-		return this.sysUserService.deleteByUserId(userId) ? R.ok()
-				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "删除系统用户失败");
+	public ApiResult<Void> deleteByUserId(@PathVariable("userId") Long userId) {
+		return this.sysUserService.deleteByUserId(userId) ? ApiResult.ok()
+				: ApiResult.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "删除系统用户失败");
 	}
 
 	/**
@@ -188,7 +190,7 @@ public class SysUserController {
 	 */
 	@GetMapping("/scope/{userId}")
 	@Authorize("hasPermission('system:user:grant')")
-	public R<SysUserScope> getUserRoleIds(@PathVariable("userId") Long userId) {
+	public ApiResult<SysUserScope> getUserRoleIds(@PathVariable("userId") Long userId) {
 
 		List<SysRole> roleList = this.sysUserRoleService.listRoles(userId);
 
@@ -200,7 +202,7 @@ public class SysUserController {
 		SysUserScope sysUserScope = new SysUserScope();
 		sysUserScope.setRoleCodes(roleCodes);
 
-		return R.ok(sysUserScope);
+		return ApiResult.ok(sysUserScope);
 	}
 
 	/**
@@ -212,9 +214,10 @@ public class SysUserController {
 	@UpdateOperationLogging(msg = "系统用户授权")
 	@Authorize("hasPermission('system:user:grant')")
 	@Operation(summary = "系统用户授权", description = "系统用户授权")
-	public R<Void> updateUserScope(@PathVariable("userId") Long userId, @RequestBody SysUserScope sysUserScope) {
-		return this.sysUserService.updateUserScope(userId, sysUserScope) ? R.ok()
-				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "系统用户授权失败");
+	public ApiResult<Void> updateUserScope(@PathVariable("userId") Long userId,
+			@RequestBody SysUserScope sysUserScope) {
+		return this.sysUserService.updateUserScope(userId, sysUserScope) ? ApiResult.ok()
+				: ApiResult.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "系统用户授权失败");
 	}
 
 	/**
@@ -224,21 +227,22 @@ public class SysUserController {
 	@UpdateOperationLogging(msg = "修改系统用户密码")
 	@Authorize("hasPermission('system:user:pass')")
 	@Operation(summary = "修改系统用户密码", description = "修改系统用户密码")
-	public R<Void> updateUserPass(@PathVariable("userId") Long userId, @RequestBody SysUserPassDTO sysUserPassDTO) {
+	public ApiResult<Void> updateUserPass(@PathVariable("userId") Long userId,
+			@RequestBody SysUserPassDTO sysUserPassDTO) {
 		String pass = sysUserPassDTO.getPass();
 		if (!pass.equals(sysUserPassDTO.getConfirmPass())) {
-			return R.failed(SystemResultCode.BAD_REQUEST, "两次密码输入不一致!");
+			return ApiResult.failed(SystemResultCode.BAD_REQUEST, "两次密码输入不一致!");
 		}
 
 		// 解密明文密码
 		String rawPassword = this.passwordHelper.decodeAes(pass);
 		// 密码规则校验
 		if (this.passwordHelper.validateRule(rawPassword)) {
-			return this.sysUserService.updatePassword(userId, rawPassword) ? R.ok()
-					: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "修改用户密码失败！");
+			return this.sysUserService.updatePassword(userId, rawPassword) ? ApiResult.ok()
+					: ApiResult.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "修改用户密码失败！");
 		}
 		else {
-			return R.failed(SystemResultCode.BAD_REQUEST, "密码格式不符合规则!");
+			return ApiResult.failed(SystemResultCode.BAD_REQUEST, "密码格式不符合规则!");
 		}
 	}
 
@@ -249,31 +253,32 @@ public class SysUserController {
 	@UpdateOperationLogging(msg = "批量修改用户状态")
 	@Authorize("hasPermission('system:user:edit')")
 	@Operation(summary = "批量修改用户状态", description = "批量修改用户状态")
-	public R<Void> updateUserStatus(@NotEmpty(message = "用户ID不能为空") @RequestBody List<Long> userIds,
+	public ApiResult<Void> updateUserStatus(@NotEmpty(message = "用户ID不能为空") @RequestBody List<Long> userIds,
 			@NotNull(message = "用户状态不能为空") @RequestParam("status") Integer status) {
 
 		if (!SysUserConst.Status.NORMAL.getValue().equals(status)
 				&& !SysUserConst.Status.LOCKED.getValue().equals(status)) {
 			throw new ValidationException("不支持的用户状态！");
 		}
-		return this.sysUserService.updateUserStatusBatch(userIds, status) ? R.ok()
-				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "批量修改用户状态！");
+		return this.sysUserService.updateUserStatusBatch(userIds, status) ? ApiResult.ok()
+				: ApiResult.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "批量修改用户状态！");
 	}
 
 	@UpdateOperationLogging(msg = "修改系统用户头像")
 	@Authorize("hasPermission('system:user:edit')")
 	@PostMapping("/avatar")
 	@Operation(summary = "修改系统用户头像", description = "修改系统用户头像")
-	public R<String> updateAvatar(@RequestParam("file") MultipartFile file, @RequestParam("userId") Long userId) {
+	public ApiResult<String> updateAvatar(@RequestParam("file") MultipartFile file,
+			@RequestParam("userId") Long userId) {
 		String objectName;
 		try {
 			objectName = this.sysUserService.updateAvatar(file, userId);
 		}
 		catch (IOException e) {
 			log.error("修改系统用户头像异常", e);
-			return R.failed(BaseResultCode.FILE_UPLOAD_ERROR);
+			return ApiResult.failed(BaseResultCode.FILE_UPLOAD_ERROR);
 		}
-		return R.ok(objectName);
+		return ApiResult.ok(objectName);
 	}
 
 }

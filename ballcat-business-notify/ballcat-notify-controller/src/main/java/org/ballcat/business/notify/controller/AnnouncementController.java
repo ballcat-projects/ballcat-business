@@ -29,8 +29,8 @@ import org.ballcat.business.notify.model.vo.AnnouncementPageVO;
 import org.ballcat.business.notify.service.AnnouncementService;
 import org.ballcat.common.model.domain.PageParam;
 import org.ballcat.common.model.domain.PageResult;
+import org.ballcat.common.model.result.ApiResult;
 import org.ballcat.common.model.result.BaseResultCode;
-import org.ballcat.common.model.result.R;
 import org.ballcat.log.operation.annotation.CreateOperationLogging;
 import org.ballcat.log.operation.annotation.DeleteOperationLogging;
 import org.ballcat.log.operation.annotation.UpdateOperationLogging;
@@ -65,91 +65,91 @@ public class AnnouncementController {
 	 * 分页查询
 	 * @param pageParam 分页对象
 	 * @param announcementQO 公告信息查询对象
-	 * @return R 通用返回体
+	 * @return ApiResult 通用返回体
 	 */
 	@GetMapping("/page")
 	@Authorize("hasPermission('notify:announcement:read')")
 	@Operation(summary = "分页查询", description = "分页查询")
-	public R<PageResult<AnnouncementPageVO>> getAnnouncementPage(@Validated PageParam pageParam,
+	public ApiResult<PageResult<AnnouncementPageVO>> getAnnouncementPage(@Validated PageParam pageParam,
 			AnnouncementQO announcementQO) {
-		return R.ok(this.announcementService.queryPage(pageParam, announcementQO));
+		return ApiResult.ok(this.announcementService.queryPage(pageParam, announcementQO));
 	}
 
 	/**
 	 * 新增公告信息
 	 * @param announcementDTO 公告信息
-	 * @return R 通用返回体
+	 * @return ApiResult 通用返回体
 	 */
 	@CreateOperationLogging(msg = "新增公告信息")
 	@PostMapping
 	@Authorize("hasPermission('notify:announcement:add')")
 	@Operation(summary = "新增公告信息", description = "新增公告信息")
-	public R<Void> save(@Valid @RequestBody AnnouncementDTO announcementDTO) {
-		return this.announcementService.addAnnouncement(announcementDTO) ? R.ok()
-				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "新增公告信息失败");
+	public ApiResult<Void> save(@Valid @RequestBody AnnouncementDTO announcementDTO) {
+		return this.announcementService.addAnnouncement(announcementDTO) ? ApiResult.ok()
+				: ApiResult.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "新增公告信息失败");
 	}
 
 	/**
 	 * 修改公告信息
 	 * @param announcementDTO 公告信息
-	 * @return R 通用返回体
+	 * @return ApiResult 通用返回体
 	 */
 	@UpdateOperationLogging(msg = "修改公告信息")
 	@PutMapping
 	@Authorize("hasPermission('notify:announcement:edit')")
 	@Operation(summary = "修改公告信息", description = "修改公告信息")
-	public R<Void> updateById(@Valid @RequestBody AnnouncementDTO announcementDTO) {
-		return this.announcementService.updateAnnouncement(announcementDTO) ? R.ok()
-				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "修改公告信息失败");
+	public ApiResult<Void> updateById(@Valid @RequestBody AnnouncementDTO announcementDTO) {
+		return this.announcementService.updateAnnouncement(announcementDTO) ? ApiResult.ok()
+				: ApiResult.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "修改公告信息失败");
 	}
 
 	/**
 	 * 通过id删除公告信息
 	 * @param id id
-	 * @return R 通用返回体
+	 * @return ApiResult 通用返回体
 	 */
 	@DeleteOperationLogging(msg = "通过id删除公告信息")
 	@DeleteMapping("/{id}")
 	@Authorize("hasPermission('notify:announcement:del')")
 	@Operation(summary = "通过id删除公告信息", description = "通过id删除公告信息")
-	public R<Void> removeById(@PathVariable("id") Long id) {
-		return this.announcementService.removeById(id) ? R.ok()
-				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "通过id删除公告信息失败");
+	public ApiResult<Void> removeById(@PathVariable("id") Long id) {
+		return this.announcementService.removeById(id) ? ApiResult.ok()
+				: ApiResult.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "通过id删除公告信息失败");
 	}
 
 	/**
 	 * 发布公告信息
-	 * @return R 通用返回体
+	 * @return ApiResult 通用返回体
 	 */
 	@UpdateOperationLogging(msg = "发布公告信息")
 	@PatchMapping("/publish/{announcementId}")
 	@Authorize("hasPermission('notify:announcement:edit')")
 	@Operation(summary = "发布公告信息", description = "发布公告信息")
-	public R<Void> enableAnnouncement(@PathVariable("announcementId") Long announcementId) {
-		return this.announcementService.publish(announcementId) ? R.ok()
-				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "发布公告信息失败");
+	public ApiResult<Void> enableAnnouncement(@PathVariable("announcementId") Long announcementId) {
+		return this.announcementService.publish(announcementId) ? ApiResult.ok()
+				: ApiResult.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "发布公告信息失败");
 	}
 
 	/**
 	 * 关闭公告信息
-	 * @return R 通用返回体
+	 * @return ApiResult 通用返回体
 	 */
 	@UpdateOperationLogging(msg = "关闭公告信息")
 	@PatchMapping("/close/{announcementId}")
 	@Authorize("hasPermission('notify:announcement:edit')")
 	@Operation(summary = "关闭公告信息", description = "关闭公告信息")
-	public R<Void> disableAnnouncement(@PathVariable("announcementId") Long announcementId) {
-		return this.announcementService.close(announcementId) ? R.ok()
-				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "关闭公告信息失败");
+	public ApiResult<Void> disableAnnouncement(@PathVariable("announcementId") Long announcementId) {
+		return this.announcementService.close(announcementId) ? ApiResult.ok()
+				: ApiResult.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "关闭公告信息失败");
 	}
 
 	@UpdateOperationLogging(msg = "公告内容图片上传", recordParams = false)
 	@Authorize("hasPermission('notify:announcement:edit')")
 	@PostMapping("/image")
 	@Operation(summary = "公告内容图片上传", description = "公告内容图片上传")
-	public R<List<String>> uploadImages(@RequestParam("files") List<MultipartFile> files) {
+	public ApiResult<List<String>> uploadImages(@RequestParam("files") List<MultipartFile> files) {
 		List<String> objectNames = this.announcementService.uploadImages(files);
-		return R.ok(objectNames);
+		return ApiResult.ok(objectNames);
 	}
 
 }

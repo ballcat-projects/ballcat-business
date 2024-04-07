@@ -24,7 +24,7 @@ import org.ballcat.business.log.model.vo.LoginLogPageVO;
 import org.ballcat.business.log.service.LoginLogService;
 import org.ballcat.common.model.domain.PageParam;
 import org.ballcat.common.model.domain.PageResult;
-import org.ballcat.common.model.result.R;
+import org.ballcat.common.model.result.ApiResult;
 import org.ballcat.security.annotation.Authorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,13 +48,14 @@ public class LoginLogController {
 	 * 分页查询
 	 * @param pageParam 分页参数
 	 * @param loginLogQO 登录日志查询对象
-	 * @return R 通用返回体
+	 * @return ApiResult 通用返回体
 	 */
 	@GetMapping("/page")
 	@Authorize("hasPermission('log:login-log:read')")
 	@Operation(summary = "分页查询", description = "分页查询")
-	public R<PageResult<LoginLogPageVO>> getLoginLogPage(@Validated PageParam pageParam, LoginLogQO loginLogQO) {
-		return R.ok(this.loginLogService.queryPage(pageParam, loginLogQO));
+	public ApiResult<PageResult<LoginLogPageVO>> getLoginLogPage(@Validated PageParam pageParam,
+			LoginLogQO loginLogQO) {
+		return ApiResult.ok(this.loginLogService.queryPage(pageParam, loginLogQO));
 	}
 
 }

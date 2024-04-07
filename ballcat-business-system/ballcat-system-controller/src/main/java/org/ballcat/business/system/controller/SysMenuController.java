@@ -40,8 +40,8 @@ import org.ballcat.business.system.model.vo.SysMenuPageVO;
 import org.ballcat.business.system.model.vo.SysMenuRouterVO;
 import org.ballcat.business.system.service.SysMenuService;
 import org.ballcat.business.system.service.SysUserRoleService;
+import org.ballcat.common.model.result.ApiResult;
 import org.ballcat.common.model.result.BaseResultCode;
-import org.ballcat.common.model.result.R;
 import org.ballcat.common.util.Assert;
 import org.ballcat.log.operation.annotation.CreateOperationLogging;
 import org.ballcat.log.operation.annotation.DeleteOperationLogging;
@@ -82,7 +82,7 @@ public class SysMenuController {
 	 */
 	@GetMapping("/router")
 	@Operation(summary = "动态路由", description = "动态路由")
-	public R<List<SysMenuRouterVO>> getUserPermission() {
+	public ApiResult<List<SysMenuRouterVO>> getUserPermission() {
 		// 获取角色Code
 		Long userId = this.principalAttributeAccessor.getUserId();
 		Assert.notNull(userId, () -> new SecurityException("获取登录用户信息失败！"));
@@ -90,7 +90,7 @@ public class SysMenuController {
 		// 获取用户角色
 		List<String> roleCodes = this.userRoleService.listRoleCodes(userId);
 		if (CollectionUtils.isEmpty(roleCodes)) {
-			return R.ok(new ArrayList<>());
+			return ApiResult.ok(new ArrayList<>());
 		}
 
 		// 获取符合条件的权限
@@ -104,86 +104,86 @@ public class SysMenuController {
 			.map(SysMenuConverter.INSTANCE::poToRouterVo)
 			.collect(Collectors.toList());
 
-		return R.ok(menuVOList);
+		return ApiResult.ok(menuVOList);
 	}
 
 	/**
 	 * 查询菜单列表
 	 * @param sysMenuQO 菜单权限查询对象
-	 * @return R 通用返回体
+	 * @return ApiResult 通用返回体
 	 */
 	@GetMapping("/list")
 	@Authorize("hasPermission('system:menu:read')")
 	@Operation(summary = "查询菜单列表", description = "查询菜单列表")
-	public R<List<SysMenuPageVO>> getSysMenuPage(SysMenuQO sysMenuQO) {
+	public ApiResult<List<SysMenuPageVO>> getSysMenuPage(SysMenuQO sysMenuQO) {
 		List<SysMenu> sysMenus = this.sysMenuService.listOrderBySort(sysMenuQO);
 		if (CollectionUtils.isEmpty(sysMenus)) {
-			R.ok(new ArrayList<>());
+			ApiResult.ok(new ArrayList<>());
 		}
 		List<SysMenuPageVO> voList = sysMenus.stream()
 			.map(SysMenuConverter.INSTANCE::poToPageVo)
 			.collect(Collectors.toList());
-		return R.ok(voList);
+		return ApiResult.ok(voList);
 	}
 
 	/**
 	 * 查询授权菜单列表
-	 * @return R 通用返回体
+	 * @return ApiResult 通用返回体
 	 */
 	@GetMapping("/grant-list")
 	@Authorize("hasPermission('system:menu:read')")
 	@Operation(summary = "查询授权菜单列表", description = "查询授权菜单列表")
-	public R<List<SysMenuGrantVO>> getSysMenuGrantList() {
+	public ApiResult<List<SysMenuGrantVO>> getSysMenuGrantList() {
 		List<SysMenu> sysMenus = this.sysMenuService.list();
 		if (CollectionUtils.isEmpty(sysMenus)) {
-			R.ok(new ArrayList<>());
+			ApiResult.ok(new ArrayList<>());
 		}
 		List<SysMenuGrantVO> voList = sysMenus.stream()
 			.map(SysMenuConverter.INSTANCE::poToGrantVo)
 			.collect(Collectors.toList());
-		return R.ok(voList);
+		return ApiResult.ok(voList);
 	}
 
 	/**
 	 * 新增菜单权限
 	 * @param sysMenuCreateDTO 菜单权限
-	 * @return R 通用返回体
+	 * @return ApiResult 通用返回体
 	 */
 	@CreateOperationLogging(msg = "新增菜单权限")
 	@PostMapping
 	@Authorize("hasPermission('system:menu:add')")
 	@Operation(summary = "新增菜单权限", description = "新增菜单权限")
-	public R<Void> save(@Valid @RequestBody SysMenuCreateDTO sysMenuCreateDTO) {
-		return this.sysMenuService.create(sysMenuCreateDTO) ? R.ok()
-				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "新增菜单权限失败");
+	public ApiResult<Void> save(@Valid @RequestBody SysMenuCreateDTO sysMenuCreateDTO) {
+		return this.sysMenuService.create(sysMenuCreateDTO) ? ApiResult.ok()
+				: ApiResult.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "新增菜单权限失败");
 	}
 
 	/**
 	 * 修改菜单权限
 	 * @param sysMenuUpdateDTO 菜单权限修改DTO
-	 * @return R 通用返回体
+	 * @return ApiResult 通用返回体
 	 */
 	@UpdateOperationLogging(msg = "修改菜单权限")
 	@PutMapping
 	@Authorize("hasPermission('system:menu:edit')")
 	@Operation(summary = "修改菜单权限", description = "修改菜单权限")
-	public R<Void> updateById(@RequestBody SysMenuUpdateDTO sysMenuUpdateDTO) {
+	public ApiResult<Void> updateById(@RequestBody SysMenuUpdateDTO sysMenuUpdateDTO) {
 		this.sysMenuService.update(sysMenuUpdateDTO);
-		return R.ok();
+		return ApiResult.ok();
 	}
 
 	/**
 	 * 通过id删除菜单权限
 	 * @param id id
-	 * @return R 通用返回体
+	 * @return ApiResult 通用返回体
 	 */
 	@DeleteOperationLogging(msg = "通过id删除菜单权限")
 	@DeleteMapping("/{id}")
 	@Authorize("hasPermission('system:menu:del')")
 	@Operation(summary = "通过id删除菜单权限", description = "通过id删除菜单权限")
-	public R<Void> removeById(@PathVariable("id") Long id) {
-		return this.sysMenuService.removeById(id) ? R.ok()
-				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "通过id删除菜单权限失败");
+	public ApiResult<Void> removeById(@PathVariable("id") Long id) {
+		return this.sysMenuService.removeById(id) ? ApiResult.ok()
+				: ApiResult.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "通过id删除菜单权限失败");
 	}
 
 }

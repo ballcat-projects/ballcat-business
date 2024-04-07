@@ -24,7 +24,7 @@ import org.ballcat.business.log.model.vo.OperationLogPageVO;
 import org.ballcat.business.log.service.OperationLogService;
 import org.ballcat.common.model.domain.PageParam;
 import org.ballcat.common.model.domain.PageResult;
-import org.ballcat.common.model.result.R;
+import org.ballcat.common.model.result.ApiResult;
 import org.ballcat.security.annotation.Authorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,14 +48,14 @@ public class OperationLogController {
 	 * 分页查询
 	 * @param pageParam 分页参数
 	 * @param operationLogQO 操作日志
-	 * @return R
+	 * @return ApiResult
 	 */
 	@GetMapping("/page")
 	@Authorize("hasPermission('log:operation-log:read')")
 	@Operation(summary = "分页查询", description = "分页查询")
-	public R<PageResult<OperationLogPageVO>> getOperationLogAdminPage(@Validated PageParam pageParam,
+	public ApiResult<PageResult<OperationLogPageVO>> getOperationLogAdminPage(@Validated PageParam pageParam,
 			OperationLogQO operationLogQO) {
-		return R.ok(this.operationLogService.queryPage(pageParam, operationLogQO));
+		return ApiResult.ok(this.operationLogService.queryPage(pageParam, operationLogQO));
 	}
 
 }

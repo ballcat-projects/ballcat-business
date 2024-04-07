@@ -31,8 +31,8 @@ import org.ballcat.business.system.model.qo.SysOrganizationQO;
 import org.ballcat.business.system.model.vo.SysOrganizationTree;
 import org.ballcat.business.system.model.vo.SysOrganizationVO;
 import org.ballcat.business.system.service.SysOrganizationService;
+import org.ballcat.common.model.result.ApiResult;
 import org.ballcat.common.model.result.BaseResultCode;
-import org.ballcat.common.model.result.R;
 import org.ballcat.log.operation.annotation.CreateOperationLogging;
 import org.ballcat.log.operation.annotation.DeleteOperationLogging;
 import org.ballcat.log.operation.annotation.UpdateOperationLogging;
@@ -63,88 +63,88 @@ public class SysOrganizationController {
 
 	/**
 	 * 组织架构列表查询
-	 * @return R 通用返回体
+	 * @return ApiResult 通用返回体
 	 */
 	@GetMapping("/list")
 	@Authorize("hasPermission('system:organization:read')")
 	@Operation(summary = "组织架构列表查询")
-	public R<List<SysOrganizationVO>> listOrganization() {
+	public ApiResult<List<SysOrganizationVO>> listOrganization() {
 		List<SysOrganization> list = this.sysOrganizationService.list();
 		if (CollectionUtils.isEmpty(list)) {
-			return R.ok(new ArrayList<>());
+			return ApiResult.ok(new ArrayList<>());
 		}
 		List<SysOrganizationVO> voList = list.stream()
 			.sorted(Comparator.comparingInt(SysOrganization::getSort))
 			.map(SysOrganizationConverter.INSTANCE::poToVo)
 			.collect(Collectors.toList());
-		return R.ok(voList);
+		return ApiResult.ok(voList);
 	}
 
 	/**
 	 * 组织架构树查询
 	 * @param qo 组织机构查询条件
-	 * @return R 通用返回体
+	 * @return ApiResult 通用返回体
 	 */
 	@GetMapping("/tree")
 	@Authorize("hasPermission('system:organization:read')")
 	@Operation(summary = "组织架构树查询")
-	public R<List<SysOrganizationTree>> getOrganizationTree(SysOrganizationQO qo) {
-		return R.ok(this.sysOrganizationService.listTree(qo));
+	public ApiResult<List<SysOrganizationTree>> getOrganizationTree(SysOrganizationQO qo) {
+		return ApiResult.ok(this.sysOrganizationService.listTree(qo));
 	}
 
 	/**
 	 * 新增组织架构
 	 * @param sysOrganizationDTO 组织机构DTO
-	 * @return R 通用返回体
+	 * @return ApiResult 通用返回体
 	 */
 	@CreateOperationLogging(msg = "新增组织架构")
 	@PostMapping
 	@Authorize("hasPermission('system:organization:add')")
 	@Operation(summary = "新增组织架构")
-	public R<Void> save(@RequestBody SysOrganizationDTO sysOrganizationDTO) {
-		return this.sysOrganizationService.create(sysOrganizationDTO) ? R.ok()
-				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "新增组织架构失败");
+	public ApiResult<Void> save(@RequestBody SysOrganizationDTO sysOrganizationDTO) {
+		return this.sysOrganizationService.create(sysOrganizationDTO) ? ApiResult.ok()
+				: ApiResult.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "新增组织架构失败");
 	}
 
 	/**
 	 * 修改组织架构
 	 * @param sysOrganizationDTO 组织机构DTO
-	 * @return R 通用返回体
+	 * @return ApiResult 通用返回体
 	 */
 	@UpdateOperationLogging(msg = "修改组织架构")
 	@PutMapping
 	@Authorize("hasPermission('system:organization:edit')")
 	@Operation(summary = "修改组织架构")
-	public R<Void> updateById(@RequestBody SysOrganizationDTO sysOrganizationDTO) {
-		return this.sysOrganizationService.update(sysOrganizationDTO) ? R.ok()
-				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "修改组织架构失败");
+	public ApiResult<Void> updateById(@RequestBody SysOrganizationDTO sysOrganizationDTO) {
+		return this.sysOrganizationService.update(sysOrganizationDTO) ? ApiResult.ok()
+				: ApiResult.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "修改组织架构失败");
 	}
 
 	/**
 	 * 通过id删除组织架构
 	 * @param id id
-	 * @return R 通用返回体
+	 * @return ApiResult 通用返回体
 	 */
 	@DeleteOperationLogging(msg = "通过id删除组织架构")
 	@DeleteMapping("/{id}")
 	@Authorize("hasPermission('system:organization:del')")
 	@Operation(summary = "通过id删除组织架构")
-	public R<Void> removeById(@PathVariable("id") Long id) {
-		return this.sysOrganizationService.removeById(id) ? R.ok()
-				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "通过id删除组织架构失败");
+	public ApiResult<Void> removeById(@PathVariable("id") Long id) {
+		return this.sysOrganizationService.removeById(id) ? ApiResult.ok()
+				: ApiResult.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "通过id删除组织架构失败");
 	}
 
 	/**
 	 * 校正组织机构层级和深度
-	 * @return R 通用返回体
+	 * @return ApiResult 通用返回体
 	 */
 	@UpdateOperationLogging(msg = "校正组织机构层级和深度")
 	@PatchMapping("/revised")
 	@Authorize("hasPermission('system:organization:revised')")
 	@Operation(summary = "校正组织机构层级和深度")
-	public R<Void> revisedHierarchyAndPath() {
-		return this.sysOrganizationService.revisedHierarchyAndPath() ? R.ok()
-				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "校正组织机构层级和深度失败");
+	public ApiResult<Void> revisedHierarchyAndPath() {
+		return this.sysOrganizationService.revisedHierarchyAndPath() ? ApiResult.ok()
+				: ApiResult.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "校正组织机构层级和深度失败");
 	}
 
 }

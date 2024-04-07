@@ -36,8 +36,8 @@ import org.ballcat.business.i18n.service.I18nDataService;
 import org.ballcat.common.core.constant.enums.ImportModeEnum;
 import org.ballcat.common.model.domain.PageParam;
 import org.ballcat.common.model.domain.PageResult;
+import org.ballcat.common.model.result.ApiResult;
 import org.ballcat.common.model.result.BaseResultCode;
-import org.ballcat.common.model.result.R;
 import org.ballcat.easyexcel.annotation.RequestExcel;
 import org.ballcat.easyexcel.annotation.ResponseExcel;
 import org.ballcat.log.operation.annotation.CreateOperationLogging;
@@ -73,37 +73,38 @@ public class I18nDataController {
 	 * 分页查询
 	 * @param pageParam 分页参数
 	 * @param i18nDataQO 国际化信息查询对象
-	 * @return R 通用返回体
+	 * @return ApiResult 通用返回体
 	 */
 	@GetMapping("/page")
 	@Authorize("hasPermission('i18n:i18n-data:read')")
 	@Operation(summary = "分页查询", description = "分页查询")
-	public R<PageResult<I18nDataPageVO>> getI18nDataPage(@Validated PageParam pageParam, I18nDataQO i18nDataQO) {
-		return R.ok(this.i18nDataService.queryPage(pageParam, i18nDataQO));
+	public ApiResult<PageResult<I18nDataPageVO>> getI18nDataPage(@Validated PageParam pageParam,
+			I18nDataQO i18nDataQO) {
+		return ApiResult.ok(this.i18nDataService.queryPage(pageParam, i18nDataQO));
 	}
 
 	/**
 	 * 查询指定国际化标识的所有数据
 	 * @param code 国际化标识
-	 * @return R 通用返回体
+	 * @return ApiResult 通用返回体
 	 */
 	@GetMapping("/list")
 	@Authorize("hasPermission('i18n:i18n-data:read')")
 	@Operation(summary = "查询指定国际化标识的所有数据", description = "查询指定国际化标识的所有数据")
-	public R<List<I18nData>> listByCode(@RequestParam("code") String code) {
-		return R.ok(this.i18nDataService.listByCode(code));
+	public ApiResult<List<I18nData>> listByCode(@RequestParam("code") String code) {
+		return ApiResult.ok(this.i18nDataService.listByCode(code));
 	}
 
 	/**
 	 * 新增国际化信息
 	 * @param i18nDataCreateDTO 国际化信息
-	 * @return R 通用返回体
+	 * @return ApiResult 通用返回体
 	 */
 	@CreateOperationLogging(msg = "新增国际化信息")
 	@PostMapping
 	@Authorize("hasPermission('i18n:i18n-data:add')")
 	@Operation(summary = "新增国际化信息", description = "新增国际化信息")
-	public R<Void> save(@Valid @RequestBody I18nDataCreateDTO i18nDataCreateDTO) {
+	public ApiResult<Void> save(@Valid @RequestBody I18nDataCreateDTO i18nDataCreateDTO) {
 		// 转换为实体类列表
 		List<I18nData> list = new ArrayList<>();
 		List<I18nDataCreateDTO.LanguageText> languageTexts = i18nDataCreateDTO.getLanguageTexts();
@@ -115,51 +116,52 @@ public class I18nDataController {
 			i18nData.setMessage(languageText.getMessage());
 			list.add(i18nData);
 		}
-		return this.i18nDataService.saveBatch(list) ? R.ok()
-				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "新增国际化信息失败");
+		return this.i18nDataService.saveBatch(list) ? ApiResult.ok()
+				: ApiResult.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "新增国际化信息失败");
 	}
 
 	/**
 	 * 修改国际化信息
 	 * @param i18nDataDTO 国际化信息
-	 * @return R 通用返回体
+	 * @return ApiResult 通用返回体
 	 */
 	@UpdateOperationLogging(msg = "修改国际化信息")
 	@PutMapping
 	@Authorize("hasPermission('i18n:i18n-data:edit')")
 	@Operation(summary = "修改国际化信息", description = "修改国际化信息")
-	public R<Void> updateById(@RequestBody I18nDataDTO i18nDataDTO) {
-		return this.i18nDataService.updateByCodeAndLanguageTag(i18nDataDTO) ? R.ok()
-				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "修改国际化信息失败");
+	public ApiResult<Void> updateById(@RequestBody I18nDataDTO i18nDataDTO) {
+		return this.i18nDataService.updateByCodeAndLanguageTag(i18nDataDTO) ? ApiResult.ok()
+				: ApiResult.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "修改国际化信息失败");
 	}
 
 	/**
 	 * 通过id删除国际化信息
 	 * @param code code 唯一标识
 	 * @param languageTag 语言标签
-	 * @return R 通用返回体
+	 * @return ApiResult 通用返回体
 	 */
 	@DeleteOperationLogging(msg = "通过id删除国际化信息")
 	@DeleteMapping
 	@Authorize("hasPermission('i18n:i18n-data:del')")
 	@Operation(summary = "通过id删除国际化信息", description = "通过id删除国际化信息")
-	public R<Void> removeById(@RequestParam("code") String code, @RequestParam("languageTag") String languageTag) {
-		return this.i18nDataService.removeByCodeAndLanguageTag(code, languageTag) ? R.ok()
-				: R.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "通过id删除国际化信息失败");
+	public ApiResult<Void> removeById(@RequestParam("code") String code,
+			@RequestParam("languageTag") String languageTag) {
+		return this.i18nDataService.removeByCodeAndLanguageTag(code, languageTag) ? ApiResult.ok()
+				: ApiResult.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "通过id删除国际化信息失败");
 	}
 
 	/**
 	 * 导入国际化信息
-	 * @return R 通用返回体
+	 * @return ApiResult 通用返回体
 	 */
 	@PostMapping("/import")
 	@Authorize("hasPermission('i18n:i18n-data:import')")
 	@Operation(summary = "导入国际化信息", description = "导入国际化信息")
-	public R<List<I18nData>> importI18nData(@RequestExcel List<I18nDataExcelVO> excelVos,
+	public ApiResult<List<I18nData>> importI18nData(@RequestExcel List<I18nDataExcelVO> excelVos,
 			@RequestParam("importMode") ImportModeEnum importModeEnum) {
 
 		if (CollectionUtils.isEmpty(excelVos)) {
-			return R.ok();
+			return ApiResult.ok();
 		}
 
 		// 转换结构
@@ -170,7 +172,7 @@ public class I18nDataController {
 		// 跳过已有数据，返回已有数据列表
 		if (importModeEnum == ImportModeEnum.SKIP_EXISTING) {
 			List<I18nData> existsList = this.i18nDataService.saveWhenNotExist(list);
-			return R.ok(existsList);
+			return ApiResult.ok(existsList);
 		}
 
 		// 覆盖已有数据
@@ -178,7 +180,7 @@ public class I18nDataController {
 			this.i18nDataService.saveOrUpdate(list);
 		}
 
-		return R.ok();
+		return ApiResult.ok();
 	}
 
 	/**

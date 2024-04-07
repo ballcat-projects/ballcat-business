@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 import org.ballcat.business.notify.enums.NotifyChannelEnum;
 import org.ballcat.business.notify.model.domain.NotifyInfo;
 import org.ballcat.business.system.model.entity.SysUser;
-import org.ballcat.common.util.HtmlUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -52,7 +51,7 @@ public class SmsNotifyPusher implements NotifyPusher {
 			.filter(StringUtils::hasText)
 			.collect(Collectors.toList());
 		// 短信文本去除 html 标签
-		String content = HtmlUtils.toText(notifyInfo.getContent());
+		// String content = HtmlUtils.toText(notifyInfo.getContent());
 		// TODO 对接短信发送平台
 		System.out.println("短信推送");
 	}
