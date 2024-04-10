@@ -97,12 +97,14 @@ public class BusinessAccessLogFilter extends DefaultAccessLogFilter {
 
 		// 记录请求体
 		if (recordOptions.isIncludeRequestBody()) {
-			accessLog.setRequestBody(getRequestBody(request));
+			String requestBody = getRequestBody(request, recordOptions.getMaxRequestBodyLength());
+			accessLog.setRequestBody(requestBody);
 		}
 
 		// 记录响应体
 		if (recordOptions.isIncludeResponseBody()) {
-			accessLog.setResponseBody(getResponseBody(response));
+			String responseBody = getResponseBody(response, recordOptions.getMaxResponseBodyLength());
+			accessLog.setResponseBody(responseBody);
 		}
 
 		// 如果登录用户 则记录用户名和用户id

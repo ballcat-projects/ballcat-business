@@ -83,7 +83,6 @@ public class BallcatLogConfiguration {
 			BusinessAccessLogFilter businessAccessLogFilter = new BusinessAccessLogFilter(defaultRecordOptions,
 					accessLogRules, new AccessLogSaveThread(accessLogService), principalAttributeAccessor,
 					defaultFilterLogLevel);
-			businessAccessLogFilter.setMaxBodyLength(accessLogProperties.getMaxBodyLength());
 			businessAccessLogFilter.setOrder(accessLogProperties.getFilterOrder());
 			return businessAccessLogFilter;
 		}
