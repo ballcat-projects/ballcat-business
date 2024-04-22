@@ -20,8 +20,8 @@ import javax.validation.constraints.NotBlank;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import org.ballcat.desensitize.enums.RegexDesensitizationTypeEnum;
-import org.ballcat.desensitize.json.annotation.JsonRegexDesensitize;
+import org.ballcat.business.system.desensitize.rule.KeyRegexDesensitizeRule;
+import org.ballcat.desensitize.annotation.RegexDesensitize;
 
 /**
  * 用户密码传输DTO，字段序列化时忽略，防止记录
@@ -36,7 +36,7 @@ public class SysUserPassDTO {
 	 * 前端传入密码
 	 */
 	@NotBlank(message = "The password cannot be empty!")
-	@JsonRegexDesensitize(type = RegexDesensitizationTypeEnum.ENCRYPTED_PASSWORD)
+	@RegexDesensitize(rule = KeyRegexDesensitizeRule.class)
 	@Schema(title = "前端输入密码")
 	private String pass;
 
@@ -44,7 +44,7 @@ public class SysUserPassDTO {
 	 * 前端确认密码
 	 */
 	@NotBlank(message = "The confirm password cannot be empty!")
-	@JsonRegexDesensitize(type = RegexDesensitizationTypeEnum.ENCRYPTED_PASSWORD)
+	@RegexDesensitize(rule = KeyRegexDesensitizeRule.class)
 	@Schema(title = "前端确认密码")
 	private String confirmPass;
 

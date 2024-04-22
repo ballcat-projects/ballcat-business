@@ -24,10 +24,10 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import org.ballcat.business.system.desensitize.rule.KeyRegexDesensitizeRule;
 import org.ballcat.common.core.validation.group.CreateGroup;
 import org.ballcat.common.core.validation.group.UpdateGroup;
-import org.ballcat.desensitize.enums.RegexDesensitizationTypeEnum;
-import org.ballcat.desensitize.json.annotation.JsonRegexDesensitize;
+import org.ballcat.desensitize.annotation.RegexDesensitize;
 import org.hibernate.validator.constraints.Range;
 
 /**
@@ -50,7 +50,7 @@ public class SysUserDTO {
 	 * 前端传入密码
 	 */
 	@NotEmpty(message = "pass {}", groups = CreateGroup.class)
-	@JsonRegexDesensitize(type = RegexDesensitizationTypeEnum.ENCRYPTED_PASSWORD)
+	@RegexDesensitize(rule = KeyRegexDesensitizeRule.class)
 	@Schema(title = "前端传入密码")
 	private String pass;
 
