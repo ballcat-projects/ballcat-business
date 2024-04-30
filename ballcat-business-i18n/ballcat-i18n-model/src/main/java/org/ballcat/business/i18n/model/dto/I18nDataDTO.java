@@ -16,6 +16,8 @@
 
 package org.ballcat.business.i18n.model.dto;
 
+import javax.validation.constraints.NotEmpty;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -33,18 +35,21 @@ public class I18nDataDTO {
 	/**
 	 * 语言标签
 	 */
+	@NotEmpty(message = "{i18nMessage.message}：{}")
 	@Schema(title = "语言标签")
 	private String languageTag;
 
 	/**
 	 * 唯一标识 = 业务:关键词
 	 */
+	@NotEmpty(message = "{i18nMessage.message}：{}")
 	@Schema(title = "唯一标识 = 业务:关键词")
 	private String code;
 
 	/**
 	 * 文本值，可以使用 { } 加角标，作为占位符
 	 */
+	@NotEmpty(message = "{i18nMessage.message}：{}")
 	@Schema(title = "文本值，可以使用 { } 加角标，作为占位符")
 	private String message;
 
