@@ -143,6 +143,20 @@ public class SysDictController {
 	}
 
 	/**
+	 * 通过id刷新hash值
+	 * @param id id
+	 * @return ApiResult
+	 */
+	@UpdateOperationLogging(msg = "通过id刷新hash值")
+	@PatchMapping("/refresh/{id}")
+	@Authorize("hasPermission('system:dict:edit')")
+	@Operation(summary = "通过id刷新hash值", description = "通过id刷新hash值")
+	public ApiResult<Void> refreshDictHashById(@PathVariable("id") Long id) {
+		this.sysDictManager.refreshDictHashById(id);
+		return ApiResult.ok();
+	}
+
+	/**
 	 * 分页查询
 	 * @param pageParam 分页参数
 	 * @param dictCode 字典标识

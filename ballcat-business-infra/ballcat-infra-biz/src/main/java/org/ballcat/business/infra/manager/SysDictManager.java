@@ -143,6 +143,24 @@ public class SysDictManager {
 	}
 
 	/**
+	 * 通过id刷新hash值
+	 * @param id 字典id
+	 */
+	public void refreshDictHashById(Long id) {
+		// 查询现有数据
+		SysDict dict = this.sysDictService.getById(id);
+		Assert.notNull(dict, () -> new BusinessException(BaseResultCode.LOGIC_CHECK_ERROR.getCode(), "错误的字典 id：" + id));
+
+		// 更新字典 hash
+		String dictCode = dict.getCode();
+		Assert.isTrue(this.sysDictService.updateHashCode(dictCode),
+				() -> new BusinessException(BaseResultCode.UPDATE_DATABASE_ERROR.getCode(), "字典 Hash 更新异常"));
+
+		// 发布字典更新事件
+		this.eventPublisher.publishEvent(new DictChangeEvent(dictCode));
+	}
+
+	/**
 	 * 字典项分页
 	 * @param pageParam 分页属性
 	 * @param dictCode 字典标识
