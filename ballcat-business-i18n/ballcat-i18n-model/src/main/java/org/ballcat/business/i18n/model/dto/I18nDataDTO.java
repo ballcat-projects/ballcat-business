@@ -35,14 +35,14 @@ public class I18nDataDTO {
 	/**
 	 * 语言标签
 	 */
-	@NotEmpty(message = "{i18nMessage.message}：{}")
+	@NotEmpty(message = "{i18nMessage.languageTag}：{}")
 	@Schema(title = "语言标签")
 	private String languageTag;
 
 	/**
 	 * 唯一标识 = 业务:关键词
 	 */
-	@NotEmpty(message = "{i18nMessage.message}：{}")
+	@NotEmpty(message = "{i18nMessage.code}：{}")
 	@Schema(title = "唯一标识 = 业务:关键词")
 	private String code;
 

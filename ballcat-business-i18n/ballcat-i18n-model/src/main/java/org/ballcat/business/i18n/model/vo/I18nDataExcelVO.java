@@ -36,7 +36,7 @@ public class I18nDataExcelVO {
 	/**
 	 * 语言标签
 	 */
-	@NotEmpty(message = "{i18nMessage.message}：{}")
+	@NotEmpty(message = "{i18nMessage.languageTag}：{}")
 	@ExcelProperty(value = "{i18nMessage.languageTag}", index = 0)
 	@Schema(title = "语言标签")
 	private String languageTag;
@@ -44,7 +44,7 @@ public class I18nDataExcelVO {
 	/**
 	 * 国际化标识
 	 */
-	@NotEmpty(message = "{i18nMessage.message}：{}")
+	@NotEmpty(message = "{i18nMessage.code}：{}")
 	@ExcelProperty(value = "{i18nMessage.code}", index = 1)
 	@Schema(title = "国际化标识")
 	private String code;
