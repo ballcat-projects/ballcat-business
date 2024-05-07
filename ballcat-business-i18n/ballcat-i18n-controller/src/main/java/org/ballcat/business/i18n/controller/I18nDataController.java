@@ -38,13 +38,16 @@ import org.ballcat.common.model.domain.PageParam;
 import org.ballcat.common.model.domain.PageResult;
 import org.ballcat.common.model.result.ApiResult;
 import org.ballcat.common.model.result.BaseResultCode;
+import org.ballcat.common.model.result.SystemResultCode;
 import org.ballcat.easyexcel.annotation.RequestExcel;
 import org.ballcat.easyexcel.annotation.ResponseExcel;
+import org.ballcat.easyexcel.domain.ErrorMessage;
 import org.ballcat.log.operation.annotation.CreateOperationLogging;
 import org.ballcat.log.operation.annotation.DeleteOperationLogging;
 import org.ballcat.log.operation.annotation.UpdateOperationLogging;
 import org.ballcat.security.annotation.Authorize;
 import org.springframework.util.CollectionUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -158,7 +161,20 @@ public class I18nDataController {
 	@Authorize("hasPermission('i18n:i18n-data:import')")
 	@Operation(summary = "导入国际化信息", description = "导入国际化信息")
 	public ApiResult<List<I18nData>> importI18nData(@RequestExcel List<I18nDataExcelVO> excelVos,
-			@RequestParam("importMode") ImportModeEnum importModeEnum) {
+			@RequestParam("importMode") ImportModeEnum importModeEnum, BindingResult bindingResult) {
+
+		// 通用校验获取失败的数据
+		List<ErrorMessage> errorMessageList = (List<ErrorMessage>) bindingResult.getTarget();
+		if (!CollectionUtils.isEmpty(errorMessageList)) {
+			StringBuilder sb = new StringBuilder();
+			for (ErrorMessage errorMessage : errorMessageList) {
+				sb.append(errorMessage.getLineNum())
+					.append("行校验失败:")
+					.append(String.join(",", errorMessage.getErrors()))
+					.append(";");
+			}
+			return ApiResult.failed(SystemResultCode.BAD_REQUEST, sb.toString());
+		}
 
 		if (CollectionUtils.isEmpty(excelVos)) {
 			return ApiResult.ok();
