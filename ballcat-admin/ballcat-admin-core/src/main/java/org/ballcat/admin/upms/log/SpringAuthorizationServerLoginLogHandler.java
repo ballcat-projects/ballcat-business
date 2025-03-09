@@ -21,7 +21,7 @@ import org.ballcat.business.log.enums.LoginEventTypeEnum;
 import org.ballcat.business.log.handler.LoginLogUtils;
 import org.ballcat.business.log.model.entity.LoginLog;
 import org.ballcat.business.log.service.LoginLogService;
-import org.ballcat.log.operation.enums.LogStatusEnum;
+import org.ballcat.common.core.constant.enums.BooleanEnum;
 import org.ballcat.springsecurity.oauth2.server.authorization.authentication.OAuth2TokenRevocationAuthenticationToken;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.authentication.ProviderNotFoundException;
@@ -73,7 +73,7 @@ public class SpringAuthorizationServerLoginLogHandler implements LoginLogHandler
 		if (username != null) {
 			LoginLog loginLog = LoginLogUtils.prodLoginLog(username)
 				.setMsg("登录成功")
-				.setStatus(LogStatusEnum.SUCCESS.getValue())
+				.setStatus(BooleanEnum.TRUE.intValue()) // TODO 使用登录日志自定义枚举
 				.setEventType(LoginEventTypeEnum.LOGIN.getValue());
 			this.loginLogService.save(loginLog);
 		}
@@ -107,7 +107,7 @@ public class SpringAuthorizationServerLoginLogHandler implements LoginLogHandler
 			LoginLog loginLog = LoginLogUtils.prodLoginLog(username)
 				.setMsg(event.getException().getMessage())
 				.setEventType(LoginEventTypeEnum.LOGIN.getValue())
-				.setStatus(LogStatusEnum.FAIL.getValue());
+				.setStatus(BooleanEnum.FALSE.intValue()); // TODO 使用登录日志自定义枚举
 			this.loginLogService.save(loginLog);
 		}
 	}

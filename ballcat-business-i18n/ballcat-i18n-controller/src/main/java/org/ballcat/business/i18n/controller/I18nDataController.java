@@ -39,12 +39,10 @@ import org.ballcat.common.model.domain.PageResult;
 import org.ballcat.common.model.result.ApiResult;
 import org.ballcat.common.model.result.BaseResultCode;
 import org.ballcat.common.model.result.SystemResultCode;
-import org.ballcat.easyexcel.annotation.RequestExcel;
-import org.ballcat.easyexcel.annotation.ResponseExcel;
-import org.ballcat.easyexcel.domain.ErrorMessage;
-import org.ballcat.log.operation.annotation.CreateOperationLogging;
-import org.ballcat.log.operation.annotation.DeleteOperationLogging;
-import org.ballcat.log.operation.annotation.UpdateOperationLogging;
+import org.ballcat.fastexcel.annotation.RequestExcel;
+import org.ballcat.fastexcel.annotation.ResponseExcel;
+import org.ballcat.fastexcel.domain.ErrorMessage;
+import org.ballcat.log.operation.annotation.OperationLog;
 import org.ballcat.security.annotation.Authorize;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
@@ -103,7 +101,8 @@ public class I18nDataController {
 	 * @param i18nDataCreateDTO 国际化信息
 	 * @return ApiResult 通用返回体
 	 */
-	@CreateOperationLogging(msg = "新增国际化信息")
+	@OperationLog(bizType = "i18n", subType = "i18n.create", bizNo = "#{#p0.code}",
+			successMessage = "用户创建了国际化信息: #{#p0.code}")
 	@PostMapping
 	@Authorize("hasPermission('i18n:i18n-data:add')")
 	@Operation(summary = "新增国际化信息", description = "新增国际化信息")
@@ -128,7 +127,8 @@ public class I18nDataController {
 	 * @param i18nDataDTO 国际化信息
 	 * @return ApiResult 通用返回体
 	 */
-	@UpdateOperationLogging(msg = "修改国际化信息")
+	@OperationLog(bizType = "i18n", subType = "i18n.create", bizNo = "#{#p0.code}",
+			successMessage = "用户修改了国际化信息: #{#p0.code}")
 	@PutMapping
 	@Authorize("hasPermission('i18n:i18n-data:edit')")
 	@Operation(summary = "修改国际化信息", description = "修改国际化信息")
@@ -143,7 +143,8 @@ public class I18nDataController {
 	 * @param languageTag 语言标签
 	 * @return ApiResult 通用返回体
 	 */
-	@DeleteOperationLogging(msg = "通过id删除国际化信息")
+	@OperationLog(bizType = "i18n", subType = "i18n.create", bizNo = "#{#code}",
+			successMessage = "用户删除了国际化信息: #{#code}")
 	@DeleteMapping
 	@Authorize("hasPermission('i18n:i18n-data:del')")
 	@Operation(summary = "通过id删除国际化信息", description = "通过id删除国际化信息")

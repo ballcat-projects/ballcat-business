@@ -50,9 +50,7 @@ import org.ballcat.common.model.domain.SelectData;
 import org.ballcat.common.model.result.ApiResult;
 import org.ballcat.common.model.result.BaseResultCode;
 import org.ballcat.common.model.result.SystemResultCode;
-import org.ballcat.log.operation.annotation.CreateOperationLogging;
-import org.ballcat.log.operation.annotation.DeleteOperationLogging;
-import org.ballcat.log.operation.annotation.UpdateOperationLogging;
+import org.ballcat.log.operation.annotation.OperationLog;
 import org.ballcat.security.annotation.Authorize;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
@@ -132,8 +130,9 @@ public class SysUserController {
 	 * @param sysUserDTO userInfo
 	 * @return success/false
 	 */
+	@OperationLog(bizType = "user", subType = "user.create", bizNo = "#{#p0.userId}",
+			successMessage = "创建用户: #{#p0.userId}，用户名：#{#p0.username}")
 	@PostMapping
-	@CreateOperationLogging(msg = "新增系统用户")
 	@Authorize("hasPermission('system:user:add')")
 	@Operation(summary = "新增系统用户", description = "新增系统用户")
 	public ApiResult<Void> addSysUser(
@@ -162,8 +161,9 @@ public class SysUserController {
 	 * @param sysUserDto userInfo
 	 * @return success/false
 	 */
+	@OperationLog(bizType = "user", subType = "user.update", bizNo = "#{#p0.userId}",
+			successMessage = "修改用户: #{#p0.userId}，用户名：#{#p0.username}")
 	@PutMapping
-	@UpdateOperationLogging(msg = "修改系统用户")
 	@Authorize("hasPermission('system:user:edit')")
 	@Operation(summary = "修改系统用户", description = "修改系统用户")
 	public ApiResult<Void> updateUserInfo(
@@ -175,8 +175,8 @@ public class SysUserController {
 	/**
 	 * 删除用户信息
 	 */
+	@OperationLog(bizType = "user", subType = "user.delete", bizNo = "#{#userId}", successMessage = "删除用户: #{#userId}")
 	@DeleteMapping("/{userId}")
-	@DeleteOperationLogging(msg = "通过id删除系统用户")
 	@Authorize("hasPermission('system:user:del')")
 	@Operation(summary = "通过id删除系统用户", description = "通过id删除系统用户")
 	public ApiResult<Void> deleteByUserId(@PathVariable("userId") Long userId) {
@@ -210,8 +210,8 @@ public class SysUserController {
 	 * @param sysUserScope sysUserScope
 	 * @return success/false
 	 */
+	@OperationLog(bizType = "user", subType = "user.grant", bizNo = "#{#userId}", successMessage = "修改用户权限: #{#userId}")
 	@PutMapping("/scope/{userId}")
-	@UpdateOperationLogging(msg = "系统用户授权")
 	@Authorize("hasPermission('system:user:grant')")
 	@Operation(summary = "系统用户授权", description = "系统用户授权")
 	public ApiResult<Void> updateUserScope(@PathVariable("userId") Long userId,
@@ -223,8 +223,9 @@ public class SysUserController {
 	/**
 	 * 修改用户密码
 	 */
+	@OperationLog(bizType = "user", subType = "user.update.password", bizNo = "#{#userId}",
+			successMessage = "修改用户密码: #{#userId}")
 	@PutMapping("/pass/{userId}")
-	@UpdateOperationLogging(msg = "修改系统用户密码")
 	@Authorize("hasPermission('system:user:pass')")
 	@Operation(summary = "修改系统用户密码", description = "修改系统用户密码")
 	public ApiResult<Void> updateUserPass(@PathVariable("userId") Long userId,
@@ -249,8 +250,8 @@ public class SysUserController {
 	/**
 	 * 批量修改用户状态
 	 */
+	@OperationLog(bizType = "user", subType = "user.update.status.batch", successMessage = "批量修改用户状态: #{#userIds}")
 	@PutMapping("/status")
-	@UpdateOperationLogging(msg = "批量修改用户状态")
 	@Authorize("hasPermission('system:user:edit')")
 	@Operation(summary = "批量修改用户状态", description = "批量修改用户状态")
 	public ApiResult<Void> updateUserStatus(@NotEmpty(message = "用户ID不能为空") @RequestBody List<Long> userIds,
@@ -264,8 +265,8 @@ public class SysUserController {
 				: ApiResult.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "批量修改用户状态！");
 	}
 
-	@UpdateOperationLogging(msg = "修改系统用户头像")
-	@Authorize("hasPermission('system:user:edit')")
+	@OperationLog(bizType = "user", subType = "user.update.avatar", bizNo = "#{#userId}",
+			successMessage = "修改用户头像: #{#p0.userId}")
 	@PostMapping("/avatar")
 	@Operation(summary = "修改系统用户头像", description = "修改系统用户头像")
 	public ApiResult<String> updateAvatar(@RequestParam("file") MultipartFile file,

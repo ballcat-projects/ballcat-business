@@ -23,7 +23,6 @@ import org.ballcat.autoconfigure.web.accesslog.AccessLogAutoConfiguration;
 import org.ballcat.autoconfigure.web.accesslog.AccessLogProperties;
 import org.ballcat.business.log.filter.BusinessAccessLogFilter;
 import org.ballcat.business.log.handler.CustomOperationLogHandler;
-import org.ballcat.business.log.model.entity.OperationLog;
 import org.ballcat.business.log.service.AccessLogService;
 import org.ballcat.business.log.service.LoginLogService;
 import org.ballcat.business.log.service.OperationLogService;
@@ -112,9 +111,8 @@ public class BallcatLogConfiguration {
 		@Bean
 		@ConditionalOnBean(OperationLogService.class)
 		@ConditionalOnMissingBean(OperationLogHandler.class)
-		public OperationLogHandler<OperationLog> customOperationLogHandler(OperationLogService operationLogService,
-				PrincipalAttributeAccessor principalAttributeAccessor) {
-			return new CustomOperationLogHandler(operationLogService, principalAttributeAccessor);
+		public OperationLogHandler customOperationLogHandler(OperationLogService operationLogService) {
+			return new CustomOperationLogHandler(operationLogService);
 		}
 
 	}

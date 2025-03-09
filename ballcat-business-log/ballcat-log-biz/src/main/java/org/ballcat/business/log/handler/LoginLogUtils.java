@@ -23,9 +23,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.ballcat.business.log.model.entity.LoginLog;
 import org.ballcat.common.core.constant.MDCConstants;
+import org.ballcat.common.core.constant.enums.BooleanEnum;
 import org.ballcat.common.util.IpUtils;
 import org.ballcat.common.util.UserAgentUtils;
-import org.ballcat.log.operation.enums.LogStatusEnum;
 import org.slf4j.MDC;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -51,7 +51,7 @@ public final class LoginLogUtils {
 			.setIp(IpUtils.getIpAddr(request))
 			.setOs(detectOS(request))
 			.setBrowser(detectBrowser(request))
-			.setStatus(LogStatusEnum.SUCCESS.getValue())
+			.setStatus(BooleanEnum.TRUE.intValue()) // TODO 使用登录日志自定义的枚举
 			.setTraceId(MDC.get(MDCConstants.TRACE_ID_KEY))
 			.setUsername(username);
 	}

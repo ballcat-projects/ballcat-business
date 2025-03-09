@@ -33,9 +33,7 @@ import org.ballcat.business.system.model.vo.SysOrganizationVO;
 import org.ballcat.business.system.service.SysOrganizationService;
 import org.ballcat.common.model.result.ApiResult;
 import org.ballcat.common.model.result.BaseResultCode;
-import org.ballcat.log.operation.annotation.CreateOperationLogging;
-import org.ballcat.log.operation.annotation.DeleteOperationLogging;
-import org.ballcat.log.operation.annotation.UpdateOperationLogging;
+import org.ballcat.log.operation.annotation.OperationLog;
 import org.ballcat.security.annotation.Authorize;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -97,7 +95,8 @@ public class SysOrganizationController {
 	 * @param sysOrganizationDTO 组织机构DTO
 	 * @return ApiResult 通用返回体
 	 */
-	@CreateOperationLogging(msg = "新增组织架构")
+	@OperationLog(bizType = "organization", subType = "organization.create",
+			successMessage = "用户创建了组织架构: #{#p0.id}，名称：#{#p0.name}")
 	@PostMapping
 	@Authorize("hasPermission('system:organization:add')")
 	@Operation(summary = "新增组织架构")
@@ -111,7 +110,8 @@ public class SysOrganizationController {
 	 * @param sysOrganizationDTO 组织机构DTO
 	 * @return ApiResult 通用返回体
 	 */
-	@UpdateOperationLogging(msg = "修改组织架构")
+	@OperationLog(bizType = "organization", subType = "organization.update", bizNo = "#{#p0.id}",
+			successMessage = "用户修改了组织架构: #{#p0.id}，名称：#{#p0.name}")
 	@PutMapping
 	@Authorize("hasPermission('system:organization:edit')")
 	@Operation(summary = "修改组织架构")
@@ -125,7 +125,8 @@ public class SysOrganizationController {
 	 * @param id id
 	 * @return ApiResult 通用返回体
 	 */
-	@DeleteOperationLogging(msg = "通过id删除组织架构")
+	@OperationLog(bizType = "organization", subType = "organization.delete", bizNo = "#{#id}",
+			successMessage = "用户删除了组织架构: #{#id}")
 	@DeleteMapping("/{id}")
 	@Authorize("hasPermission('system:organization:del')")
 	@Operation(summary = "通过id删除组织架构")
@@ -138,7 +139,7 @@ public class SysOrganizationController {
 	 * 校正组织机构层级和深度
 	 * @return ApiResult 通用返回体
 	 */
-	@UpdateOperationLogging(msg = "校正组织机构层级和深度")
+	@OperationLog(bizType = "organization", subType = "organization.revised", successMessage = "用户校正了组织架构层级和深度")
 	@PatchMapping("/revised")
 	@Authorize("hasPermission('system:organization:revised')")
 	@Operation(summary = "校正组织机构层级和深度")

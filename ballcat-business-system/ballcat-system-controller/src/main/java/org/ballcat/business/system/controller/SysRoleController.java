@@ -42,9 +42,7 @@ import org.ballcat.common.model.domain.PageResult;
 import org.ballcat.common.model.domain.SelectData;
 import org.ballcat.common.model.result.ApiResult;
 import org.ballcat.common.model.result.BaseResultCode;
-import org.ballcat.log.operation.annotation.CreateOperationLogging;
-import org.ballcat.log.operation.annotation.DeleteOperationLogging;
-import org.ballcat.log.operation.annotation.UpdateOperationLogging;
+import org.ballcat.log.operation.annotation.OperationLog;
 import org.ballcat.security.annotation.Authorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -101,7 +99,8 @@ public class SysRoleController {
 	 * @param sysRole 系统角色表
 	 * @return ApiResult
 	 */
-	@CreateOperationLogging(msg = "新增系统角色")
+	@OperationLog(bizType = "role", subType = "role.create", bizNo = "#{#p0.code}",
+			successMessage = "用户创建了角色: #{#p0.code}，名称：#{#p0.name}")
 	@PostMapping
 	@Authorize("hasPermission('system:role:add')")
 	@Operation(summary = "新增系统角色", description = "新增系统角色")
@@ -115,7 +114,7 @@ public class SysRoleController {
 	 * @param roleUpdateDTO 角色修改DTO
 	 * @return success/false
 	 */
-	@UpdateOperationLogging(msg = "修改系统角色")
+	@OperationLog(bizType = "role", subType = "role.update", bizNo = "#{#p0.id}", successMessage = "用户修改了角色: #{#p0.id}")
 	@PutMapping
 	@Authorize("hasPermission('system:role:edit')")
 	@Operation(summary = "修改系统角色", description = "修改系统角色")
@@ -130,7 +129,7 @@ public class SysRoleController {
 	 * @return 结果信息
 	 */
 	@DeleteMapping("/{id}")
-	@DeleteOperationLogging(msg = "通过id删除系统角色")
+	@OperationLog(bizType = "role", subType = "role.delete", bizNo = "#{#id}", successMessage = "用户修改了角色: #{#id}")
 	@Authorize("hasPermission('system:role:del')")
 	@Operation(summary = "通过id删除系统角色", description = "通过id删除系统角色")
 	public ApiResult<Boolean> removeById(@PathVariable("id") Long id) {
@@ -160,7 +159,8 @@ public class SysRoleController {
 	 * @return success、false
 	 */
 	@PutMapping("/permission/code/{roleCode}")
-	@UpdateOperationLogging(msg = "更新角色权限")
+	@OperationLog(bizType = "role", subType = "role.grant", bizNo = "#{#roleCode}",
+			successMessage = "用户修改了角色授权: #{#roleCode}")
 	@Authorize("hasPermission('system:role:grant')")
 	@Operation(summary = "更新角色权限", description = "更新角色权限")
 	public ApiResult<Boolean> savePermissionIds(@PathVariable("roleCode") String roleCode,

@@ -26,9 +26,7 @@ import org.ballcat.business.infra.service.SysConfigService;
 import org.ballcat.common.model.domain.PageParam;
 import org.ballcat.common.model.domain.PageResult;
 import org.ballcat.common.model.result.ApiResult;
-import org.ballcat.log.operation.annotation.CreateOperationLogging;
-import org.ballcat.log.operation.annotation.DeleteOperationLogging;
-import org.ballcat.log.operation.annotation.UpdateOperationLogging;
+import org.ballcat.log.operation.annotation.OperationLog;
 import org.ballcat.security.annotation.Authorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -72,7 +70,8 @@ public class SysConfigController {
 	 * @param sysConfig 系统配置
 	 * @return ApiResult
 	 */
-	@CreateOperationLogging(msg = "新增系统配置")
+	@OperationLog(bizType = "config", subType = "config.create", bizNo = "#{#p0.confKey}",
+			successMessage = "用户创建了系统配置 #{#sysConfig.name}，key: #{#sysConfig.confKey}， value: #{#sysConfig.confValue}")
 	@PostMapping
 	@Authorize("hasPermission('system:config:add')")
 	@Operation(summary = "新增系统配置", description = "新增系统配置")
@@ -85,7 +84,8 @@ public class SysConfigController {
 	 * @param sysConfig 系统配置
 	 * @return ApiResult
 	 */
-	@UpdateOperationLogging(msg = "修改系统配置")
+	@OperationLog(bizType = "config", subType = "config.update", bizNo = "#{#p0.confKey}",
+			successMessage = "用户修改了系统配置 #{#sysConfig.name}，key: #{#sysConfig.confKey}， value: #{#sysConfig.confValue}")
 	@PutMapping
 	@Authorize("hasPermission('system:config:edit')")
 	@Operation(summary = "修改系统配置")
@@ -98,7 +98,8 @@ public class SysConfigController {
 	 * @param confKey confKey
 	 * @return ApiResult
 	 */
-	@DeleteOperationLogging(msg = "删除系统配置")
+	@OperationLog(bizType = "config", subType = "config.delete", bizNo = "#{#confKey}",
+			successMessage = "用户删除了系统配置 key: #{#sysConfig.confKey}")
 	@DeleteMapping
 	@Authorize("hasPermission('system:config:del')")
 	@Operation(summary = "删除系统配置")

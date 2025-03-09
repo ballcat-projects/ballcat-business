@@ -43,9 +43,7 @@ import org.ballcat.business.system.service.SysUserRoleService;
 import org.ballcat.common.model.result.ApiResult;
 import org.ballcat.common.model.result.BaseResultCode;
 import org.ballcat.common.util.Assert;
-import org.ballcat.log.operation.annotation.CreateOperationLogging;
-import org.ballcat.log.operation.annotation.DeleteOperationLogging;
-import org.ballcat.log.operation.annotation.UpdateOperationLogging;
+import org.ballcat.log.operation.annotation.OperationLog;
 import org.ballcat.security.annotation.Authorize;
 import org.ballcat.security.core.PrincipalAttributeAccessor;
 import org.springframework.util.CollectionUtils;
@@ -149,7 +147,8 @@ public class SysMenuController {
 	 * @param sysMenuCreateDTO 菜单权限
 	 * @return ApiResult 通用返回体
 	 */
-	@CreateOperationLogging(msg = "新增菜单权限")
+	@OperationLog(bizType = "menu", subType = "menu.create", bizNo = "#{#p0.id}",
+			successMessage = "用户创建了菜单权限: #{#p0.id}，标题：#{#p0.title}")
 	@PostMapping
 	@Authorize("hasPermission('system:menu:add')")
 	@Operation(summary = "新增菜单权限", description = "新增菜单权限")
@@ -163,7 +162,8 @@ public class SysMenuController {
 	 * @param sysMenuUpdateDTO 菜单权限修改DTO
 	 * @return ApiResult 通用返回体
 	 */
-	@UpdateOperationLogging(msg = "修改菜单权限")
+	@OperationLog(bizType = "menu", subType = "menu.update", bizNo = "#{#p0.id}",
+			successMessage = "用户修改了菜单权限: #{#p0.id}，标题：#{#p0.title}")
 	@PutMapping
 	@Authorize("hasPermission('system:menu:edit')")
 	@Operation(summary = "修改菜单权限", description = "修改菜单权限")
@@ -177,7 +177,7 @@ public class SysMenuController {
 	 * @param id id
 	 * @return ApiResult 通用返回体
 	 */
-	@DeleteOperationLogging(msg = "通过id删除菜单权限")
+	@OperationLog(bizType = "menu", subType = "menu.delete", bizNo = "#{#id}", successMessage = "用户删除了菜单权限: #{#id}")
 	@DeleteMapping("/{id}")
 	@Authorize("hasPermission('system:menu:del')")
 	@Operation(summary = "通过id删除菜单权限", description = "通过id删除菜单权限")

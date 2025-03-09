@@ -31,9 +31,7 @@ import org.ballcat.common.model.domain.PageParam;
 import org.ballcat.common.model.domain.PageResult;
 import org.ballcat.common.model.result.ApiResult;
 import org.ballcat.common.model.result.BaseResultCode;
-import org.ballcat.log.operation.annotation.CreateOperationLogging;
-import org.ballcat.log.operation.annotation.DeleteOperationLogging;
-import org.ballcat.log.operation.annotation.UpdateOperationLogging;
+import org.ballcat.log.operation.annotation.OperationLog;
 import org.ballcat.security.annotation.Authorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -80,7 +78,8 @@ public class AnnouncementController {
 	 * @param announcementDTO 公告信息
 	 * @return ApiResult 通用返回体
 	 */
-	@CreateOperationLogging(msg = "新增公告信息")
+	@OperationLog(bizType = "announcement", subType = "announcement.create", bizNo = "#{#announcementDTO.id}",
+			successMessage = "用户创建了系统公告: #{#announcementDTO.title}")
 	@PostMapping
 	@Authorize("hasPermission('notify:announcement:add')")
 	@Operation(summary = "新增公告信息", description = "新增公告信息")
@@ -94,7 +93,8 @@ public class AnnouncementController {
 	 * @param announcementDTO 公告信息
 	 * @return ApiResult 通用返回体
 	 */
-	@UpdateOperationLogging(msg = "修改公告信息")
+	@OperationLog(bizType = "announcement", subType = "announcement.update", bizNo = "#{#announcementDTO.id}",
+			successMessage = "用户修改了系统公告: #{#announcementDTO.id}")
 	@PutMapping
 	@Authorize("hasPermission('notify:announcement:edit')")
 	@Operation(summary = "修改公告信息", description = "修改公告信息")
@@ -108,7 +108,8 @@ public class AnnouncementController {
 	 * @param id id
 	 * @return ApiResult 通用返回体
 	 */
-	@DeleteOperationLogging(msg = "通过id删除公告信息")
+	@OperationLog(bizType = "announcement", subType = "announcement.delete", bizNo = "#{#id}",
+			successMessage = "用户删除了系统公告: #{#id}")
 	@DeleteMapping("/{id}")
 	@Authorize("hasPermission('notify:announcement:del')")
 	@Operation(summary = "通过id删除公告信息", description = "通过id删除公告信息")
@@ -121,7 +122,8 @@ public class AnnouncementController {
 	 * 发布公告信息
 	 * @return ApiResult 通用返回体
 	 */
-	@UpdateOperationLogging(msg = "发布公告信息")
+	@OperationLog(bizType = "announcement", subType = "announcement.publish", bizNo = "#{#announcementId}",
+			successMessage = "用户发布了系统公告: #{#announcementId}")
 	@PatchMapping("/publish/{announcementId}")
 	@Authorize("hasPermission('notify:announcement:edit')")
 	@Operation(summary = "发布公告信息", description = "发布公告信息")
@@ -134,7 +136,8 @@ public class AnnouncementController {
 	 * 关闭公告信息
 	 * @return ApiResult 通用返回体
 	 */
-	@UpdateOperationLogging(msg = "关闭公告信息")
+	@OperationLog(bizType = "announcement", subType = "announcement.close", bizNo = "#{#announcementId}",
+			successMessage = "用户关闭了系统公告: #{#announcementId}")
 	@PatchMapping("/close/{announcementId}")
 	@Authorize("hasPermission('notify:announcement:edit')")
 	@Operation(summary = "关闭公告信息", description = "关闭公告信息")
@@ -143,7 +146,6 @@ public class AnnouncementController {
 				: ApiResult.failed(BaseResultCode.UPDATE_DATABASE_ERROR, "关闭公告信息失败");
 	}
 
-	@UpdateOperationLogging(msg = "公告内容图片上传", recordParams = false)
 	@Authorize("hasPermission('notify:announcement:edit')")
 	@PostMapping("/image")
 	@Operation(summary = "公告内容图片上传", description = "公告内容图片上传")

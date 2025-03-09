@@ -37,9 +37,7 @@ import org.ballcat.common.model.domain.PageParam;
 import org.ballcat.common.model.domain.PageResult;
 import org.ballcat.common.model.result.ApiResult;
 import org.ballcat.common.model.result.BaseResultCode;
-import org.ballcat.log.operation.annotation.CreateOperationLogging;
-import org.ballcat.log.operation.annotation.DeleteOperationLogging;
-import org.ballcat.log.operation.annotation.UpdateOperationLogging;
+import org.ballcat.log.operation.annotation.OperationLog;
 import org.ballcat.security.annotation.Authorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -105,7 +103,8 @@ public class SysDictController {
 	 * @param sysDict 字典表
 	 * @return ApiResult
 	 */
-	@CreateOperationLogging(msg = "新增字典表")
+	@OperationLog(bizType = "dict", subType = "dict.create", bizNo = "#{#sysDict.code}",
+			successMessage = "用户创建了字典 #{#sysDict.code}")
 	@PostMapping
 	@Authorize("hasPermission('system:dict:add')")
 	@Operation(summary = "新增字典表", description = "新增字典表")
@@ -119,7 +118,8 @@ public class SysDictController {
 	 * @param sysDict 字典表
 	 * @return ApiResult
 	 */
-	@UpdateOperationLogging(msg = "修改字典表")
+	@OperationLog(bizType = "dict", subType = "dict.update", bizNo = "#{#sysDict.code}",
+			successMessage = "用户修改了字典 #{#sysDict.code}")
 	@PutMapping
 	@Authorize("hasPermission('system:dict:edit')")
 	@Operation(summary = "修改字典表", description = "修改字典表")
@@ -133,7 +133,8 @@ public class SysDictController {
 	 * @param id id
 	 * @return ApiResult
 	 */
-	@DeleteOperationLogging(msg = "通过id删除字典表")
+	@OperationLog(bizType = "dict", subType = "dict.delete", bizNo = "#{#sysDict.code}",
+			successMessage = "用户删除了字典 #{#sysDict.code}")
 	@DeleteMapping("/{id}")
 	@Authorize("hasPermission('system:dict:del')")
 	@Operation(summary = "通过id删除字典表", description = "通过id删除字典表")
@@ -147,7 +148,8 @@ public class SysDictController {
 	 * @param id id
 	 * @return ApiResult
 	 */
-	@UpdateOperationLogging(msg = "通过id刷新hash值")
+	@OperationLog(bizType = "dict", subType = "dict.refresh", bizNo = "#{#id}",
+			successMessage = "用户删除了字典Hash, id: #{#id}")
 	@PatchMapping("/refresh/{id}")
 	@Authorize("hasPermission('system:dict:edit')")
 	@Operation(summary = "通过id刷新hash值", description = "通过id刷新hash值")
@@ -175,7 +177,8 @@ public class SysDictController {
 	 * @param sysDictItemDTO 字典项
 	 * @return ApiResult
 	 */
-	@CreateOperationLogging(msg = "新增字典项")
+	@OperationLog(bizType = "dict", subType = "dict.item.create", bizNo = "#{#sysDictItemDTO.id}",
+			successMessage = "用户创建了 #{#sysDictItemDTO.dictCode} 下的字典项, #{#sysDictItemDTO.id}")
 	@PostMapping("item")
 	@Authorize("hasPermission('system:dict:add')")
 	@Operation(summary = "新增字典项", description = "新增字典项")
@@ -190,7 +193,8 @@ public class SysDictController {
 	 * @param sysDictItemDTO 字典项
 	 * @return ApiResult
 	 */
-	@UpdateOperationLogging(msg = "修改字典项")
+	@OperationLog(bizType = "dict", subType = "dict.item.update", bizNo = "#{#sysDictItemDTO.id}",
+			successMessage = "用户修改了 #{#sysDictItemDTO.dictCode} 下的字典项, #{#sysDictItemDTO.id}")
 	@PutMapping("item")
 	@Authorize("hasPermission('system:dict:edit')")
 	@Operation(summary = "修改字典项", description = "修改字典项")
@@ -205,7 +209,8 @@ public class SysDictController {
 	 * @param id id
 	 * @return ApiResult
 	 */
-	@DeleteOperationLogging(msg = "通过id删除字典项")
+	@OperationLog(bizType = "dict", subType = "dict.item.delete", bizNo = "#{#id}",
+			successMessage = "用户删除了字典项： #{#sysDictItemDTO.id}")
 	@DeleteMapping("/item/{id}")
 	@Authorize("hasPermission('system:dict:del')")
 	@Operation(summary = "通过id删除字典项", description = "通过id删除字典项")
@@ -219,7 +224,8 @@ public class SysDictController {
 	 * @param id id
 	 * @return ApiResult
 	 */
-	@UpdateOperationLogging(msg = "通过id修改字典项状态")
+	@OperationLog(bizType = "dict", subType = "dict.item.update-status", bizNo = "#{#id}",
+			successMessage = "用户修改了字典项 #{#id} 的状态为 #{#status}")
 	@PatchMapping("/item/{id}")
 	@Authorize("hasPermission('system:dict:edit')")
 	@Operation(summary = "通过id修改字典项状态", description = "通过id修改字典项状态")
