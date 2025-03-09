@@ -20,7 +20,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.ballcat</groupId>
-			<artifactId>ballcat-spring-boot-starter-easyexcel</artifactId>
+			<artifactId>ballcat-spring-boot-starter-fastexcel</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.ballcat</groupId>
