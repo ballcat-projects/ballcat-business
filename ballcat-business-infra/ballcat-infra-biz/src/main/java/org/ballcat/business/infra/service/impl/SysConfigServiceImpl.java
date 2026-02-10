@@ -50,6 +50,11 @@ public class SysConfigServiceImpl extends ExtendServiceImpl<SysConfigMapper, Sys
 		return sysConfig == null ? null : sysConfig.getConfValue();
 	}
 
+	@Override
+	public SysConfig getByKey(String confKey) {
+		return baseMapper.selectByKey(confKey);
+	}
+
 	/**
 	 * 保存系统配置，由于查询不到时会缓存空值，所以新建时也需要删除对应 key，防止之前误存了空值数据
 	 * @param entity 实体对象

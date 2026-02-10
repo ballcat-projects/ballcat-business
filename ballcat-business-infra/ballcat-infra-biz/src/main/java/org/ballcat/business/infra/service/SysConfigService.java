@@ -46,6 +46,13 @@ public interface SysConfigService extends ExtendService<SysConfig> {
 	String getConfValueByKey(String confKey);
 
 	/**
+	 * 根据 confKey 获取系统配置
+	 * @param confKey 配置key
+	 * @return 系统配置
+	 */
+	SysConfig getByKey(String confKey);
+
+	/**
 	 * 根据 confKey 进行更新
 	 * @param sysConfig 系统配置
 	 * @return 更新是否成功
